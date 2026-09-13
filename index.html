@@ -266,6 +266,11 @@
       </div>
       <div class="res-row" style="padding:8px 22px"><span class="res-lbl" style="font-size:11px">Est. Years Until Debt Free</span><span class="res-val acc" style="font-size:13px" id="r-debtfree">—</span></div>
 
+      <div class="res-divider"></div>
+      <div class="res-section-lbl">Cash Buffer</div>
+      <div class="res-row"><span class="res-lbl">1-Year Holding Costs (your share)</span><span class="res-val acc" id="r-buffer">$0</span></div>
+      <div class="res-row" style="padding:6px 22px"><span class="res-lbl" style="font-size:10px">Council + water + BC + PM fees, proportioned by ownership %</span></div>
+
     </div>
 
     <!-- Retirement -->
@@ -385,6 +390,26 @@
           <div class="computed-lbl">Loan Amount</div>
           <div class="computed" id="loan${i}">—</div>
         </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="section-lbl">Cash Buffer — Annual Holding Costs</div>
+          <div class="field">
+            <label>Council Rates <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
+            <div class="input-wrap"><span class="pfx">$</span><input type="number" id="buf_council${i}" value="1800" min="0" step="10" oninput="calc()"></div>
+          </div>
+          <div class="field">
+            <label>Water Rates <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
+            <div class="input-wrap"><span class="pfx">$</span><input type="number" id="buf_water${i}" value="540" min="0" step="10" oninput="calc()"></div>
+          </div>
+          <div class="field">
+            <label>Body Corporate / Strata <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
+            <div class="input-wrap"><span class="pfx">$</span><input type="number" id="buf_bc${i}" value="0" min="0" step="10" oninput="calc()"></div>
+            <div class="field-note">Leave 0 for freehold properties</div>
+          </div>
+          <div class="computed-wrap" style="padding-top:12px">
+            <div class="computed-lbl">Your Share of All Annual Costs (incl. PM)</div>
+            <div class="computed" id="bufShare${i}">—</div>
+          </div>
+        </div>
       `;
       panelsEl.appendChild(panel);
     }
@@ -430,7 +455,7 @@
     const acct    = v('accounting');
 
     // Per-property (apply ownership fraction)
-    let totalPrice = 0, totalLoan = 0, totalWeeklyRent = 0;
+    let totalPrice = 0, totalLoan = 0, totalWeeklyRent = 0, totalBuffer = 0;
     for (let i = 1; i <= 4; i++) {
       const price  = v('price' + i);
       const sup    = v('super' + i);
@@ -449,6 +474,15 @@
 
       // Update loan display
       if ($('loan' + i)) $('loan' + i).textContent = fmt(loan);
+
+      // Cash buffer calc — per-property holding costs × ownership %
+      const bufCouncil = v('buf_council' + i);
+      const bufWater   = v('buf_water' + i);
+      const bufBC      = v('buf_bc' + i);
+      const bufPM      = rent * own * 0.088 * 52;          // PM fees, already ownership-weighted
+      const bufShare   = (bufCouncil + bufWater + bufBC) * own + bufPM;
+      if (i <= numProps) totalBuffer += bufShare;
+      if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShare);
     }
 
     const annualRent = totalWeeklyRent * 52;
@@ -501,6 +535,7 @@
     pop('r-cashflow');
 
     $('r-debtfree').textContent = fmtYrs(yearsDebtFree);
+    setVal('r-buffer', fmt(totalBuffer), 'acc');
 
     // Retirement
     $('r-propval').textContent  = fmt(propValRet);
