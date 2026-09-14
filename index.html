@@ -210,17 +210,7 @@
       </div>
     </div>
 
-    <!-- ── OUTGOINGS DEFAULTS ── -->
-    <div class="card">
-      <div class="card-hd"><div class="card-icon">📋</div><h3>Annual Costs</h3></div>
-      <div class="card-body">
-        <div class="field">
-          <label>Accounting, Admin, Auditing & Registration</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="accounting" value="2,988" class="currency-input"></div>
-          <div class="field-note">Fixed annual cost — same regardless of ownership %</div>
-        </div>
-      </div>
-    </div>
+
 
   </div>
 
@@ -397,6 +387,13 @@
             <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="buf_insurance${i}" value="1,800" class="currency-input" oninput="calc()"></div>
             <div class="field-note">Freehold = building insurance · Strata = body corporate levy</div>
           </div>
+          ${i === 1 ? `
+          <div class="field">
+            <label>Accounting, Admin, Auditing & Registration <span style="font-weight:400;text-transform:none;font-size:10px">(fixed — not split by ownership)</span></label>
+            <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="accounting" value="2,988" class="currency-input" oninput="calc()"></div>
+            <div class="field-note">Fixed SMSF annual cost — same regardless of ownership %</div>
+          </div>
+          ` : ''}
           <div class="computed-wrap" style="padding-top:12px">
             <div class="computed-lbl">Your Share of All Annual Costs (incl. PM)</div>
             <div class="computed" id="bufShare${i}">—</div>
@@ -565,7 +562,7 @@
     calc();
   });
 
-  ['income','salary_sacrifice','age','ret_age','accounting'].forEach(id => {
+  ['income','salary_sacrifice','age','ret_age'].forEach(id => {
     $(id)?.addEventListener('input', calc);
   });
 
