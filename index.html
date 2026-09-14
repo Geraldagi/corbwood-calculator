@@ -357,11 +357,12 @@
         </div>
         <div class="field" style="margin-top:18px">
           <label>Ownership %</label>
-          <div style="display:flex;gap:8px;margin-bottom:4px">
-            <button class="own-btn prop-count-btn" data-prop="${i}" data-own="0.1" onclick="selectOwn(${i},0.1)">10%</button>
-            <button class="own-btn prop-count-btn active" data-prop="${i}" data-own="0.25" onclick="selectOwn(${i},0.25)">25%</button>
-            <button class="own-btn prop-count-btn" data-prop="${i}" data-own="0.33" onclick="selectOwn(${i},0.33)">33%</button>
-            <button class="own-btn prop-count-btn" data-prop="${i}" data-own="0.4" onclick="selectOwn(${i},0.4)">40%</button>
+          <div class="slider-row">
+            <input type="range" id="own_slider${i}" min="1" max="100" step="1" value="25" oninput="syncOwn(${i},'slider')">
+            <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+              <input type="number" id="own_input${i}" min="1" max="100" step="1" value="25" class="no-pfx" style="width:62px;padding:8px;font-size:15px;font-weight:900;color:var(--bteal);border:1.5px solid var(--border);border-radius:9px;background:#FAFBFC;font-family:'Lato',sans-serif;text-align:center" oninput="syncOwn(${i},'input')">
+              <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
+            </div>
           </div>
         </div>
         <div class="computed-wrap" style="padding-top:12px">
@@ -442,11 +443,18 @@
     calc();
   }
 
-  function selectOwn(propNum, own) {
-    propState[propNum].own = own;
-    document.querySelectorAll('.own-btn[data-prop="' + propNum + '"]').forEach(b => {
-      b.classList.toggle('active', parseFloat(b.dataset.own) === own);
-    });
+  function syncOwn(propNum, source) {
+    const slider = $('own_slider' + propNum);
+    const input  = $('own_input' + propNum);
+    let val;
+    if (source === 'slider') {
+      val = parseInt(slider.value);
+      input.value = val;
+    } else {
+      val = Math.min(100, Math.max(1, parseInt(input.value) || 1));
+      slider.value = val;
+    }
+    propState[propNum].own = val / 100;
     calc();
   }
 
