@@ -277,6 +277,12 @@
 <script>
   // ── STATE ──
   let numProps = 1;
+  const propState = {
+    1: { lvr: 0.5, own: 0.25 },
+    2: { lvr: 0.5, own: 0.25 },
+    3: { lvr: 0.5, own: 0.25 },
+    4: { lvr: 0.5, own: 0.25 }
+  };
 
   // ── UTILS ──
   const $ = id => document.getElementById(id);
@@ -337,24 +343,38 @@
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="price${i}" value="" class="currency-input" oninput="calc()"></div>
         </div>
         <div class="field">
-          <label>Super Contribution (Deposit)</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="super${i}" value="" class="currency-input" oninput="calc()"></div>
+          <label>LVR Structure</label>
+          <div style="display:flex;gap:8px;margin-bottom:4px">
+            <button class="lvr-btn prop-count-btn" data-prop="${i}" data-lvr="0" onclick="selectLVR(${i},0)">Cash</button>
+            <button class="lvr-btn prop-count-btn active" data-prop="${i}" data-lvr="0.5" onclick="selectLVR(${i},0.5)">50/50</button>
+            <button class="lvr-btn prop-count-btn" data-prop="${i}" data-lvr="0.65" onclick="selectLVR(${i},0.65)">65/35</button>
+          </div>
+          <div class="field-note">Cash = no loan · 50/50 = 50% loan · 65/35 = 65% loan</div>
+        </div>
+        <div class="computed-wrap">
+          <div class="computed-lbl">Total Deposit Required (whole property)</div>
+          <div class="computed" id="totalDep${i}">—</div>
+        </div>
+        <div class="field" style="margin-top:18px">
+          <label>Ownership %</label>
+          <div style="display:flex;gap:8px;margin-bottom:4px">
+            <button class="own-btn prop-count-btn" data-prop="${i}" data-own="0.1" onclick="selectOwn(${i},0.1)">10%</button>
+            <button class="own-btn prop-count-btn active" data-prop="${i}" data-own="0.25" onclick="selectOwn(${i},0.25)">25%</button>
+            <button class="own-btn prop-count-btn" data-prop="${i}" data-own="0.33" onclick="selectOwn(${i},0.33)">33%</button>
+            <button class="own-btn prop-count-btn" data-prop="${i}" data-own="0.4" onclick="selectOwn(${i},0.4)">40%</button>
+          </div>
+        </div>
+        <div class="computed-wrap" style="padding-top:12px">
+          <div class="computed-lbl">Your Deposit Required</div>
+          <div class="computed" id="clientDep${i}">—</div>
         </div>
         <div class="field">
           <label>Weekly Rent</label>
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="rent${i}" value="" class="currency-input" oninput="calc()"></div>
           <div class="field-note">Enter the rent per week you will receive</div>
         </div>
-        <div class="field">
-          <label>Ownership % <span style="font-weight:400;text-transform:none;font-size:10px">(for co-investments)</span></label>
-          <div class="slider-row">
-            <input type="range" id="own${i}" min="1" max="100" step="1" value="100" oninput="syncOwn(${i})">
-            <div class="slider-val" id="ownVal${i}">100%</div>
-          </div>
-          <div class="field-note">Set below 100% if co-investing with another SMSF</div>
-        </div>
         <div class="computed-wrap">
-          <div class="computed-lbl">Loan Amount</div>
+          <div class="computed-lbl">Your Loan Amount</div>
           <div class="computed" id="loan${i}">—</div>
         </div>
         <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
@@ -414,8 +434,19 @@
     }
   }
 
-  function syncOwn(i) {
-    $('ownVal' + i).textContent = $('own' + i).value + '%';
+  function selectLVR(propNum, lvr) {
+    propState[propNum].lvr = lvr;
+    document.querySelectorAll('.lvr-btn[data-prop="' + propNum + '"]').forEach(b => {
+      b.classList.toggle('active', parseFloat(b.dataset.lvr) === lvr);
+    });
+    calc();
+  }
+
+  function selectOwn(propNum, own) {
+    propState[propNum].own = own;
+    document.querySelectorAll('.own-btn[data-prop="' + propNum + '"]').forEach(b => {
+      b.classList.toggle('active', parseFloat(b.dataset.own) === own);
+    });
     calc();
   }
 
@@ -449,13 +480,13 @@
     let totalPrice = 0, totalLoan = 0, totalWeeklyRent = 0, totalBuffer = 0, totalRates = 0, totalIns = 0;
     for (let i = 1; i <= 4; i++) {
       const price  = v('price' + i);
-      const sup    = v('super' + i);
       const rent   = v('rent' + i);
-      const own    = (v('own' + i) || 100) / 100;
+      const own    = propState[i].own;
+      const lvr    = propState[i].lvr;
 
       const effectivePrice = price * own;
-      const loan  = Math.max(0, effectivePrice - sup);
-      const effectiveRent = rent * own;
+      const loan           = price * lvr * own;
+      const effectiveRent  = rent * own;
 
       if (i <= numProps) {
         totalPrice      += effectivePrice;
@@ -463,8 +494,10 @@
         totalWeeklyRent += effectiveRent;
       }
 
-      // Update loan display
-      if ($('loan' + i)) $('loan' + i).textContent = fmt(loan);
+      // Update computed displays
+      if ($('loan' + i))      $('loan' + i).textContent      = price > 0 ? fmt(loan) : '—';
+      if ($('totalDep' + i))  $('totalDep' + i).textContent  = price > 0 ? fmt(price * (1 - lvr)) : '—';
+      if ($('clientDep' + i)) $('clientDep' + i).textContent = price > 0 ? fmt(price * (1 - lvr) * own) : '—';
 
       // Cash buffer calc — per-property holding costs × ownership %
       const bufCouncil = v('buf_council' + i);
@@ -500,8 +533,8 @@
     const yearsToRet = Math.max(0, retAge - age);
 
     // Retirement calcs (use property 1 inputs as per original formula)
-    const p1Price     = v('price1') * ((v('own1') || 100) / 100);
-    const p1WeeklyRent= v('rent1')  * ((v('own1') || 100) / 100);
+    const p1Price      = v('price1') * propState[1].own;
+    const p1WeeklyRent = v('rent1')  * propState[1].own;
     const propValRet  = yearsToRet > 0 ? Math.round(FV(0.04, yearsToRet, 0, -p1Price)) : p1Price;
     const rentRetWeek = yearsToRet > 0 ? Math.round(FV(0.025, yearsToRet, 0, -p1WeeklyRent)) : p1WeeklyRent;
     const cashRetYears = Math.max(0, yearsToRet - yearsDebtFree);
