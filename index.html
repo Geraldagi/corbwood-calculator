@@ -196,19 +196,7 @@
       </div>
     </div>
 
-    <!-- ── LOAN ── -->
-    <div class="card">
-      <div class="card-hd"><div class="card-icon">📉</div><h3>Loan Settings</h3></div>
-      <div class="card-body">
-        <div class="field">
-          <label>Current Interest Rate</label>
-          <div class="slider-row">
-            <input type="range" id="rate" min="1" max="15" step="0.01" value="6.34">
-            <div class="slider-val" id="rateVal">6.34%</div>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
 
 
@@ -234,7 +222,7 @@
       <div class="res-divider"></div>
       <div class="res-section-lbl">Outgoings</div>
       <div class="res-row"><span class="res-lbl">Loan Interest</span><span class="res-val neg" id="r-interest">$0</span></div>
-      <div class="res-row"><span class="res-lbl">Rental & PM Fees (8.8%)</span><span class="res-val neg" id="r-pm">$0</span></div>
+      <div class="res-row"><span class="res-lbl">Rental & PM Fees</span><span class="res-val neg" id="r-pm">$0</span></div>
       <div class="res-row"><span class="res-lbl">Council & Water Rates</span><span class="res-val neg" id="r-rates">$0</span></div>
       <div class="res-row"><span class="res-lbl">Building Insurance / Body Corporate</span><span class="res-val neg" id="r-ins">$0</span></div>
       <div class="res-row"><span class="res-lbl">Accounting & Admin</span><span class="res-val neg" id="r-acc">$0</span></div>
@@ -393,6 +381,24 @@
             <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="accounting" value="2,988" class="currency-input" oninput="calc()"></div>
             <div class="field-note">Fixed SMSF annual cost — same regardless of ownership %</div>
           </div>
+          <div class="computed-wrap" style="padding-top:12px">
+            <div class="computed-lbl">Property Management (annual total)</div>
+            <div class="computed" id="pmTotal">—</div>
+          </div>
+          <div class="field" style="margin-top:14px">
+            <label>PM Rate</label>
+            <div class="slider-row">
+              <input type="range" id="pm_rate" min="5" max="15" step="0.1" value="8.8" oninput="syncPM()">
+              <div class="slider-val" id="pmRateVal">8.8%</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Interest Rate</label>
+            <div class="slider-row">
+              <input type="range" id="rate" min="1" max="15" step="0.01" value="6.34" oninput="syncRate()">
+              <div class="slider-val" id="rateVal">6.34%</div>
+            </div>
+          </div>
           ` : ''}
           <div class="computed-wrap" style="padding-top:12px">
             <div class="computed-lbl">Your Share of All Annual Costs (incl. PM)</div>
@@ -439,6 +445,7 @@
     const age     = v('age');
     const retAge  = v('ret_age');
     const rate    = v('rate') / 100;
+    const pmRate  = (v('pm_rate') || 8.8) / 100;
     const acct    = v('accounting');
 
     // Per-property (apply ownership fraction)
@@ -466,7 +473,7 @@
       const bufCouncil = v('buf_council' + i);
       const bufWater   = v('buf_water' + i);
       const bufIns     = v('buf_insurance' + i);
-      const bufPM      = rent * own * 0.088 * 52;          // PM fees, already ownership-weighted
+      const bufPM      = rent * own * pmRate * 52;          // PM fees, already ownership-weighted
       const bufShare   = (bufCouncil + bufWater + bufIns) * own + bufPM;
       if (i <= numProps) {
         totalBuffer += bufShare;
@@ -485,7 +492,8 @@
     const rentalYield = totalPrice > 0 ? (annualRent / totalPrice) * 100 : 0;
     const employerContrib = income * 0.12;
     const taxDep  = totalPrice * 0.003;
-    const pmFees  = totalWeeklyRent * 0.088 * 52;
+    const pmFees  = totalWeeklyRent * pmRate * 52;
+    if ($('pmTotal')) $('pmTotal').textContent = fmt(pmFees);
     const loanInt = totalLoan * rate;
     const totalIn  = Math.round(annualRent + employerContrib + ss + taxDep);
     const totalOut = Math.round(loanInt + totalRates + totalIns + acct + pmFees);
@@ -562,10 +570,14 @@
   buildPropPanels();
   attachCurrencyFormatters();
 
-  $('rate').addEventListener('input', () => {
+  function syncPM() {
+    $('pmRateVal').textContent = parseFloat($('pm_rate').value).toFixed(1) + '%';
+    calc();
+  }
+  function syncRate() {
     $('rateVal').textContent = parseFloat($('rate').value).toFixed(2) + '%';
     calc();
-  });
+  }
 
   ['income','salary_sacrifice','age','ret_age'].forEach(id => {
     $(id)?.addEventListener('input', calc);
