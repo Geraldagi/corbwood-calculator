@@ -473,7 +473,9 @@
         totalRates  += (bufCouncil + bufWater) * own;
         totalIns    += bufIns * own;
       }
-      if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShare);
+      // Property 1 display includes accounting (fixed SMSF cost shown once)
+      const bufShareDisplay = (i === 1) ? bufShare + acct : bufShare;
+      if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShareDisplay);
     }
 
     // Add accounting as a fixed cost to the buffer total (not proportioned)
