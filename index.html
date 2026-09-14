@@ -250,7 +250,7 @@
       <div class="res-divider"></div>
       <div class="res-section-lbl">Cash Buffer</div>
       <div class="res-row"><span class="res-lbl">1-Year Holding Costs (your share)</span><span class="res-val acc" id="r-buffer">$0</span></div>
-      <div class="res-row" style="padding:6px 22px"><span class="res-lbl" style="font-size:10px">Council + water + insurance/BC + PM — proportioned by ownership %</span></div>
+      <div class="res-row" style="padding:6px 22px"><span class="res-lbl" style="font-size:10px">Council + water + insurance/BC + PM (proportioned) + accounting (fixed)</span></div>
 
     </div>
 
@@ -475,6 +475,9 @@
       }
       if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShare);
     }
+
+    // Add accounting as a fixed cost to the buffer total (not proportioned)
+    totalBuffer += acct;
 
     const annualRent = totalWeeklyRent * 52;
     const rentalYield = totalPrice > 0 ? (annualRent / totalPrice) * 100 : 0;
