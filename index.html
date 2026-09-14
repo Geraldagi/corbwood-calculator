@@ -406,15 +406,21 @@
           <div class="field" style="margin-top:14px">
             <label>PM Rate</label>
             <div class="slider-row">
-              <input type="range" id="pm_rate" min="5" max="15" step="0.1" value="8.8" oninput="syncPM()">
-              <div class="slider-val" id="pmRateVal">8.8%</div>
+              <input type="range" id="pm_rate" min="5" max="15" step="0.1" value="8.8" oninput="syncPM('slider')">
+              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+                <input type="number" id="pmRateVal" min="5" max="15" step="0.1" value="8.8" class="no-pfx" style="width:62px;padding:8px;font-size:15px;font-weight:900;color:var(--bteal);border:1.5px solid var(--border);border-radius:9px;background:#FAFBFC;font-family:'Lato',sans-serif;text-align:center" oninput="syncPM('input')">
+                <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
+              </div>
             </div>
           </div>
           <div class="field">
             <label>Interest Rate</label>
             <div class="slider-row">
-              <input type="range" id="rate" min="1" max="15" step="0.01" value="6.34" oninput="syncRate()">
-              <div class="slider-val" id="rateVal">6.34%</div>
+              <input type="range" id="rate" min="1" max="15" step="0.01" value="6.34" oninput="syncRate('slider')">
+              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+                <input type="number" id="rateVal" min="1" max="15" step="0.01" value="6.34" class="no-pfx" style="width:62px;padding:8px;font-size:15px;font-weight:900;color:var(--bteal);border:1.5px solid var(--border);border-radius:9px;background:#FAFBFC;font-family:'Lato',sans-serif;text-align:center" oninput="syncRate('input')">
+                <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
+              </div>
             </div>
           </div>
           ` : ''}
@@ -606,12 +612,28 @@
   buildPropPanels();
   attachCurrencyFormatters();
 
-  function syncPM() {
-    $('pmRateVal').textContent = parseFloat($('pm_rate').value).toFixed(1) + '%';
+  function syncPM(source) {
+    const slider = $('pm_rate');
+    const input  = $('pmRateVal');
+    if (source === 'slider') {
+      input.value = parseFloat(slider.value).toFixed(1);
+    } else {
+      const val = Math.min(15, Math.max(5, parseFloat(input.value) || 8.8));
+      slider.value = val;
+      input.value = val.toFixed(1);
+    }
     calc();
   }
-  function syncRate() {
-    $('rateVal').textContent = parseFloat($('rate').value).toFixed(2) + '%';
+  function syncRate(source) {
+    const slider = $('rate');
+    const input  = $('rateVal');
+    if (source === 'slider') {
+      input.value = parseFloat(slider.value).toFixed(2);
+    } else {
+      const val = Math.min(15, Math.max(1, parseFloat(input.value) || 6.34));
+      slider.value = val;
+      input.value = val.toFixed(2);
+    }
     calc();
   }
 
