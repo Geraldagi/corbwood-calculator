@@ -104,13 +104,13 @@
     .res-total-val { font-size:20px;font-weight:900;color:var(--bteal);transition:all .3s; }
 
     /* Retirement section */
-    .ret-card { background:rgba(42,91,98,.35);border:1px solid rgba(50,176,198,.15);border-radius:14px;margin-top:14px;overflow:hidden; }
-    .ret-hd { padding:14px 22px 10px;border-bottom:1px solid rgba(255,255,255,.07);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--bteal); }
-    .ret-row { display:flex;justify-content:space-between;align-items:flex-start;padding:12px 22px;border-bottom:1px solid rgba(255,255,255,.05); }
+    .ret-card { background:var(--white);border:1px solid var(--border);border-radius:14px;margin-top:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05); }
+    .ret-hd { padding:14px 22px 10px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy); }
+    .ret-row { display:flex;justify-content:space-between;align-items:flex-start;padding:13px 22px;border-bottom:1px solid var(--border); }
     .ret-row:last-child { border-bottom:none; }
-    .ret-lbl { font-size:12px;color:rgba(255,255,255,.45);font-weight:400;max-width:160px;line-height:1.3; }
-    .ret-val { font-size:16px;font-weight:900;color:var(--bteal); }
-    .ret-sub { font-size:10px;color:rgba(255,255,255,.3);margin-top:2px; }
+    .ret-lbl { font-size:12px;color:var(--grey);font-weight:400;max-width:160px;line-height:1.4; }
+    .ret-val { font-size:18px;font-weight:900;color:var(--dteal); }
+    .ret-sub { font-size:11px;color:var(--muted);margin-top:3px; }
 
     .disclaimer { margin-top:14px;padding:12px 16px;background:rgba(37,38,61,.06);border-radius:9px;border:1px solid rgba(37,38,61,.08);font-size:10px;color:var(--muted);line-height:1.6;text-align:center; }
     .cta { margin-top:14px;width:100%;padding:15px;background:linear-gradient(135deg,var(--bteal),var(--dteal));color:#fff;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;border:none;border-radius:11px;cursor:pointer;transition:opacity .2s,transform .1s; }
@@ -207,9 +207,9 @@
     <div class="res-card">
 
       <div class="res-hero">
-        <div class="res-hero-lbl">Gross Rental Yield</div>
-        <div class="yield-big" id="r-yield">0.00%</div>
-        <div class="yield-sub">based on total purchase price</div>
+        <div class="res-hero-lbl">Annual Cashflow</div>
+        <div class="yield-big" id="r-cashflow" style="color:var(--bteal)">$0</div>
+        <div class="yield-sub" id="r-yield">0.00% gross rental yield</div>
       </div>
 
       <div class="res-section-lbl">Incomings</div>
@@ -230,15 +230,14 @@
 
       <div class="res-divider"></div>
       <div class="res-total">
-        <span class="res-total-lbl">Annual Cashflow</span>
-        <span class="res-total-val" id="r-cashflow">$0</span>
+        <span class="res-total-lbl">Est. Years Until Debt Free</span>
+        <span class="res-total-val" id="r-debtfree">—</span>
       </div>
-      <div class="res-row" style="padding:8px 22px"><span class="res-lbl" style="font-size:11px">Est. Years Until Debt Free</span><span class="res-val acc" style="font-size:13px" id="r-debtfree">—</span></div>
 
       <div class="res-divider"></div>
       <div class="res-section-lbl">Cash Buffer</div>
       <div class="res-row"><span class="res-lbl">1-Year Holding Costs (your share)</span><span class="res-val acc" id="r-buffer">$0</span></div>
-      <div class="res-row" style="padding:6px 22px"><span class="res-lbl" style="font-size:10px">Council + water + insurance/BC + PM (proportioned) + accounting (fixed)</span></div>
+
 
     </div>
 
@@ -268,9 +267,7 @@
       </div>
     </div>
 
-    <div class="disclaimer">
-      <strong>Disclaimer:</strong> Indicative estimates only — not financial advice. Obtain independent financial and legal advice before making investment decisions. Depreciation at 0.3% of purchase price. PM fees at 8.8% of rent.
-    </div>
+
     <button class="cta">📞 Speak with a Corbwood Specialist</button>
   </div>
 </div>
@@ -511,10 +508,9 @@
     const cashBal = Math.round(cashRetYears * annualRent + cashRetYears * employerContrib);
 
     // ── UPDATE UI ──
-    // Yield
+    // Yield (subtitle)
     const yEl = $('r-yield');
-    yEl.textContent = fmtPct(rentalYield);
-    pop('r-yield');
+    if (yEl) yEl.textContent = fmtPct(rentalYield) + ' gross rental yield';
 
     // Incomings
     setVal('r-rent',     fmt(annualRent),      'pos');
@@ -534,7 +530,6 @@
     // Cashflow
     const cfEl = $('r-cashflow');
     cfEl.textContent = (cashflow >= 0 ? '+' : '−') + fmt(Math.abs(cashflow));
-    cfEl.className = 'res-total-val' + (cashflow >= 0 ? '' : '');
     cfEl.style.color = cashflow >= 0 ? 'var(--bteal)' : '#FF7B7B';
     pop('r-cashflow');
 
