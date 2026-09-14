@@ -53,9 +53,9 @@
     .input-wrap { position:relative; }
     .pfx { position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--mteal);pointer-events:none; }
     .sfx { position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--mteal);pointer-events:none; }
-    input[type=number] { width:100%;padding:11px 13px 11px 28px;border:1.5px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;color:var(--text);background:#FAFBFC;transition:border-color .2s,box-shadow .2s;-moz-appearance:textfield;outline:none; }
+    input[type=number], input[type=text] { width:100%;padding:11px 13px 11px 28px;border:1.5px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;color:var(--text);background:#FAFBFC;transition:border-color .2s,box-shadow .2s;-moz-appearance:textfield;outline:none; }
     input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; }
-    input[type=number]:focus { border-color:var(--bteal);box-shadow:0 0 0 3px rgba(50,176,198,.12);background:#fff; }
+    input[type=number]:focus, input[type=text]:focus { border-color:var(--bteal);box-shadow:0 0 0 3px rgba(50,176,198,.12);background:#fff; }
     input.no-pfx { padding-left:13px; }
     input.has-sfx { padding-right:36px; }
     .field-note { font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4; }
@@ -165,11 +165,11 @@
         </div>
         <div class="field">
           <label>Gross Annual Income (Combined)</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="number" id="income" value="120000" min="0" step="1000"></div>
+          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="income" value="120,000" class="currency-input"></div>
         </div>
         <div class="field">
           <label>Salary Sacrifice (Annual)</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="number" id="salary_sacrifice" value="0" min="0" step="500"></div>
+          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="salary_sacrifice" value="0" class="currency-input"></div>
           <div class="field-note">Enter 0 if you don't salary sacrifice</div>
         </div>
         <div class="field">
@@ -216,7 +216,7 @@
       <div class="card-body">
         <div class="field">
           <label>Accounting, Admin, Auditing & Registration</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="number" id="accounting" value="2988" min="0" step="10"></div>
+          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="accounting" value="2,988" class="currency-input"></div>
           <div class="field-note">Fixed annual cost — same regardless of ownership %</div>
         </div>
       </div>
@@ -305,7 +305,8 @@
 
   // ── UTILS ──
   const $ = id => document.getElementById(id);
-  const v = id => parseFloat($(id)?.value) || 0;
+  const v = id => parseFloat(($(id)?.value || '').replace(/,/g, '')) || 0;
+  const fmtCommas = n => (!n && n !== 0) ? '' : Math.round(Math.abs(n)).toLocaleString('en-AU');
   const fmt = n => {
     const abs = Math.round(Math.abs(n));
     return '$' + abs.toLocaleString('en-AU');
@@ -358,15 +359,15 @@
       panel.innerHTML = `
         <div class="field">
           <label>Purchase Price</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="number" id="price${i}" value="" min="0" step="1000" oninput="calc()"></div>
+          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="price${i}" value="" class="currency-input" oninput="calc()"></div>
         </div>
         <div class="field">
           <label>Super Contribution (Deposit)</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="number" id="super${i}" value="" min="0" step="1000" oninput="calc()"></div>
+          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="super${i}" value="" class="currency-input" oninput="calc()"></div>
         </div>
         <div class="field">
           <label>Weekly Rent</label>
-          <div class="input-wrap"><span class="pfx">$</span><input type="number" id="rent${i}" value="" min="0" step="10" oninput="calc()"></div>
+          <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="rent${i}" value="" class="currency-input" oninput="calc()"></div>
           <div class="field-note">Enter the rent per week you will receive</div>
         </div>
         <div class="field">
@@ -385,15 +386,15 @@
           <div class="section-lbl">Cash Buffer — Annual Holding Costs</div>
           <div class="field">
             <label>Council Rates <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
-            <div class="input-wrap"><span class="pfx">$</span><input type="number" id="buf_council${i}" value="1800" min="0" step="10" oninput="calc()"></div>
+            <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="buf_council${i}" value="1,800" class="currency-input" oninput="calc()"></div>
           </div>
           <div class="field">
             <label>Water Rates <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
-            <div class="input-wrap"><span class="pfx">$</span><input type="number" id="buf_water${i}" value="540" min="0" step="10" oninput="calc()"></div>
+            <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="buf_water${i}" value="540" class="currency-input" oninput="calc()"></div>
           </div>
           <div class="field">
             <label>Building Insurance / Body Corporate <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
-            <div class="input-wrap"><span class="pfx">$</span><input type="number" id="buf_insurance${i}" value="1800" min="0" step="10" oninput="calc()"></div>
+            <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="buf_insurance${i}" value="1,800" class="currency-input" oninput="calc()"></div>
             <div class="field-note">Freehold = building insurance · Strata = body corporate levy</div>
           </div>
           <div class="computed-wrap" style="padding-top:12px">
@@ -536,8 +537,28 @@
     $('r-rentalret').textContent = fmtWeek(rentRetWeek);
   }
 
+  function attachCurrencyFormatters() {
+    document.querySelectorAll('.currency-input').forEach(el => {
+      el.addEventListener('focus', function() {
+        this.value = this.value.replace(/,/g, '');
+      });
+      el.addEventListener('blur', function() {
+        const num = parseFloat(this.value.replace(/,/g, ''));
+        if (!isNaN(num)) this.value = fmtCommas(num);
+        calc();
+      });
+    });
+    // Format any pre-filled values on load
+    document.querySelectorAll('.currency-input').forEach(el => {
+      const raw = el.value.replace(/,/g, '');
+      const num = parseFloat(raw);
+      if (!isNaN(num) && raw !== '') el.value = fmtCommas(num);
+    });
+  }
+
   // ── INIT ──
   buildPropPanels();
+  attachCurrencyFormatters();
 
   $('rate').addEventListener('input', () => {
     $('rateVal').textContent = parseFloat($('rate').value).toFixed(2) + '%';
