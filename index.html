@@ -343,9 +343,9 @@
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="price${i}" value="" class="currency-input" oninput="calc()"></div>
         </div>
         <div class="field">
-          <label>Total Loan Amount</label>
+          <label>Your Loan Amount</label>
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="loan_amount${i}" value="" class="currency-input" oninput="calc()"></div>
-          <div class="field-note">Enter the total loan on the property</div>
+          <div class="field-note">Enter your share of the loan</div>
         </div>
         <div class="field" style="margin-top:18px">
           <label>Ownership %</label>
@@ -363,10 +363,7 @@
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="rent${i}" value="" class="currency-input" oninput="calc()"></div>
           <div class="field-note">Enter the rent per week you will receive</div>
         </div>
-        <div class="computed-wrap">
-          <div class="computed-lbl">Your Loan Amount</div>
-          <div class="computed" id="loan${i}">—</div>
-        </div>
+
         <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
           <div class="section-lbl">Cash Buffer — Annual Holding Costs</div>
           <div class="field">
@@ -482,7 +479,7 @@
       const loanTotal = v('loan_amount' + i);
 
       const effectivePrice = price * own;
-      const loan           = loanTotal * own;
+      const loan           = loanTotal;
       const effectiveRent  = rent * own;
 
       if (i <= numProps) {
@@ -491,8 +488,7 @@
         totalWeeklyRent += effectiveRent;
       }
 
-      // Update computed displays
-      if ($('loan' + i)) $('loan' + i).textContent = loanTotal > 0 ? fmt(loan) : '—';
+
 
       // Cash buffer calc — per-property holding costs × ownership %
       const bufCouncil = v('buf_council' + i);
