@@ -15,7 +15,6 @@
     }
     body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
-    /* HEADER */
     header { background:var(--navy); padding:18px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 20px rgba(0,0,0,.3); }
     .logo { display:flex; align-items:center; gap:14px; }
     .logo-icon { width:38px;height:38px;background:linear-gradient(135deg,var(--bteal),var(--dteal));border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff; }
@@ -23,15 +22,12 @@
     .logo-text p { font-size:10px;font-weight:300;color:var(--mteal);letter-spacing:1.4px;text-transform:uppercase;margin-top:1px; }
     .badge { background:rgba(50,176,198,.15);border:1px solid rgba(50,176,198,.3);color:var(--bteal);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 13px;border-radius:20px; }
 
-    /* HERO */
     .hero { background:linear-gradient(135deg,var(--navy2),var(--dteal));padding:32px 40px;text-align:center;color:#fff; }
     .hero h2 { font-size:26px;font-weight:900;letter-spacing:-.5px;margin-bottom:6px; }
     .hero p { font-size:14px;font-weight:300;color:rgba(255,255,255,.7); }
 
-    /* LAYOUT */
     .main { max-width:1160px;margin:0 auto;padding:28px 20px 60px;display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start; }
 
-    /* CARDS */
     .card { background:var(--white);border-radius:14px;border:1px solid var(--border);box-shadow:0 1px 8px rgba(0,0,0,.05);margin-bottom:18px;overflow:hidden; }
     .card:last-child { margin-bottom:0; }
     .card-hd { padding:15px 22px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px; }
@@ -39,55 +35,49 @@
     .card-hd h3 { font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.4px;text-transform:uppercase; }
     .card-body { padding:20px 22px; }
 
-    /* PROPERTY TABS */
     .prop-tabs { display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap; }
     .prop-tab { padding:6px 16px;border-radius:8px;border:1.5px solid var(--border);font-family:'Lato',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--grey);background:var(--bg);transition:all .2s; }
     .prop-tab.active { background:var(--navy);border-color:var(--navy);color:#fff; }
     .prop-panel { display:none; }
     .prop-panel.active { display:block; }
 
-    /* FIELDS */
     .field { margin-bottom:18px; }
     .field:last-child { margin-bottom:0; }
     label { display:block;font-size:11px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px; }
     .input-wrap { position:relative; }
     .pfx { position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--mteal);pointer-events:none; }
-    .sfx { position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--mteal);pointer-events:none; }
     input[type=number], input[type=text] { width:100%;padding:11px 13px 11px 28px;border:1.5px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;color:var(--text);background:#FAFBFC;transition:border-color .2s,box-shadow .2s;-moz-appearance:textfield;outline:none; }
     input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; }
     input[type=number]:focus, input[type=text]:focus { border-color:var(--bteal);box-shadow:0 0 0 3px rgba(50,176,198,.12);background:#fff; }
     input.no-pfx { padding-left:13px; }
-    input.has-sfx { padding-right:36px; }
     .field-note { font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4; }
 
-    /* SLIDER */
     .slider-row { display:flex;align-items:center;gap:12px; }
     input[type=range] { flex:1;-webkit-appearance:none;outline:none;height:5px;background:var(--border);border-radius:4px;cursor:pointer; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:var(--bteal);box-shadow:0 2px 8px rgba(50,176,198,.4);cursor:pointer;transition:transform .1s; }
     input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
-    .slider-val { min-width:52px;text-align:right;font-size:17px;font-weight:900;color:var(--bteal); }
 
-    /* COMPUTED */
     .computed-wrap { margin-top:8px;padding-top:16px;border-top:1px solid var(--border); }
     .computed-lbl { font-size:10px;font-weight:700;color:var(--mteal);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px; }
     .computed { background:linear-gradient(135deg,#EEF9FA,#E8F5F6);border:1.5px solid rgba(50,176,198,.2);border-radius:9px;padding:11px 13px;font-size:15px;font-weight:700;color:var(--dteal); }
 
-    /* PROP COUNT SELECTOR */
     .prop-count-row { display:flex;gap:8px;margin-bottom:20px; }
     .prop-count-btn { flex:1;padding:10px;border:1.5px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;cursor:pointer;color:var(--grey);background:var(--bg);transition:all .2s;text-align:center; }
     .prop-count-btn.active { background:var(--navy);border-color:var(--navy);color:#fff; }
 
-    /* SECTION LABEL */
     .section-lbl { font-size:11px;font-weight:700;color:var(--mteal);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border); }
 
-    /* RESULTS PANEL */
+    /* SS toggle */
+    .ss-toggle { display:flex;gap:20px;margin-top:10px; }
+    .ss-toggle label { display:flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;font-size:12px;font-weight:600;color:var(--grey);cursor:pointer;margin-bottom:0; }
+    .ss-toggle input[type=radio] { width:auto;padding:0;border:none;background:none;accent-color:var(--bteal);flex-shrink:0; }
+
     .results-panel { position:sticky;top:20px; }
     .res-card { background:var(--navy);border-radius:14px;overflow:hidden;box-shadow:0 4px 28px rgba(37,38,61,.25); }
     .res-hero { background:linear-gradient(135deg,var(--dteal),var(--navy2));padding:20px 22px;text-align:center; }
     .res-hero-lbl { font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mteal);margin-bottom:6px; }
     .yield-big { font-size:50px;font-weight:900;color:var(--bteal);line-height:1;letter-spacing:-2px;transition:all .3s; }
     .yield-sub { font-size:12px;color:rgba(255,255,255,.45);margin-top:4px; }
-
     .res-section-lbl { padding:10px 22px 4px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3); }
     .res-row { display:flex;justify-content:space-between;align-items:center;padding:11px 22px;border-bottom:1px solid rgba(255,255,255,.06);transition:background .15s; }
     .res-row:hover { background:rgba(255,255,255,.03); }
@@ -98,12 +88,10 @@
     .res-val.neg { color:#FF7B7B; }
     .res-val.acc { color:var(--bteal); }
     .res-divider { height:1px;background:rgba(255,255,255,.08);margin:2px 0; }
-
     .res-total { display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:rgba(50,176,198,.1);border-top:1px solid rgba(50,176,198,.2); }
     .res-total-lbl { font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.4px; }
     .res-total-val { font-size:20px;font-weight:900;color:var(--bteal);transition:all .3s; }
 
-    /* Retirement section */
     .ret-card { background:var(--white);border:1px solid var(--border);border-radius:14px;margin-top:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05); }
     .ret-hd { padding:14px 22px 10px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy); }
     .ret-row { display:flex;justify-content:space-between;align-items:flex-start;padding:13px 22px;border-bottom:1px solid var(--border); }
@@ -112,7 +100,6 @@
     .ret-val { font-size:18px;font-weight:900;color:var(--dteal); }
     .ret-sub { font-size:11px;color:var(--muted);margin-top:3px; }
 
-    .disclaimer { margin-top:14px;padding:12px 16px;background:rgba(37,38,61,.06);border-radius:9px;border:1px solid rgba(37,38,61,.08);font-size:10px;color:var(--muted);line-height:1.6;text-align:center; }
     .cta { margin-top:14px;width:100%;padding:15px;background:linear-gradient(135deg,var(--bteal),var(--dteal));color:#fff;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;border:none;border-radius:11px;cursor:pointer;transition:opacity .2s,transform .1s; }
     .cta:hover { opacity:.92;transform:translateY(-1px); }
 
@@ -150,7 +137,6 @@
 <div class="main">
   <div class="inputs-col">
 
-    <!-- ── SETUP ── -->
     <div class="card">
       <div class="card-hd"><div class="card-icon">👤</div><h3>Your Details</h3></div>
       <div class="card-body">
@@ -171,6 +157,10 @@
           <label>Salary Sacrifice (Annual)</label>
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="salary_sacrifice" value="0" class="currency-input"></div>
           <div class="field-note">Enter 0 if you don't salary sacrifice</div>
+          <div class="ss-toggle">
+            <label><input type="radio" name="ss_mode" value="loan" checked onchange="calc()"> Apply to loan repayment</label>
+            <label><input type="radio" name="ss_mode" value="cash" onchange="calc()"> Build up as cash</label>
+          </div>
         </div>
         <div class="field">
           <label>Current Age <span style="font-weight:400;text-transform:none;font-size:10px">(average if couple)</span></label>
@@ -183,29 +173,19 @@
       </div>
     </div>
 
-    <!-- ── PROPERTIES ── -->
     <div class="card">
       <div class="card-hd"><div class="card-icon">🏠</div><h3>Property Details</h3></div>
       <div class="card-body">
-
         <div class="prop-tabs" id="propTabs"></div>
-
-        <!-- Property panels generated by JS -->
         <div id="propPanels"></div>
-
       </div>
     </div>
 
-
-
-
-
   </div>
 
-  <!-- ── RESULTS PANEL ── -->
+  <!-- RESULTS PANEL -->
   <div class="results-panel">
     <div class="res-card">
-
       <div class="res-hero">
         <div class="res-hero-lbl">Annual Cashflow</div>
         <div class="yield-big" id="r-cashflow" style="color:var(--bteal)">$0</div>
@@ -237,17 +217,14 @@
       <div class="res-divider"></div>
       <div class="res-section-lbl">Cash Buffer</div>
       <div class="res-row"><span class="res-lbl">1-Year Holding Costs (your share)</span><span class="res-val acc" id="r-buffer">$0</span></div>
-
-
     </div>
 
-    <!-- Retirement -->
     <div class="ret-card">
       <div class="ret-hd">Potential Retirement Portfolio</div>
       <div class="ret-row">
         <div>
-          <div class="ret-lbl">Property Value at Retirement</div>
-          <div class="ret-sub">4% p.a. compounded (nat. avg 6.8% over 25yr)</div>
+          <div class="ret-lbl">Total Property Value at Retirement</div>
+          <div class="ret-sub">4% p.a. compounded across all properties</div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-propval">$0</div></div>
       </div>
@@ -260,13 +237,12 @@
       </div>
       <div class="ret-row">
         <div>
-          <div class="ret-lbl">Rental Income at Retirement</div>
-          <div class="ret-sub">2.5% p.a. compounded growth</div>
+          <div class="ret-lbl">Total Rental Income at Retirement</div>
+          <div class="ret-sub">2.5% p.a. compounded across all properties</div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-rentalret">$0</div><div class="ret-sub" style="text-align:right">per week</div></div>
       </div>
     </div>
-
 
     <button class="cta">📞 Speak with a Corbwood Specialist</button>
   </div>
@@ -275,7 +251,6 @@
 <footer>&copy; 2026 Corbwood & Associates Pty Ltd — ABN 96 617 441 700 — Licence #4295736</footer>
 
 <script>
-  // ── STATE ──
   let numProps = 1;
   const propState = {
     1: { own: 0.25 },
@@ -284,39 +259,30 @@
     4: { own: 0.25 }
   };
 
-  // ── UTILS ──
   const $ = id => document.getElementById(id);
   const v = id => parseFloat(($(id)?.value || '').replace(/,/g, '')) || 0;
   const fmtCommas = n => (!n && n !== 0) ? '' : Math.round(Math.abs(n)).toLocaleString('en-AU');
-  const fmt = n => {
-    const abs = Math.round(Math.abs(n));
-    return '$' + abs.toLocaleString('en-AU');
-  };
+  const fmt = n => '$' + Math.round(Math.abs(n)).toLocaleString('en-AU');
   const fmtPct = n => isNaN(n) || !isFinite(n) ? '0.00%' : n.toFixed(2) + '%';
   const fmtYrs = n => isNaN(n) || !isFinite(n) || n <= 0 ? '—' : n.toFixed(1) + ' yrs';
   const fmtWeek = n => '$' + Math.round(Math.abs(n)).toLocaleString('en-AU') + '/wk';
 
   function pop(id) {
-    const el = $(id);
-    el.classList.remove('pop');
-    void el.offsetWidth;
-    el.classList.add('pop');
+    const el = $(id); if (!el) return;
+    el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
   }
-
   function setVal(id, text, cls) {
-    const el = $(id);
+    const el = $(id); if (!el) return;
     el.textContent = text;
     if (cls) el.className = 'res-val ' + cls;
     pop(id);
   }
-
-  // FV function: FV(rate, nper, pmt, pv)
   function FV(rate, nper, pmt, pv) {
     if (rate === 0) return -(pv + pmt * nper);
     return -(pv * Math.pow(1 + rate, nper) + pmt * ((Math.pow(1 + rate, nper) - 1) / rate));
   }
 
-  // ── PROPERTY PANELS ──
+  // ── BUILD PROPERTY PANELS ──
   function buildPropPanels() {
     const tabsEl = $('propTabs');
     const panelsEl = $('propPanels');
@@ -324,7 +290,6 @@
     panelsEl.innerHTML = '';
 
     for (let i = 1; i <= 4; i++) {
-      // Tab
       const tab = document.createElement('button');
       tab.className = 'prop-tab' + (i === 1 ? ' active' : '');
       tab.textContent = 'Property ' + i;
@@ -333,7 +298,6 @@
       tab.id = 'ptab-' + i;
       tabsEl.appendChild(tab);
 
-      // Panel
       const panel = document.createElement('div');
       panel.className = 'prop-panel' + (i === 1 ? ' active' : '');
       panel.id = 'ppanel-' + i;
@@ -356,12 +320,39 @@
               <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
             </div>
           </div>
+          <div class="computed-wrap" style="margin-top:10px;padding-top:10px">
+            <div class="computed-lbl">Your Share of Property Value</div>
+            <div class="computed" id="ownVal${i}">—</div>
+          </div>
         </div>
-
         <div class="field">
           <label>Weekly Rent</label>
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="rent${i}" value="" class="currency-input" oninput="calc()"></div>
           <div class="field-note">Enter the rent per week you will receive</div>
+        </div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="section-lbl">Rates & Fees</div>
+          <div class="field">
+            <label>PM Rate</label>
+            <div class="slider-row">
+              <input type="range" id="pm_rate${i}" min="5" max="15" step="0.1" value="8.8" oninput="syncPM(${i},'slider')">
+              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+                <input type="number" id="pmRateVal${i}" min="5" max="15" step="0.1" value="8.8" class="no-pfx" style="width:62px;padding:8px;font-size:15px;font-weight:900;color:var(--bteal);border:1.5px solid var(--border);border-radius:9px;background:#FAFBFC;font-family:'Lato',sans-serif;text-align:center" oninput="syncPM(${i},'input')">
+                <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Interest Rate</label>
+            <div class="slider-row">
+              <input type="range" id="rate${i}" min="1" max="15" step="0.01" value="6.34" oninput="syncRate(${i},'slider')">
+              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+                <input type="number" id="rateVal${i}" min="1" max="15" step="0.01" value="6.34" class="no-pfx" style="width:62px;padding:8px;font-size:15px;font-weight:900;color:var(--bteal);border:1.5px solid var(--border);border-radius:9px;background:#FAFBFC;font-family:'Lato',sans-serif;text-align:center" oninput="syncRate(${i},'input')">
+                <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
@@ -385,34 +376,22 @@
             <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="accounting" value="2,500" class="currency-input" oninput="calc()"></div>
             <div class="field-note">Fixed SMSF annual cost — same regardless of ownership %</div>
           </div>
-          <div class="computed-wrap" style="padding-top:12px">
-            <div class="computed-lbl">Property Management (annual total)</div>
-            <div class="computed" id="pmTotal">—</div>
-          </div>
-          <div class="field" style="margin-top:14px">
-            <label>PM Rate</label>
-            <div class="slider-row">
-              <input type="range" id="pm_rate" min="5" max="15" step="0.1" value="8.8" oninput="syncPM('slider')">
-              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
-                <input type="number" id="pmRateVal" min="5" max="15" step="0.1" value="8.8" class="no-pfx" style="width:62px;padding:8px;font-size:15px;font-weight:900;color:var(--bteal);border:1.5px solid var(--border);border-radius:9px;background:#FAFBFC;font-family:'Lato',sans-serif;text-align:center" oninput="syncPM('input')">
-                <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label>Interest Rate</label>
-            <div class="slider-row">
-              <input type="range" id="rate" min="1" max="15" step="0.01" value="6.34" oninput="syncRate('slider')">
-              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
-                <input type="number" id="rateVal" min="1" max="15" step="0.01" value="6.34" class="no-pfx" style="width:62px;padding:8px;font-size:15px;font-weight:900;color:var(--bteal);border:1.5px solid var(--border);border-radius:9px;background:#FAFBFC;font-family:'Lato',sans-serif;text-align:center" oninput="syncRate('input')">
-                <span style="font-size:14px;font-weight:700;color:var(--mteal)">%</span>
-              </div>
-            </div>
-          </div>
           ` : ''}
           <div class="computed-wrap" style="padding-top:12px">
             <div class="computed-lbl">Your Share of All Annual Costs (incl. PM)</div>
             <div class="computed" id="bufShare${i}">—</div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="section-lbl">📈 Retirement Projection — This Property</div>
+          <div class="computed-wrap" style="padding-top:0;border-top:none">
+            <div class="computed-lbl">Projected Value at Retirement</div>
+            <div class="computed" id="retVal${i}">—</div>
+          </div>
+          <div class="computed-wrap">
+            <div class="computed-lbl">Projected Weekly Rent at Retirement</div>
+            <div class="computed" id="retRent${i}">—</div>
           </div>
         </div>
       `;
@@ -426,8 +405,6 @@
       $('ppanel-' + i)?.classList.toggle('active', i === n);
     }
   }
-
-
 
   function syncOwn(propNum, source) {
     const slider = $('own_slider' + propNum);
@@ -444,154 +421,9 @@
     calc();
   }
 
-  function setPropCount(n) {
-    numProps = n;
-    document.querySelectorAll('.prop-count-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === n));
-    for (let i = 1; i <= 4; i++) {
-      const tab = $('ptab-' + i);
-      if (tab) tab.style.display = i <= n ? '' : 'none';
-    }
-    // If active tab is now hidden, switch to 1
-    const activePanelVisible = document.querySelector('.prop-panel.active');
-    const activeTabId = document.querySelector('.prop-tab.active')?.id;
-    const activeNum = activeTabId ? parseInt(activeTabId.split('-')[1]) : 1;
-    if (activeNum > n) switchPropTab(1);
-    calc();
-  }
-
-  // ── MAIN CALC ──
-  function calc() {
-    // Inputs
-    const income  = v('income');
-    const ss      = v('salary_sacrifice');
-    const age     = v('age');
-    const retAge  = v('ret_age');
-    const rate    = v('rate') / 100;
-    const pmRate  = (v('pm_rate') || 8.8) / 100;
-    const acct    = v('accounting');
-
-    // Per-property (apply ownership fraction)
-    let totalPrice = 0, totalLoan = 0, totalWeeklyRent = 0, totalBuffer = 0, totalRates = 0, totalIns = 0;
-    for (let i = 1; i <= 4; i++) {
-      const price     = v('price' + i);
-      const rent      = v('rent' + i);
-      const own       = propState[i].own;
-      const loanTotal = v('loan_amount' + i);
-
-      const effectivePrice = price * own;
-      const loan           = loanTotal;
-      const effectiveRent  = rent * own;
-
-      if (i <= numProps) {
-        totalPrice      += effectivePrice;
-        totalLoan       += loan;
-        totalWeeklyRent += effectiveRent;
-      }
-
-
-
-      // Cash buffer calc — per-property holding costs × ownership %
-      const bufCouncil = v('buf_council' + i);
-      const bufWater   = v('buf_water' + i);
-      const bufIns     = v('buf_insurance' + i);
-      const bufPM      = rent * own * pmRate * 52;          // PM fees, already ownership-weighted
-      const bufShare   = (bufCouncil + bufWater + bufIns) * own + bufPM;
-      if (i <= numProps) {
-        totalBuffer += bufShare;
-        totalRates  += (bufCouncil + bufWater) * own;
-        totalIns    += bufIns * own;
-      }
-      // Property 1 display includes accounting (fixed SMSF cost shown once)
-      const bufShareDisplay = (i === 1) ? bufShare + acct : bufShare;
-      if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShareDisplay);
-    }
-
-    // Add accounting as a fixed cost to the buffer total (not proportioned)
-    totalBuffer += acct;
-
-    const annualRent = totalWeeklyRent * 52;
-    const rentalYield = totalPrice > 0 ? (annualRent / totalPrice) * 100 : 0;
-    const employerContrib = income * 0.12;
-    const taxDep  = totalPrice * 0.003;
-    const pmFees  = totalWeeklyRent * pmRate * 52;
-    if ($('pmTotal')) $('pmTotal').textContent = fmt(pmFees);
-    const loanInt = totalLoan * rate;
-    const totalIn  = Math.round(annualRent + employerContrib + ss + taxDep);
-    const totalOut = Math.round(loanInt + totalRates + totalIns + acct + pmFees);
-    const cashflow = totalIn - totalOut;
-    const yearsDebtFree = cashflow > 0 ? (totalLoan / cashflow) * 0.8 : Infinity;
-
-    const yearsToRet = Math.max(0, retAge - age);
-
-    // Retirement calcs (use property 1 inputs as per original formula)
-    const p1Price      = v('price1') * propState[1].own;
-    const p1WeeklyRent = v('rent1')  * propState[1].own;
-    const propValRet  = yearsToRet > 0 ? Math.round(FV(0.04, yearsToRet, 0, -p1Price)) : p1Price;
-    const rentRetWeek = yearsToRet > 0 ? Math.round(FV(0.025, yearsToRet, 0, -p1WeeklyRent)) : p1WeeklyRent;
-    const cashRetYears = Math.max(0, yearsToRet - yearsDebtFree);
-    const cashBal = Math.round(cashRetYears * annualRent + cashRetYears * employerContrib);
-
-    // ── UPDATE UI ──
-    // Yield (subtitle)
-    const yEl = $('r-yield');
-    if (yEl) yEl.textContent = fmtPct(rentalYield) + ' gross rental yield';
-
-    // Incomings
-    setVal('r-rent',     fmt(annualRent),      'pos');
-    setVal('r-ec',       fmt(employerContrib), 'pos');
-    setVal('r-ss',       fmt(ss),              'pos');
-    setVal('r-dep',      fmt(taxDep),          'pos');
-    setVal('r-in',       fmt(totalIn),         'pos');
-
-    // Outgoings
-    setVal('r-interest', fmt(loanInt), 'neg');
-    setVal('r-pm',       fmt(pmFees),  'neg');
-    setVal('r-rates',    fmt(totalRates), 'neg');
-    setVal('r-ins',      fmt(totalIns),   'neg');
-    setVal('r-acc',      fmt(acct),    'neg');
-    setVal('r-out',      fmt(totalOut), 'neg');
-
-    // Cashflow
-    const cfEl = $('r-cashflow');
-    cfEl.textContent = (cashflow >= 0 ? '+' : '−') + fmt(Math.abs(cashflow));
-    cfEl.style.color = cashflow >= 0 ? 'var(--bteal)' : '#FF7B7B';
-    pop('r-cashflow');
-
-    $('r-debtfree').textContent = fmtYrs(yearsDebtFree);
-    setVal('r-buffer', fmt(totalBuffer), 'acc');
-
-    // Retirement
-    $('r-propval').textContent  = fmt(propValRet);
-    $('r-cash').textContent     = fmt(cashBal);
-    $('r-rentalret').textContent = fmtWeek(rentRetWeek);
-  }
-
-  function attachCurrencyFormatters() {
-    document.querySelectorAll('.currency-input').forEach(el => {
-      el.addEventListener('focus', function() {
-        this.value = this.value.replace(/,/g, '');
-      });
-      el.addEventListener('blur', function() {
-        const num = parseFloat(this.value.replace(/,/g, ''));
-        if (!isNaN(num)) this.value = fmtCommas(num);
-        calc();
-      });
-    });
-    // Format any pre-filled values on load
-    document.querySelectorAll('.currency-input').forEach(el => {
-      const raw = el.value.replace(/,/g, '');
-      const num = parseFloat(raw);
-      if (!isNaN(num) && raw !== '') el.value = fmtCommas(num);
-    });
-  }
-
-  // ── INIT ──
-  buildPropPanels();
-  attachCurrencyFormatters();
-
-  function syncPM(source) {
-    const slider = $('pm_rate');
-    const input  = $('pmRateVal');
+  function syncPM(propNum, source) {
+    const slider = $('pm_rate' + propNum);
+    const input  = $('pmRateVal' + propNum);
     if (source === 'slider') {
       input.value = parseFloat(slider.value).toFixed(1);
     } else {
@@ -601,9 +433,10 @@
     }
     calc();
   }
-  function syncRate(source) {
-    const slider = $('rate');
-    const input  = $('rateVal');
+
+  function syncRate(propNum, source) {
+    const slider = $('rate' + propNum);
+    const input  = $('rateVal' + propNum);
     if (source === 'slider') {
       input.value = parseFloat(slider.value).toFixed(2);
     } else {
@@ -613,6 +446,152 @@
     }
     calc();
   }
+
+  function setPropCount(n) {
+    numProps = n;
+    document.querySelectorAll('.prop-count-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === n));
+    for (let i = 1; i <= 4; i++) {
+      const tab = $('ptab-' + i);
+      if (tab) tab.style.display = i <= n ? '' : 'none';
+    }
+    const activeTabId = document.querySelector('.prop-tab.active')?.id;
+    const activeNum = activeTabId ? parseInt(activeTabId.split('-')[1]) : 1;
+    if (activeNum > n) switchPropTab(1);
+    calc();
+  }
+
+  // ── MAIN CALC ──
+  function calc() {
+    const income     = v('income');
+    const ss         = v('salary_sacrifice');
+    const ssToCash   = document.querySelector('input[name="ss_mode"]:checked')?.value === 'cash';
+    const age        = v('age');
+    const retAge     = v('ret_age');
+    const acct       = v('accounting');
+    const yearsToRet = Math.max(0, retAge - age);
+
+    let totalPrice = 0, totalLoan = 0, totalWeeklyRent = 0;
+    let totalBuffer = 0, totalRates = 0, totalIns = 0;
+    let totalPmFees = 0, totalLoanInt = 0, totalTaxDep = 0;
+    let totalPropValRet = 0, totalRentRetWeek = 0;
+
+    for (let i = 1; i <= 4; i++) {
+      const price    = v('price' + i);
+      const rent     = v('rent' + i);
+      const own      = propState[i].own;
+      const loan     = v('loan_amount' + i);
+      const pmRate   = (v('pm_rate' + i) || 8.8) / 100;
+      const rate     = (v('rate' + i) || 6.34) / 100;
+
+      const effectivePrice = price * own;
+      const effectiveRent  = rent * own;
+
+      // Ownership value display
+      if ($('ownVal' + i)) $('ownVal' + i).textContent = price > 0 ? fmt(effectivePrice) : '—';
+
+      // Per-property retirement projections
+      const propValRet_i  = yearsToRet > 0 && effectivePrice > 0 ? Math.round(FV(0.04, yearsToRet, 0, -effectivePrice)) : effectivePrice;
+      const rentRetWeek_i = yearsToRet > 0 && effectiveRent > 0  ? Math.round(FV(0.025, yearsToRet, 0, -effectiveRent))  : effectiveRent;
+      if ($('retVal' + i))  $('retVal' + i).textContent  = effectivePrice > 0 ? fmt(propValRet_i)       : '—';
+      if ($('retRent' + i)) $('retRent' + i).textContent = effectiveRent  > 0 ? fmtWeek(rentRetWeek_i) : '—';
+
+      // Per-property fees
+      const pmFees_i  = effectiveRent * pmRate * 52;
+      const loanInt_i = loan * rate;
+      const taxDep_i  = effectivePrice * 0.003;
+
+      // Cash buffer
+      const bufCouncil = v('buf_council' + i);
+      const bufWater   = v('buf_water' + i);
+      const bufIns     = v('buf_insurance' + i);
+      const bufShare   = (bufCouncil + bufWater + bufIns) * own + pmFees_i;
+      const bufShareDisplay = (i === 1) ? bufShare + acct : bufShare;
+      if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShareDisplay);
+
+      if (i <= numProps) {
+        totalPrice       += effectivePrice;
+        totalLoan        += loan;
+        totalWeeklyRent  += effectiveRent;
+        totalPmFees      += pmFees_i;
+        totalLoanInt     += loanInt_i;
+        totalTaxDep      += taxDep_i;
+        totalBuffer      += bufShare;
+        totalRates       += (bufCouncil + bufWater) * own;
+        totalIns         += bufIns * own;
+        totalPropValRet  += propValRet_i;
+        totalRentRetWeek += rentRetWeek_i;
+      }
+    }
+
+    totalBuffer += acct;
+
+    const annualRent      = totalWeeklyRent * 52;
+    const rentalYield     = totalPrice > 0 ? (annualRent / totalPrice) * 100 : 0;
+    const employerContrib = income * 0.12;
+
+    // SS toggle: loan mode includes SS in cashflow for debt; cash mode excludes it from debt calc
+    const ssForDebt       = ssToCash ? 0 : ss;
+    const totalIn         = Math.round(annualRent + employerContrib + ss + totalTaxDep);
+    const totalOut        = Math.round(totalLoanInt + totalRates + totalIns + acct + totalPmFees);
+    const cashflow        = totalIn - totalOut;
+    const cashflowForDebt = Math.round(annualRent + employerContrib + ssForDebt + totalTaxDep) - totalOut;
+    const yearsDebtFree   = cashflowForDebt > 0 ? (totalLoan / cashflowForDebt) * 0.8 : Infinity;
+
+    // Retirement cash balance
+    const cashRetYears = Math.max(0, yearsToRet - yearsDebtFree);
+    let cashBal = Math.round(cashRetYears * (annualRent + employerContrib));
+    cashBal += ssToCash
+      ? Math.round(yearsToRet * ss)      // SS builds over full investment period
+      : Math.round(cashRetYears * ss);   // SS was against loan; builds only post-debt-free
+
+    // ── UPDATE UI ──
+    const yEl = $('r-yield');
+    if (yEl) yEl.textContent = fmtPct(rentalYield) + ' gross rental yield';
+
+    setVal('r-rent',     fmt(annualRent),      'pos');
+    setVal('r-ec',       fmt(employerContrib), 'pos');
+    setVal('r-ss',       fmt(ss),              'pos');
+    setVal('r-dep',      fmt(totalTaxDep),     'pos');
+    setVal('r-in',       fmt(totalIn),         'pos');
+
+    setVal('r-interest', fmt(totalLoanInt),  'neg');
+    setVal('r-pm',       fmt(totalPmFees),   'neg');
+    setVal('r-rates',    fmt(totalRates),    'neg');
+    setVal('r-ins',      fmt(totalIns),      'neg');
+    setVal('r-acc',      fmt(acct),          'neg');
+    setVal('r-out',      fmt(totalOut),      'neg');
+
+    const cfEl = $('r-cashflow');
+    cfEl.textContent = (cashflow >= 0 ? '+' : '−') + fmt(Math.abs(cashflow));
+    cfEl.style.color = cashflow >= 0 ? 'var(--bteal)' : '#FF7B7B';
+    pop('r-cashflow');
+
+    $('r-debtfree').textContent = fmtYrs(yearsDebtFree);
+    setVal('r-buffer', fmt(totalBuffer), 'acc');
+
+    $('r-propval').textContent   = fmt(totalPropValRet);
+    $('r-cash').textContent      = fmt(cashBal);
+    $('r-rentalret').textContent = fmtWeek(totalRentRetWeek);
+  }
+
+  function attachCurrencyFormatters() {
+    document.querySelectorAll('.currency-input').forEach(el => {
+      el.addEventListener('focus', function() { this.value = this.value.replace(/,/g, ''); });
+      el.addEventListener('blur', function() {
+        const num = parseFloat(this.value.replace(/,/g, ''));
+        if (!isNaN(num)) this.value = fmtCommas(num);
+        calc();
+      });
+    });
+    document.querySelectorAll('.currency-input').forEach(el => {
+      const raw = el.value.replace(/,/g, '');
+      const num = parseFloat(raw);
+      if (!isNaN(num) && raw !== '') el.value = fmtCommas(num);
+    });
+  }
+
+  buildPropPanels();
+  attachCurrencyFormatters();
 
   ['income','salary_sacrifice','age','ret_age'].forEach(id => {
     $(id)?.addEventListener('input', calc);
