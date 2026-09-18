@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Review #1 — Corbwood & Associates</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #25263D; --navy2: #2e2f4d; --dteal: #2A5B62;
+      --mteal: #4C9A9F; --lteal: #40B8BC; --bteal: #32B0C6;
+      --grey: #5D5D5D; --bg: #F4F6F8; --white: #fff;
+      --border: #E2E8ED; --text: #1A1A2E; --muted: #8A9BAE;
+      --green: #5DDBA0; --red: #FF7B7B; --amber: #F5A623;
+    }
+    body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── HEADER ── */
+    header { background: var(--navy); padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 20px rgba(0,0,0,.3); }
+    .logo { display: flex; align-items: center; gap: 14px; }
+    .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, var(--bteal), var(--dteal)); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: #fff; }
+    .logo-text h1 { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: .4px; }
+    .logo-text p { font-size: 10px; font-weight: 300; color: var(--mteal); letter-spacing: 1.4px; text-transform: uppercase; margin-top: 1px; }
+    .badge { background: rgba(50,176,198,.15); border: 1px solid rgba(50,176,198,.3); color: var(--bteal); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 13px; border-radius: 20px; }
+
+    /* ── HERO ── */
+    .hero { background: linear-gradient(135deg, var(--navy2), var(--dteal)); padding: 32px 40px; text-align: center; color: #fff; }
+    .hero h2 { font-size: 28px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 4px; }
+    .hero-sub { font-size: 11px; font-weight: 700; color: var(--bteal); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 10px; }
+    .hero-desc { font-size: 14px; font-weight: 300; color: rgba(255,255,255,.7); max-width: 580px; margin: 0 auto; line-height: 1.6; }
+
+    /* ── LAYOUT ── */
+    .main { max-width: 1160px; margin: 0 auto; padding: 28px 20px 60px; display: grid; grid-template-columns: 1fr 360px; gap: 22px; align-items: start; }
+
+    /* ── CARDS ── */
+    .card { background: var(--white); border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 1px 8px rgba(0,0,0,.05); margin-bottom: 18px; overflow: hidden; }
+    .card:last-child { margin-bottom: 0; }
+    .card-hd { padding: 15px 22px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .card-icon { width: 30px; height: 30px; border-radius: 7px; background: linear-gradient(135deg, var(--bteal), var(--mteal)); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .card-hd h3 { font-size: 12px; font-weight: 700; color: var(--navy); letter-spacing: .4px; text-transform: uppercase; }
+    .card-body { padding: 20px 22px; }
+
+    /* Internal card */
+    .card-internal { border: 1.5px solid rgba(50,176,198,.25); }
+    .card-hd-internal { background: linear-gradient(135deg, rgba(42,91,98,.07), rgba(50,176,198,.05)); }
+    .internal-badge { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: rgba(50,176,198,.15); color: var(--bteal); padding: 2px 8px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+
+    /* ── FIELDS ── */
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field-label { display: block; font-size: 11px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 6px; }
+    .required { color: var(--red); }
+    input[type=text], input[type=email] { width: 100%; padding: 11px 13px; border: 1.5px solid var(--border); border-radius: 9px; font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); background: #FAFBFC; outline: none; transition: border-color .2s, box-shadow .2s; }
+    input[type=text]:focus, input[type=email]:focus { border-color: var(--bteal); box-shadow: 0 0 0 3px rgba(50,176,198,.12); background: #fff; }
+    input[readonly] { color: var(--muted); background: var(--bg); cursor: default; }
+    textarea { width: 100%; padding: 11px 13px; border: 1.5px solid var(--border); border-radius: 9px; font-family: 'Lato', sans-serif; font-size: 14px; color: var(--text); background: #FAFBFC; resize: vertical; outline: none; transition: border-color .2s, box-shadow .2s; line-height: 1.5; }
+    textarea:focus { border-color: var(--bteal); box-shadow: 0 0 0 3px rgba(50,176,198,.12); background: #fff; }
+
+    /* ── CHECKLIST ── */
+    .checklist { display: flex; flex-direction: column; gap: 4px; }
+    .check-item { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 9px 10px; border-radius: 9px; transition: background .15s; }
+    .check-item:hover { background: var(--bg); }
+    .real-cb { display: none; }
+    .check-box { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; flex-shrink: 0; transition: all .2s; margin-top: 1px; display: flex; align-items: center; justify-content: center; background: #fff; }
+    .real-cb:checked + .check-box { background: var(--bteal); border-color: var(--bteal); }
+    .real-cb:checked + .check-box::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 900; line-height: 1; }
+    .check-box-team { border-color: var(--mteal); }
+    .real-cb:checked + .check-box-team { background: var(--dteal); border-color: var(--dteal); }
+    .check-label { font-size: 13.5px; color: var(--text); line-height: 1.5; flex: 1; transition: color .2s; }
+    .real-cb:checked ~ .check-label { color: var(--muted); }
+
+    /* ── NPS ── */
+    .nps-buttons { display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap; }
+    .nps-btn { width: 38px; height: 38px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--grey); background: var(--bg); transition: all .2s; font-family: 'Lato', sans-serif; }
+    .nps-btn:hover { border-color: var(--bteal); color: var(--bteal); }
+    .nps-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .nps-btn.active.detractor { background: var(--red); border-color: var(--red); }
+    .nps-btn.active.passive { background: var(--amber); border-color: var(--amber); }
+    .nps-btn.active.promoter { background: var(--green); border-color: #4ac88a; color: #1A1A2E; }
+    .nps-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-bottom: 16px; font-weight: 600; letter-spacing: .3px; }
+
+    /* ── RESULTS PANEL ── */
+    .results-panel { position: sticky; top: 20px; }
+    .res-card { background: var(--navy); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 28px rgba(37,38,61,.25); }
+    .res-hero { background: linear-gradient(135deg, var(--dteal), var(--navy2)); padding: 20px 22px; text-align: center; }
+    .res-hero-lbl { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mteal); margin-bottom: 6px; }
+    .yield-big { font-size: 48px; font-weight: 900; color: var(--bteal); line-height: 1; letter-spacing: -2px; transition: all .3s; }
+    .yield-sub { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 4px; }
+    .progress-bar-wrap { padding: 12px 22px 14px; }
+    .progress-bar-bg { height: 5px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--bteal); border-radius: 3px; transition: width .35s ease; width: 0%; }
+    .res-section-lbl { padding: 10px 22px 4px; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.3); }
+    .res-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 22px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .res-row:last-child { border-bottom: none; }
+    .res-lbl { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 400; }
+    .res-val { font-size: 13px; font-weight: 700; color: #fff; text-align: right; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .res-val.acc { color: var(--bteal); }
+    .res-val.promoter { color: var(--green); }
+    .res-val.passive { color: var(--amber); }
+    .res-val.detractor { color: var(--red); }
+
+    /* ── EMAIL CARD ── */
+    .email-card { background: var(--white); border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 1px 8px rgba(0,0,0,.05); margin-top: 14px; overflow: hidden; }
+    .email-hd { padding: 14px 22px 12px; border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+    .email-body { padding: 18px 22px; }
+    .email-body .field { margin-bottom: 12px; }
+    .email-body .field-label { font-size: 10px; }
+
+    /* ── CTA ── */
+    .cta { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--bteal), var(--dteal)); color: #fff; font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 700; border: none; border-radius: 11px; cursor: pointer; transition: opacity .2s, transform .1s; letter-spacing: .3px; margin-top: 4px; }
+    .cta:hover { opacity: .92; transform: translateY(-1px); }
+    .cta:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .send-status { margin-top: 10px; font-size: 12px; font-weight: 600; text-align: center; min-height: 18px; line-height: 1.5; }
+    .send-status.success { color: #5DDBA0; }
+    .send-status.error { color: var(--red); }
+    .send-status.loading { color: var(--bteal); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); text-align: center; padding: 18px; font-size: 11px; color: rgba(255,255,255,.28); letter-spacing: .4px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .main { grid-template-columns: 1fr; padding: 16px 14px 48px; }
+      .results-panel { position: static; }
+      header { padding: 14px 18px; }
+      .hero { padding: 24px 18px; }
+      .nps-buttons { gap: 4px; }
+      .nps-btn { width: 33px; height: 33px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">C</div>
+    <div class="logo-text">
+      <h1>Corbwood & Associates</h1>
+      <p>SMSF Property Specialists</p>
+    </div>
+  </div>
+  <div class="badge">Portfolio Review #1</div>
+</header>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <h2>Portfolio Review #1</h2>
+  <p class="hero-sub">2 Months Post Settlement</p>
+  <p class="hero-desc">Now that the property has settled, what do you need to be across for the property to succeed?</p>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- LEFT COLUMN -->
+  <div class="inputs-col">
+
+    <!-- Client Details -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">👤</div><h3>Client Details</h3></div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">Client's Name <span class="required">*</span></label>
+          <input type="text" id="clientName" placeholder="Enter client's full name" oninput="updateSummary()">
+        </div>
+        <div class="field">
+          <label class="field-label">Reviewed By</label>
+          <input type="text" id="reviewedBy" placeholder="Corbwood team member" oninput="updateSummary()">
+        </div>
+        <div class="field">
+          <label class="field-label">Review Date</label>
+          <input type="text" id="reviewDate" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bank Account -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">🏦</div><h3>Bank Account</h3></div>
+      <div class="card-body">
+        <div class="checklist" id="section-bank">
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Accessed the bank account either online or via the app</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Seen at least one rental disbursement and one mortgage payment</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Organised employer Super Guarantee Contributions to go into the SMSF</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Managed Admin Service -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">📋</div><h3>Managed Admin Service</h3></div>
+      <div class="card-body">
+        <div class="checklist" id="section-admin">
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Part of the Capri Financial Managed Admin Service?</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Have all bills been forwarded to Capri for them to arrange to receive directly?</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Property Manager / Rent -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">🏠</div><h3>Property Manager / Rent</h3></div>
+      <div class="card-body">
+        <div class="checklist" id="section-pm">
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">PM has introduced themselves and shared contact details?</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loan -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">💳</div><h3>Loan</h3></div>
+      <div class="card-body">
+        <div class="checklist" id="section-loan">
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Received communication directly from La Trobe?</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Aware of half yearly and annual statement process?</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tax -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">📊</div><h3>Tax</h3></div>
+      <div class="card-body">
+        <div class="checklist" id="section-tax">
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Know who's doing Tax (Crescent Accounts — Tom Neilsen)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Aware of submission extension request to February 28th of following year</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Understand the importance of the Tax Depreciation Schedule?</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Further Considerations -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">💡</div><h3>Further Considerations</h3></div>
+      <div class="card-body">
+        <div class="checklist" id="section-further">
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Insurance options inside SMSF</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Have an up to date will</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Assessed possibility of reducing interest rate / collateralising debt on loans external to SMSF (Home, Business, Car etc)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Know about our $1,000 referral scheme for every settlement</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb client-item" onchange="updateProgress()">
+            <span class="check-box"></span>
+            <span class="check-label">Left a Google review</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">📝</div><h3>Notes</h3></div>
+      <div class="card-body">
+        <div class="field">
+          <textarea id="notes" rows="4" placeholder="Add any relevant notes from this review..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Points -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">✅</div><h3>Action Points</h3></div>
+      <div class="card-body">
+        <div class="field">
+          <textarea id="actionPoints" rows="4" placeholder="List any action points arising from this review..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- NPS -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">⭐</div><h3>Net Promoter Score</h3></div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">On a scale of 0–10, how likely are you to recommend Corbwood to a friend or family member?</label>
+          <div class="nps-buttons" id="npsButtons"></div>
+          <div class="nps-labels"><span>Not at all likely</span><span>Extremely likely</span></div>
+        </div>
+        <div class="field">
+          <label class="field-label">What's the main reason for your score?</label>
+          <textarea id="npsReason" rows="3" placeholder="Client's response..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Team Actions (Internal) -->
+    <div class="card card-internal">
+      <div class="card-hd card-hd-internal">
+        <div class="card-icon">⚙️</div>
+        <h3>Global Team Actions <span class="internal-badge">Internal Only</span></h3>
+      </div>
+      <div class="card-body">
+        <div class="checklist" id="section-team">
+          <label class="check-item">
+            <input type="checkbox" class="real-cb team-item" onchange="updateProgress()">
+            <span class="check-box check-box-team"></span>
+            <span class="check-label">Send Capri Financial Underwriting Questionnaire</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb team-item" onchange="updateProgress()">
+            <span class="check-box check-box-team"></span>
+            <span class="check-label">Send Introduction to Arcuri Turnbull Law</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb team-item" onchange="updateProgress()">
+            <span class="check-box check-box-team"></span>
+            <span class="check-label">Send Introduction to Head of Residential Lending at Investure</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb team-item" onchange="updateProgress()">
+            <span class="check-box check-box-team"></span>
+            <span class="check-label">Send Referral Link</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="real-cb team-item" onchange="updateProgress()">
+            <span class="check-box check-box-team"></span>
+            <span class="check-label">Send Link to Leave a Google Review</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /inputs-col -->
+
+  <!-- ── RIGHT PANEL ── -->
+  <div class="results-panel">
+
+    <!-- Progress summary (dark card) -->
+    <div class="res-card">
+      <div class="res-hero">
+        <div class="res-hero-lbl">Client Items Complete</div>
+        <div class="yield-big" id="progressDisplay">0/16</div>
+        <div class="yield-sub">checklist items</div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
+      </div>
+
+      <div class="res-section-lbl">Review Details</div>
+      <div class="res-row"><span class="res-lbl">Client</span><span class="res-val" id="summaryName">—</span></div>
+      <div class="res-row"><span class="res-lbl">Reviewer</span><span class="res-val" id="summaryReviewer">—</span></div>
+      <div class="res-row"><span class="res-lbl">Date</span><span class="res-val" id="summaryDate">—</span></div>
+      <div class="res-row"><span class="res-lbl">NPS Score</span><span class="res-val acc" id="summaryNPS">—</span></div>
+
+      <div class="res-section-lbl">Internal Actions</div>
+      <div class="res-row"><span class="res-lbl">Team checklist</span><span class="res-val" id="teamProgress">0 / 5</span></div>
+    </div>
+
+    <!-- Email / Send card -->
+    <div class="email-card">
+      <div class="email-hd">📧 Send Report</div>
+      <div class="email-body">
+        <div class="field">
+          <label class="field-label">Client Email <span class="required">*</span></label>
+          <input type="email" id="email1" placeholder="client@email.com">
+        </div>
+        <div class="field">
+          <label class="field-label">Corbwood Team Email</label>
+          <input type="email" id="email2" placeholder="team@corbwood.com.au">
+        </div>
+        <div class="field">
+          <label class="field-label">Additional Recipient</label>
+          <input type="email" id="email3" placeholder="Optional">
+        </div>
+        <button class="cta" id="sendBtn" onclick="sendReport()">📤 Send Report to All</button>
+        <div id="sendStatus" class="send-status"></div>
+      </div>
+    </div>
+
+  </div><!-- /results-panel -->
+
+</div><!-- /main -->
+
+<footer>© 2026 Corbwood & Associates · SMSF Property Specialists · 15-17 Millennium Circuit, Helensvale QLD 4212</footer>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════ -->
+<script>
+  // ────────────────────────────────────────────
+  // EMAILJS CONFIGURATION
+  // 1. Go to https://emailjs.com → create free account
+  // 2. Add an Email Service (Gmail, Outlook, etc.)
+  // 3. Create an Email Template with these variables:
+  //      {{to_email}} {{cc_email}} {{extra_email}}
+  //      {{client_name}} {{reviewer}} {{review_date}}
+  //      {{nps_score}} {{nps_reason}}
+  //      {{notes}} {{action_points}} {{checklist_html}}
+  // 4. Paste your credentials below and set TEST_MODE = false
+  // ────────────────────────────────────────────
+  const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+  const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+  const EMAILJS_TEST_MODE   = true; // ← set to false once configured
+
+  let selectedNPS = null;
+
+  // ── INIT ──────────────────────────────────
+  (function init() {
+    const today = new Date();
+    const formatted = today.toLocaleDateString('en-AU', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+    document.getElementById('reviewDate').value = formatted;
+    document.getElementById('summaryDate').textContent =
+      today.toLocaleDateString('en-AU', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    // Build NPS buttons 0–10
+    const container = document.getElementById('npsButtons');
+    for (let i = 0; i <= 10; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'nps-btn';
+      btn.textContent = i;
+      const score = i;
+      btn.onclick = () => selectNPS(score, btn);
+      container.appendChild(btn);
+    }
+
+    if (!EMAILJS_TEST_MODE) {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+  })();
+
+  // ── NPS ───────────────────────────────────
+  function selectNPS(score, btn) {
+    document.querySelectorAll('.nps-btn').forEach(b => b.className = 'nps-btn');
+    const cat = score <= 6 ? 'detractor' : score <= 8 ? 'passive' : 'promoter';
+    btn.className = `nps-btn active ${cat}`;
+    selectedNPS = score;
+    const el = document.getElementById('summaryNPS');
+    el.textContent = `${score}/10`;
+    el.className = `res-val ${cat}`;
+  }
+
+  // ── PROGRESS ──────────────────────────────
+  function updateProgress() {
+    const clientItems   = document.querySelectorAll('.client-item');
+    const clientChecked = [...clientItems].filter(c => c.checked).length;
+    const totalClient   = clientItems.length;
+    const teamItems     = document.querySelectorAll('.team-item');
+    const teamChecked   = [...teamItems].filter(c => c.checked).length;
+
+    document.getElementById('progressDisplay').textContent = `${clientChecked}/${totalClient}`;
+    document.getElementById('progressBar').style.width = `${(clientChecked / totalClient) * 100}%`;
+    document.getElementById('teamProgress').textContent = `${teamChecked} / ${teamItems.length}`;
+  }
+
+  // ── SUMMARY ───────────────────────────────
+  function updateSummary() {
+    const name     = document.getElementById('clientName').value.trim();
+    const reviewer = document.getElementById('reviewedBy').value.trim();
+    document.getElementById('summaryName').textContent     = name     || '—';
+    document.getElementById('summaryReviewer').textContent = reviewer || '—';
+  }
+
+  // ── BUILD EMAIL CHECKLIST HTML ────────────
+  function buildChecklistHTML() {
+    const sections = [
+      { id: 'section-bank',    label: 'Bank Account' },
+      { id: 'section-admin',   label: 'Managed Admin Service' },
+      { id: 'section-pm',      label: 'Property Manager / Rent' },
+      { id: 'section-loan',    label: 'Loan' },
+      { id: 'section-tax',     label: 'Tax' },
+      { id: 'section-further', label: 'Further Considerations' },
+    ];
+    let html = '';
+    sections.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (!el) return;
+      html += `<h3 style="color:#25263D;font-size:13px;font-weight:700;margin:14px 0 6px;border-bottom:1px solid #E2E8ED;padding-bottom:4px;">${s.label}</h3>`;
+      el.querySelectorAll('.check-item').forEach(item => {
+        const cb  = item.querySelector('.real-cb');
+        const lbl = item.querySelector('.check-label');
+        html += `<p style="margin:4px 0;font-size:12px;color:${cb.checked ? '#8A9BAE' : '#1A1A2E'};">${cb.checked ? '✅' : '⬜'} ${lbl.textContent}</p>`;
+      });
+    });
+    html += `<h3 style="color:#2A5B62;font-size:13px;font-weight:700;margin:18px 0 6px;border-bottom:1px solid #E2E8ED;padding-bottom:4px;">Team Actions (Internal)</h3>`;
+    document.querySelectorAll('.team-item').forEach(cb => {
+      const lbl = cb.closest('.check-item').querySelector('.check-label');
+      html += `<p style="margin:4px 0;font-size:12px;">${cb.checked ? '✅' : '⬜'} ${lbl.textContent}</p>`;
+    });
+    return html;
+  }
+
+  // ── GENERATE PDF ──────────────────────────
+  async function generatePDF() {
+    const clientName = document.getElementById('clientName').value.trim() || 'Client';
+    const reviewDate = document.getElementById('reviewDate').value;
+    const reviewedBy = document.getElementById('reviewedBy').value.trim() || 'Corbwood Team';
+    const notes      = document.getElementById('notes').value.trim();
+    const actions    = document.getElementById('actionPoints').value.trim();
+    const npsReason  = document.getElementById('npsReason').value.trim();
+
+    // Checklist sections for PDF
+    const sections = [
+      { id: 'section-bank',    label: 'Bank Account' },
+      { id: 'section-admin',   label: 'Managed Admin Service' },
+      { id: 'section-pm',      label: 'Property Manager / Rent' },
+      { id: 'section-loan',    label: 'Loan' },
+      { id: 'section-tax',     label: 'Tax' },
+      { id: 'section-further', label: 'Further Considerations' },
+    ];
+
+    let checklistHTML = '';
+    sections.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (!el) return;
+      checklistHTML += `
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px;font-weight:700;color:#2A5B62;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid #E2E8ED;">${s.label}</div>`;
+      el.querySelectorAll('.check-item').forEach(item => {
+        const cb  = item.querySelector('.real-cb');
+        const lbl = item.querySelector('.check-label');
+        checklistHTML += `
+          <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;">
+            <div style="width:14px;height:14px;border:2px solid ${cb.checked ? '#32B0C6' : '#CBD5E1'};border-radius:3px;flex-shrink:0;background:${cb.checked ? '#32B0C6' : 'transparent'};margin-top:1px;display:flex;align-items:center;justify-content:center;">
+              ${cb.checked ? '<span style="color:white;font-size:9px;font-weight:900;line-height:1;">✓</span>' : ''}
+            </div>
+            <span style="font-size:11.5px;color:${cb.checked ? '#8A9BAE' : '#1A1A2E'};line-height:1.4;">${lbl.textContent}</span>
+          </div>`;
+      });
+      checklistHTML += `</div>`;
+    });
+
+    // Team actions
+    checklistHTML += `
+      <div style="margin-top:18px;padding-top:14px;border-top:2px solid #E2E8ED;">
+        <div style="font-size:10px;font-weight:700;color:#4C9A9F;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid #E2E8ED;">Team Actions (Internal)</div>`;
+    document.querySelectorAll('.team-item').forEach(cb => {
+      const lbl = cb.closest('.check-item').querySelector('.check-label');
+      checklistHTML += `
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;">
+          <div style="width:14px;height:14px;border:2px solid ${cb.checked ? '#2A5B62' : '#CBD5E1'};border-radius:3px;flex-shrink:0;background:${cb.checked ? '#2A5B62' : 'transparent'};margin-top:1px;display:flex;align-items:center;justify-content:center;">
+            ${cb.checked ? '<span style="color:white;font-size:9px;font-weight:900;line-height:1;">✓</span>' : ''}
+          </div>
+          <span style="font-size:11.5px;color:${cb.checked ? '#8A9BAE' : '#1A1A2E'};line-height:1.4;">${lbl.textContent}</span>
+        </div>`;
+    });
+    checklistHTML += `</div>`;
+
+    const clientDone  = [...document.querySelectorAll('.client-item')].filter(c => c.checked).length;
+    const clientTotal = document.querySelectorAll('.client-item').length;
+
+    const npsColor = selectedNPS === null ? '#8A9BAE'
+      : selectedNPS >= 9 ? '#5DDBA0'
+      : selectedNPS >= 7 ? '#F5A623'
+      : '#FF7B7B';
+    const npsLabel = selectedNPS === null ? '' : selectedNPS >= 9 ? 'Promoter' : selectedNPS >= 7 ? 'Passive' : 'Detractor';
+
+    const pdfContent = `
+      <div style="font-family:Arial,Helvetica,sans-serif;max-width:700px;margin:0 auto;color:#1A1A2E;">
+        <!-- Header bar -->
+        <div style="background:#25263D;padding:22px 30px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="color:#fff;font-size:17px;font-weight:900;letter-spacing:-0.3px;">Corbwood &amp; Associates</div>
+            <div style="color:#4C9A9F;font-size:9px;font-weight:400;letter-spacing:2px;text-transform:uppercase;margin-top:2px;">SMSF Property Specialists</div>
+          </div>
+          <div style="background:rgba(50,176,198,.15);border:1px solid rgba(50,176,198,.3);color:#32B0C6;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:20px;">Portfolio Review #1</div>
+        </div>
+        <!-- Gradient sub-header -->
+        <div style="background:linear-gradient(135deg,#2e2f4d,#2A5B62);padding:16px 30px;">
+          <div style="color:#fff;font-size:18px;font-weight:900;">Portfolio Review #1 — 2 Months Post Settlement</div>
+          <div style="color:rgba(255,255,255,0.55);font-size:11px;margin-top:3px;">Now that the property has settled, what do you need to be across for the property to succeed?</div>
+        </div>
+        <!-- Meta strip -->
+        <div style="background:#F4F6F8;padding:12px 30px;border-bottom:2px solid #E2E8ED;">
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="font-size:9px;color:#5D5D5D;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding-bottom:2px;width:25%;">Client</td>
+              <td style="font-size:9px;color:#5D5D5D;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding-bottom:2px;width:25%;">Reviewed By</td>
+              <td style="font-size:9px;color:#5D5D5D;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding-bottom:2px;width:30%;">Date</td>
+              <td style="font-size:9px;color:#5D5D5D;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding-bottom:2px;width:20%;">Completion</td>
+            </tr>
+            <tr>
+              <td style="font-size:14px;font-weight:900;color:#25263D;">${clientName}</td>
+              <td style="font-size:12px;font-weight:700;color:#25263D;">${reviewedBy}</td>
+              <td style="font-size:12px;font-weight:700;color:#25263D;">${reviewDate}</td>
+              <td style="font-size:13px;font-weight:700;color:#32B0C6;">${clientDone}/${clientTotal}</td>
+            </tr>
+          </table>
+        </div>
+        <!-- Checklist body -->
+        <div style="padding:22px 30px;">
+          ${checklistHTML}
+          ${notes ? `<div style="margin-top:18px;padding-top:14px;border-top:1px solid #E2E8ED;">
+            <div style="font-size:10px;font-weight:700;color:#25263D;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Notes</div>
+            <p style="font-size:12px;line-height:1.6;white-space:pre-wrap;color:#1A1A2E;">${notes}</p>
+          </div>` : ''}
+          ${actions ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid #E2E8ED;">
+            <div style="font-size:10px;font-weight:700;color:#25263D;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Action Points</div>
+            <p style="font-size:12px;line-height:1.6;white-space:pre-wrap;color:#1A1A2E;">${actions}</p>
+          </div>` : ''}
+          ${selectedNPS !== null ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid #E2E8ED;">
+            <div style="font-size:10px;font-weight:700;color:#25263D;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Net Promoter Score</div>
+            <div style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;background:${npsColor};border-radius:8px;">
+              <span style="font-size:22px;font-weight:900;color:#fff;">${selectedNPS}/10</span>
+              <span style="font-size:11px;color:rgba(255,255,255,0.85);">${npsLabel}</span>
+            </div>
+            ${npsReason ? `<p style="font-size:12px;color:#5D5D5D;margin-top:8px;line-height:1.5;font-style:italic;">"${npsReason}"</p>` : ''}
+          </div>` : ''}
+        </div>
+        <!-- Footer -->
+        <div style="background:#25263D;padding:14px 30px;text-align:center;">
+          <div style="color:rgba(255,255,255,0.28);font-size:9px;letter-spacing:0.5px;">© 2026 Corbwood &amp; Associates · 15-17 Millennium Circuit, Helensvale QLD 4212 · 07 5609 7670</div>
+        </div>
+      </div>`;
+
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = pdfContent;
+    document.body.appendChild(wrapper);
+
+    const filename = `Corbwood-Portfolio-Review-1-${clientName.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`;
+
+    const blob = await html2pdf().from(wrapper).set({
+      margin: [8, 8, 8, 8],
+      filename,
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).output('blob');
+
+    document.body.removeChild(wrapper);
+    return { blob, filename };
+  }
+
+  // ── SEND REPORT ───────────────────────────
+  async function sendReport() {
+    const clientName = document.getElementById('clientName').value.trim();
+    const email1     = document.getElementById('email1').value.trim();
+    const statusEl   = document.getElementById('sendStatus');
+    const sendBtn    = document.getElementById('sendBtn');
+
+    if (!clientName) { setStatus('error', '⚠ Please enter the client\'s name first.'); return; }
+    if (!email1)     { setStatus('error', '⚠ Client email address is required.'); return; }
+
+    setStatus('loading', '⏳ Generating PDF…');
+    sendBtn.disabled = true;
+
+    try {
+      const { blob, filename } = await generatePDF();
+
+      // Always download the PDF locally
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+      URL.revokeObjectURL(url);
+
+      if (EMAILJS_TEST_MODE) {
+        setStatus('success', '✅ PDF downloaded! Set up EmailJS to enable auto-email delivery.');
+        sendBtn.disabled = false;
+        return;
+      }
+
+      setStatus('loading', '📤 Sending emails…');
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+
+      const recipients = [
+        document.getElementById('email1').value.trim(),
+        document.getElementById('email2').value.trim(),
+        document.getElementById('email3').value.trim(),
+      ].filter(Boolean);
+
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email:       recipients[0] || '',
+        cc_email:       recipients[1] || '',
+        extra_email:    recipients[2] || '',
+        client_name:    clientName,
+        reviewer:       document.getElementById('reviewedBy').value.trim() || 'Corbwood Team',
+        review_date:    document.getElementById('reviewDate').value,
+        nps_score:      selectedNPS !== null ? `${selectedNPS}/10` : 'Not provided',
+        nps_reason:     document.getElementById('npsReason').value.trim() || 'N/A',
+        notes:          document.getElementById('notes').value.trim() || 'None',
+        action_points:  document.getElementById('actionPoints').value.trim() || 'None',
+        checklist_html: buildChecklistHTML(),
+      });
+
+      setStatus('success', `✅ Report sent to ${recipients.join(', ')}`);
+    } catch (err) {
+      console.error(err);
+      setStatus('error', '❌ Email failed — but PDF was downloaded successfully.');
+    }
+
+    sendBtn.disabled = false;
+  }
+
+  function setStatus(type, msg) {
+    const el = document.getElementById('sendStatus');
+    el.className = `send-status ${type}`;
+    el.textContent = msg;
+  }
+</script>
+</body>
+</html>
