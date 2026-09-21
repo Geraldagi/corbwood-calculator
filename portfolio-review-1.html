@@ -348,6 +348,17 @@
       </div>
     </div>
 
+    <!-- Constructive Feedback -->
+    <div class="card">
+      <div class="card-hd"><div class="card-icon">💬</div><h3>Constructive Feedback</h3></div>
+      <div class="card-body">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Anything the client felt could be improved or done differently — kept separate from their NPS reason so positive feedback stays clean.</p>
+        <div class="field">
+          <textarea id="constructiveFeedback" rows="4" placeholder="Any areas for improvement mentioned by the client..."></textarea>
+        </div>
+      </div>
+    </div>
+
     <!-- Global Team Actions (Internal) -->
     <div class="card card-internal">
       <div class="card-hd card-hd-internal">
@@ -556,6 +567,7 @@
     const notes      = document.getElementById('notes').value.trim();
     const actions    = document.getElementById('actionPoints').value.trim();
     const npsReason  = document.getElementById('npsReason').value.trim();
+    const constructiveFeedback = document.getElementById('constructiveFeedback').value.trim();
 
     // Checklist sections for PDF
     const sections = [
@@ -656,6 +668,10 @@
             <div style="font-size:10px;font-weight:700;color:#25263D;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Action Points</div>
             <p style="font-size:12px;line-height:1.6;white-space:pre-wrap;color:#1A1A2E;">${actions}</p>
           </div>` : ''}
+          ${constructiveFeedback ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid #E2E8ED;">
+            <div style="font-size:10px;font-weight:700;color:#25263D;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Constructive Feedback</div>
+            <p style="font-size:12px;line-height:1.6;white-space:pre-wrap;color:#1A1A2E;">${constructiveFeedback}</p>
+          </div>` : ''}
           ${selectedNPS !== null ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid #E2E8ED;">
             <div style="font-size:10px;font-weight:700;color:#25263D;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Net Promoter Score</div>
             <div style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;background:${npsColor};border-radius:8px;">
@@ -737,6 +753,7 @@
         notes:          document.getElementById('notes').value.trim() || 'None',
         action_points:  document.getElementById('actionPoints').value.trim() || 'None',
         checklist_html: buildChecklistHTML(),
+        constructive_feedback: document.getElementById('constructiveFeedback').value.trim() || 'None',
       });
 
       setStatus('success', `✅ Report sent to ${recipients.join(', ')}`);
