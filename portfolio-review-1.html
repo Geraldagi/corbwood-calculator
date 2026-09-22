@@ -6,7 +6,6 @@
   <title>Portfolio Review #1 — Corbwood & Associates</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -454,20 +453,15 @@
      ══════════════════════════════════════════ -->
 <script>
   // ────────────────────────────────────────────
-  // EMAILJS CONFIGURATION
-  // 1. Go to https://emailjs.com → create free account
-  // 2. Add an Email Service (Gmail, Outlook, etc.)
-  // 3. Create an Email Template with these variables:
-  //      {{to_email}} {{cc_email}} {{extra_email}}
-  //      {{client_name}} {{reviewer}} {{review_date}}
-  //      {{nps_score}} {{nps_reason}}
-  //      {{notes}} {{action_points}} {{checklist_html}}
-  // 4. Paste your credentials below and set TEST_MODE = false
+  // ZAPIER CONFIGURATION
+  // 1. In Zapier: Trigger = Webhooks by Zapier → Catch Hook
+  // 2. Action = Gmail → Send Email
+  //      To: {{client_email}} | CC: {{team_email}},{{extra_email}}
+  //      Subject: {{subject}} | Body: {{body}} (HTML)
+  //      Attachment: {{pdf_url}} (Zapier downloads and attaches)
+  // 3. Paste your Catch Hook URL below
   // ────────────────────────────────────────────
-  const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
-  const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-  const EMAILJS_TEST_MODE   = true; // ← set to false once configured
+  const ZAPIER_WEBHOOK_URL = 'YOUR_ZAPIER_CATCH_HOOK_URL'; // ← paste here
 
   let selectedNPS = null;
 
@@ -493,9 +487,7 @@
       container.appendChild(btn);
     }
 
-    if (!EMAILJS_TEST_MODE) {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    }
+
   })();
 
   // ── NPS ───────────────────────────────────
@@ -705,11 +697,26 @@
     return { blob, filename };
   }
 
+  // ── UPLOAD PDF TO TEMP STORAGE ───────────
+  async function uploadPDF(blob, filename) {
+    const formData = new FormData();
+    formData.append('file', blob, filename);
+    const res = await fetch('https://tmpfiles.org/api/v1/upload', {
+      method: 'POST',
+      body: formData
+    });
+    if (!res.ok) throw new Error('PDF upload failed');
+    const data = await res.json();
+    // Convert page URL to direct download URL
+    return data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+  }
+
   // ── SEND REPORT ───────────────────────────
   async function sendReport() {
     const clientName = document.getElementById('clientName').value.trim();
     const email1     = document.getElementById('email1').value.trim();
-    const statusEl   = document.getElementById('sendStatus');
+    const email2     = document.getElementById('email2').value.trim();
+    const email3     = document.getElementById('email3').value.trim();
     const sendBtn    = document.getElementById('sendBtn');
 
     if (!clientName) { setStatus('error', '⚠ Please enter the client\'s name first.'); return; }
@@ -721,45 +728,46 @@
     try {
       const { blob, filename } = await generatePDF();
 
-      // Always download the PDF locally
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
-      URL.revokeObjectURL(url);
+      setStatus('loading', '☁️ Uploading PDF…');
+      const pdfUrl = await uploadPDF(blob, filename);
 
-      if (EMAILJS_TEST_MODE) {
-        setStatus('success', '✅ PDF downloaded! Set up EmailJS to enable auto-email delivery.');
-        sendBtn.disabled = false;
-        return;
-      }
+      setStatus('loading', '📤 Sending via Zapier…');
 
-      setStatus('loading', '📤 Sending emails…');
-      emailjs.init(EMAILJS_PUBLIC_KEY);
+      const clientDone  = [...document.querySelectorAll('.client-item')].filter(c => c.checked).length;
+      const clientTotal = document.querySelectorAll('.client-item').length;
 
-      const recipients = [
-        document.getElementById('email1').value.trim(),
-        document.getElementById('email2').value.trim(),
-        document.getElementById('email3').value.trim(),
-      ].filter(Boolean);
-
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email:       recipients[0] || '',
-        cc_email:       recipients[1] || '',
-        extra_email:    recipients[2] || '',
-        client_name:    clientName,
-        reviewer:       document.getElementById('reviewedBy').value.trim() || 'Corbwood Team',
-        review_date:    document.getElementById('reviewDate').value,
-        nps_score:      selectedNPS !== null ? `${selectedNPS}/10` : 'Not provided',
-        nps_reason:     document.getElementById('npsReason').value.trim() || 'N/A',
-        notes:          document.getElementById('notes').value.trim() || 'None',
-        action_points:  document.getElementById('actionPoints').value.trim() || 'None',
-        checklist_html: buildChecklistHTML(),
+      const payload = {
+        client_name:           clientName,
+        reviewer:              document.getElementById('reviewedBy').value.trim() || 'Corbwood Team',
+        review_date:           document.getElementById('reviewDate').value,
+        nps_score:             selectedNPS !== null ? `${selectedNPS}/10` : 'Not provided',
+        nps_reason:            document.getElementById('npsReason').value.trim() || 'N/A',
+        notes:                 document.getElementById('notes').value.trim() || 'None',
+        action_points:         document.getElementById('actionPoints').value.trim() || 'None',
         constructive_feedback: document.getElementById('constructiveFeedback').value.trim() || 'None',
+        checklist_summary:     `${clientDone}/${clientTotal} items completed`,
+        client_email:          email1,
+        team_email:            email2,
+        extra_email:           email3,
+        pdf_url:               pdfUrl,
+        pdf_filename:          filename,
+        subject:               `Portfolio Review #1 — ${clientName}`,
+        body:                  buildChecklistHTML()
+      };
+
+      const zapRes = await fetch(ZAPIER_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
 
+      if (!zapRes.ok) throw new Error(`Zapier responded ${zapRes.status}`);
+
+      const recipients = [email1, email2, email3].filter(Boolean);
       setStatus('success', `✅ Report sent to ${recipients.join(', ')}`);
     } catch (err) {
       console.error(err);
-      setStatus('error', '❌ Email failed — but PDF was downloaded successfully.');
+      setStatus('error', '❌ Send failed — please try again or contact support.');
     }
 
     sendBtn.disabled = false;
