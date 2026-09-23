@@ -685,15 +685,25 @@
 
     const filename = `Corbwood-Portfolio-Review-1-${clientName.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`;
 
-    const blob = await html2pdf().from(wrapper).set({
-      margin: [8, 8, 8, 8],
-      filename,
-      image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, onclone: (doc) => { doc.querySelectorAll('style,link[rel="stylesheet"]').forEach(el => el.remove()); } },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    }).output('blob');
+    // Strip page stylesheet BEFORE html2canvas starts — it can't handle CSS custom properties (var())
+    const pageStyle = document.head.querySelector('style');
+    const savedStyle = pageStyle ? pageStyle.textContent : '';
+    if (pageStyle) pageStyle.textContent = '';
 
-    document.body.removeChild(wrapper);
+    let blob;
+    try {
+      blob = await html2pdf().from(wrapper).set({
+        margin: [8, 8, 8, 8],
+        filename,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).output('blob');
+    } finally {
+      if (pageStyle) pageStyle.textContent = savedStyle;  // always restore
+      document.body.removeChild(wrapper);
+    }
+
     return { blob, filename };
   }
 
