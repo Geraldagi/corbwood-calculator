@@ -712,17 +712,14 @@
 
   // ── UPLOAD PDF TO TEMP STORAGE ───────────
   async function uploadPDF(blob, filename) {
+    // 0x0.st: open-source temp hosting with proper CORS support
     const formData = new FormData();
     formData.append('file', blob, filename);
-    // file.io: reliable CORS-friendly temp hosting; single-download suits Zapier
-    const res = await fetch('https://file.io/?expires=1h', {
-      method: 'POST',
-      body: formData
-    });
-    if (!res.ok) throw new Error('PDF upload failed');
-    const data = await res.json();
-    if (!data.success) throw new Error('PDF upload rejected: ' + (data.message || 'unknown'));
-    return data.link;
+    const res = await fetch('https://0x0.st', { method: 'POST', body: formData });
+    if (!res.ok) throw new Error('Upload failed: ' + res.status);
+    const url = (await res.text()).trim();
+    if (!url.startsWith('https://')) throw new Error('Upload: unexpected response');
+    return url;
   }
 
 
@@ -875,10 +872,16 @@
       try { const r = await generatePDF(); blob = r.blob; filename = r.filename; }
       catch(e) { throw new Error('PDF: ' + e.message); }
 
+      // Always download PDF locally
+      const _u = URL.createObjectURL(blob);
+      const _a = document.createElement('a'); _a.href = _u; _a.download = filename; _a.click();
+      URL.revokeObjectURL(_u);
+
+      // Try to upload for email attachment (non-blocking)
       setStatus('loading', '☁️ Uploading PDF…');
-      let pdfUrl;
+      let pdfUrl = null;
       try { pdfUrl = await uploadPDF(blob, filename); }
-      catch(e) { throw new Error('Upload: ' + e.message); }
+      catch(e) { /* Upload failed — email will send without attachment; PDF was downloaded locally */ }
 
       setStatus('loading', '📤 Sending via Zapier…');
 
