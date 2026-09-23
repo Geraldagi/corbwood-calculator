@@ -749,14 +749,20 @@
 
   // ── UPLOAD PDF TO TEMP STORAGE ───────────
   async function uploadPDF(blob, filename) {
-    // 0x0.st: open-source temp hosting with proper CORS support
-    const formData = new FormData();
-    formData.append('file', blob, filename);
-    const res = await fetch('https://0x0.st', { method: 'POST', body: formData });
-    if (!res.ok) throw new Error('Upload failed: ' + res.status);
-    const url = (await res.text()).trim();
-    if (!url.startsWith('https://')) throw new Error('Upload: unexpected response');
-    return url;
+    // 5-second timeout — if no response, caller continues without attachment
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 5000);
+    try {
+      const fd = new FormData();
+      fd.append('file', blob, filename);
+      const res = await fetch('https://0x0.st', { method:'POST', body:fd, signal:ctrl.signal });
+      if (!res.ok) throw new Error('status ' + res.status);
+      const url = (await res.text()).trim();
+      if (!url.startsWith('https://')) throw new Error('bad response');
+      return url;
+    } finally {
+      clearTimeout(t);
+    }
   }
 
 
@@ -940,7 +946,7 @@
         action_points:         document.getElementById('actionPoints').value.trim() || 'None',
         constructive_feedback: document.getElementById('constructiveFeedback').value.trim() || 'None',
         checklist_summary:     String(clientDone) + '/' + String(clientTotal) + ' items completed',
-        checklist_html:        checklistBody,
+        body:                  checklistBody,
         client_email:          email1,
         team_email:            email2,
         extra_email:           email3,
