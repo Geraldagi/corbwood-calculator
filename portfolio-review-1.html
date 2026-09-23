@@ -868,29 +868,26 @@
       const clientDone  = [...document.querySelectorAll('.client-item')].filter(c => c.checked).length;
       const clientTotal = document.querySelectorAll('.client-item').length;
 
-      let emailBody;
-      try { emailBody = buildEmailHTML(); }
-      catch(e) { throw new Error('Email build: ' + e.message); }
-
       setStatus('loading', '📤 Sending via Zapier…');
 
       const payload = {
         client_name:           clientName,
         reviewer:              document.getElementById('reviewedBy').value.trim() || 'Corbwood Team',
         review_date:           document.getElementById('reviewDate').value,
-        nps_score:             selectedNPS !== null ? `${selectedNPS}/10` : 'Not provided',
+        nps_score:             selectedNPS !== null ? String(selectedNPS) + '/10' : 'Not provided',
         nps_reason:            document.getElementById('npsReason').value.trim() || 'N/A',
+        nps_category:          selectedNPS === null ? '' : selectedNPS >= 9 ? 'Promoter' : selectedNPS >= 7 ? 'Passive' : 'Detractor',
         notes:                 document.getElementById('notes').value.trim() || 'None',
         action_points:         document.getElementById('actionPoints').value.trim() || 'None',
         constructive_feedback: document.getElementById('constructiveFeedback').value.trim() || 'None',
-        checklist_summary:     `${clientDone}/${clientTotal} items completed`,
+        checklist_summary:     String(clientDone) + '/' + String(clientTotal) + ' items completed',
+        checklist_html:        buildChecklistHTML(),
         client_email:          email1,
         team_email:            email2,
         extra_email:           email3,
         pdf_url:               pdfUrl,
         pdf_filename:          filename,
-        subject:               `Portfolio Review #1 — ${clientName}`,
-        body:                  emailBody
+        subject:               'Portfolio Review #1 — ' + clientName,
       };
 
       const formData = new FormData();
