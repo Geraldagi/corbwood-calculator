@@ -755,10 +755,13 @@
         body:                  buildChecklistHTML()
       };
 
+      // FormData avoids CORS preflight — Zapier receives all fields correctly
+      const formData = new FormData();
+      Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
+
       const zapRes = await fetch(ZAPIER_WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: formData
       });
 
       if (!zapRes.ok) throw new Error(`Zapier responded ${zapRes.status}`);
