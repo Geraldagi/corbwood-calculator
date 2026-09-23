@@ -858,17 +858,23 @@
     sendBtn.disabled = true;
 
     try {
-      const { blob, filename } = await generatePDF();
+      let blob, filename;
+      try { const r = await generatePDF(); blob = r.blob; filename = r.filename; }
+      catch(e) { throw new Error('PDF: ' + e.message); }
 
       setStatus('loading', '☁️ Uploading PDF…');
-      const pdfUrl = await uploadPDF(blob, filename);
+      let pdfUrl;
+      try { pdfUrl = await uploadPDF(blob, filename); }
+      catch(e) { throw new Error('Upload: ' + e.message); }
 
-      setStatus('loading', '📤 Building email…');
+      setStatus('loading', '📤 Sending via Zapier…');
 
       const clientDone  = [...document.querySelectorAll('.client-item')].filter(c => c.checked).length;
       const clientTotal = document.querySelectorAll('.client-item').length;
 
-      setStatus('loading', '📤 Sending via Zapier…');
+      let checklistBody;
+      try { checklistBody = buildChecklistHTML(); }
+      catch(e) { throw new Error('Checklist: ' + e.message); }
 
       const payload = {
         client_name:           clientName,
@@ -881,7 +887,7 @@
         action_points:         document.getElementById('actionPoints').value.trim() || 'None',
         constructive_feedback: document.getElementById('constructiveFeedback').value.trim() || 'None',
         checklist_summary:     String(clientDone) + '/' + String(clientTotal) + ' items completed',
-        checklist_html:        buildChecklistHTML(),
+        checklist_html:        checklistBody,
         client_email:          email1,
         team_email:            email2,
         extra_email:           email3,
@@ -890,20 +896,18 @@
         subject:               'Portfolio Review #1 — ' + clientName,
       };
 
-      const formData = new FormData();
-      Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
+      let formData;
+      try { formData = new FormData(); Object.entries(payload).forEach(([k, v]) => formData.append(k, String(v))); }
+      catch(e) { throw new Error('FormData: ' + e.message); }
 
       let zapRes;
-      try {
-        zapRes = await fetch(ZAPIER_WEBHOOK_URL, { method: 'POST', body: formData });
-      } catch(fetchErr) {
-        throw new Error('Network: ' + fetchErr.message);
-      }
+      try { zapRes = await fetch(ZAPIER_WEBHOOK_URL, { method: 'POST', body: formData }); }
+      catch(e) { throw new Error('Fetch: ' + e.message); }
 
-      if (!zapRes.ok) throw new Error('Zapier responded ' + zapRes.status);
+      if (!zapRes.ok) throw new Error('Zapier: ' + zapRes.status);
 
       const recipients = [email1, email2, email3].filter(Boolean);
-      setStatus('success', `✅ Report sent to ${recipients.join(', ')}`);
+      setStatus('success', '✅ Report sent to ' + recipients.join(', '));
     } catch (err) {
       console.error(err);
       setStatus('error', '❌ ' + (err.message || 'Unknown error'));
