@@ -650,9 +650,12 @@
         '--green':'#5DDBA0','--red':'#FF7B7B','--amber':'#F5A623',
       };
       let fixed = savedStyle;
+      // Replace var() references
       Object.entries(vars).forEach(([name, val]) => {
         fixed = fixed.replace(new RegExp('var\\(' + name + '\\)', 'g'), val);
       });
+      // Strip :root custom property declarations so html2canvas never sees --name syntax
+      fixed = fixed.replace(/:root\s*\{[^}]*\}/g, ':root {}');
       pageStyle.textContent = fixed;
     }
 
@@ -662,7 +665,7 @@
         margin: [8, 8, 8, 8],
         filename,
         image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        html2canvas: { scale: 2, useCORS: true, logging: false, foreignObjectRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       }).output('blob');
     } finally {
