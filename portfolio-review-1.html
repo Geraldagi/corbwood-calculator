@@ -446,7 +446,7 @@
 
 </div><!-- /main -->
 
-<footer>© 2026 Corbwood & Associates · SMSF Property Specialists · 15-17 Millennium Circuit, Helensvale QLD 4212</footer>
+<footer>© 2026 Corbwood & Associates · SMSF Property Specialists · 103/120 Siganto Drive, Helensvale QLD 4212</footer>
 
 <!-- ══════════════════════════════════════════
      JAVASCRIPT
@@ -675,7 +675,7 @@
         </div>
         <!-- Footer -->
         <div style="background:#25263D;padding:14px 30px;text-align:center;">
-          <div style="color:rgba(255,255,255,0.28);font-size:9px;letter-spacing:0.5px;">© 2026 Corbwood &amp; Associates · 15-17 Millennium Circuit, Helensvale QLD 4212 · 07 5609 7670</div>
+          <div style="color:rgba(255,255,255,0.28);font-size:9px;letter-spacing:0.5px;">© 2026 Corbwood &amp; Associates · 103/120 Siganto Drive, Helensvale QLD 4212 · 07 5609 7670</div>
         </div>
       </div>`;
 
@@ -837,7 +837,7 @@
     ${notesBlock}${actionsBlock}${cfBlock}${npsBlock}
   </td></tr>
   <tr><td style="background:#25263D;padding:16px 28px;text-align:center;border-radius:0 0 12px 12px;">
-    <div style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:0.4px;">© 2026 Corbwood &amp; Associates · 15-17 Millennium Circuit, Helensvale QLD 4212 · 07 5609 7670</div>
+    <div style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:0.4px;">© 2026 Corbwood &amp; Associates · 103/120 Siganto Drive, Helensvale QLD 4212 · 07 5609 7670</div>
   </td></tr>
 </table></td></tr></table>
 </body></html>`;
@@ -863,10 +863,16 @@
       setStatus('loading', '☁️ Uploading PDF…');
       const pdfUrl = await uploadPDF(blob, filename);
 
-      setStatus('loading', '📤 Sending via Zapier…');
+      setStatus('loading', '📤 Building email…');
 
       const clientDone  = [...document.querySelectorAll('.client-item')].filter(c => c.checked).length;
       const clientTotal = document.querySelectorAll('.client-item').length;
+
+      let emailBody;
+      try { emailBody = buildEmailHTML(); }
+      catch(e) { throw new Error('Email build: ' + e.message); }
+
+      setStatus('loading', '📤 Sending via Zapier…');
 
       const payload = {
         client_name:           clientName,
@@ -884,25 +890,26 @@
         pdf_url:               pdfUrl,
         pdf_filename:          filename,
         subject:               `Portfolio Review #1 — ${clientName}`,
-        body:                  buildEmailHTML()
+        body:                  emailBody
       };
 
-      // FormData avoids CORS preflight — Zapier receives all fields correctly
       const formData = new FormData();
       Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
 
-      const zapRes = await fetch(ZAPIER_WEBHOOK_URL, {
-        method: 'POST',
-        body: formData
-      });
+      let zapRes;
+      try {
+        zapRes = await fetch(ZAPIER_WEBHOOK_URL, { method: 'POST', body: formData });
+      } catch(fetchErr) {
+        throw new Error('Network: ' + fetchErr.message);
+      }
 
-      if (!zapRes.ok) throw new Error(`Zapier responded ${zapRes.status}`);
+      if (!zapRes.ok) throw new Error('Zapier responded ' + zapRes.status);
 
       const recipients = [email1, email2, email3].filter(Boolean);
       setStatus('success', `✅ Report sent to ${recipients.join(', ')}`);
     } catch (err) {
       console.error(err);
-      setStatus('error', '❌ Send failed — please try again or contact support.');
+      setStatus('error', '❌ ' + (err.message || 'Unknown error'));
     }
 
     sendBtn.disabled = false;
