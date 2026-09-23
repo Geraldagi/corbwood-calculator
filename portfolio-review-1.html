@@ -552,158 +552,195 @@
   }
 
   // ── GENERATE PDF ─────────────────────────
-  // Uses jsPDF directly — no html2canvas, no CSS parsing errors
   async function generatePDF() {
     const { jsPDF } = window.jspdf;
-
     const clientName = document.getElementById('clientName').value.trim() || 'Client';
     const reviewedBy = document.getElementById('reviewedBy').value.trim() || 'Corbwood Team';
     const reviewDate = document.getElementById('reviewDate').value;
-    const notes      = document.getElementById('notes').value.trim();
-    const actionPts  = document.getElementById('actionPoints').value.trim();
-    const cf         = document.getElementById('constructiveFeedback').value.trim();
-    const npsReason  = document.getElementById('npsReason').value.trim();
+    const notes     = document.getElementById('notes').value.trim();
+    const actionPts = document.getElementById('actionPoints').value.trim();
+    const cf        = document.getElementById('constructiveFeedback').value.trim();
+    const npsReason = document.getElementById('npsReason').value.trim();
     const clientDone  = [...document.querySelectorAll('.client-item')].filter(c => c.checked).length;
     const clientTotal = document.querySelectorAll('.client-item').length;
+    const filename = 'Corbwood-Portfolio-Review-1-' + clientName.replace(/\s+/g,'-') + '-' + new Date().toISOString().split('T')[0] + '.pdf';
 
-    const filename = 'Corbwood-Portfolio-Review-1-' + clientName.replace(/\s+/g, '-') + '-' + new Date().toISOString().split('T')[0] + '.pdf';
+    const doc = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
+    const pw=210, ph=297, mg=10;
+    let y=0;
 
-    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-    const pw = 210, ph = 297, mg = 12;
-    let y = 0;
+    // Brand colours
+    const NAVY  = [37,38,61],   NAVY2 = [46,47,77],  TEAL = [50,176,198];
+    const DTEAL = [42,91,98],   MTEAL = [76,154,159], BG   = [244,246,248];
+    const INK   = [26,26,46],   MUTED = [138,155,174], GREY = [93,93,93];
+    const BORD  = [226,232,237], WHITE = [255,255,255];
+    const GREEN = [93,219,160],  AMBER = [245,166,35],  RED = [255,123,123];
 
-    const navy    = [37, 38, 61];
-    const navy2   = [46, 47, 77];
-    const teal    = [50, 176, 198];
-    const dteal   = [42, 91, 98];
-    const mteal   = [76, 154, 159];
-    const white   = [255, 255, 255];
-    const grey    = [93, 93, 93];
-    const ink     = [26, 26, 46];
-    const muted   = [138, 155, 174];
-    const border  = [226, 232, 237];
+    function chk(n) { if(y+n>ph-14){ doc.addPage(); y=12; } }
 
-    function newPage() { doc.addPage(); y = 15; }
-    function chk(n) { if (y + n > ph - 15) newPage(); }
-
-    // ── HEADER
-    doc.setFillColor(...navy); doc.rect(0, 0, pw, 22, 'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(...white);
-    doc.text('Corbwood & Associates', mg, 10);
-    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...mteal);
-    doc.text('SMSF PROPERTY SPECIALISTS', mg, 16);
-    doc.setDrawColor(...teal); doc.setLineWidth(0.4);
-    doc.roundedRect(pw-50, 7, 38, 8, 3, 3, 'D');
-    doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(...teal);
-    doc.text('PORTFOLIO REVIEW #1', pw-31, 11.8, { align:'center' });
-    y = 22;
-
-    // ── SUB-HEADER
-    doc.setFillColor(...navy2); doc.rect(0, y, pw, 15, 'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...white);
-    doc.text('Portfolio Review #1 — 2 Months Post Settlement', pw/2, y+7, { align:'center' });
-    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(190,200,220);
-    doc.text('Now that the property has settled, what do you need to be across for the property to succeed?', pw/2, y+12.5, { align:'center' });
-    y += 15;
-
-    // ── META STRIP
-    doc.setFillColor(244,246,248); doc.rect(0, y, pw, 18, 'F');
-    doc.setDrawColor(...border); doc.setLineWidth(0.5); doc.line(0, y+18, pw, y+18);
-    const cols = [mg, pw*0.28, pw*0.56, pw*0.77];
-    const lbls = ['CLIENT','REVIEWED BY','DATE','COMPLETION'];
-    const vals = [clientName, reviewedBy, reviewDate, clientDone+'/'+clientTotal];
-    lbls.forEach((l,i) => {
-      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(...grey); doc.text(l, cols[i], y+6);
-      doc.setFontSize(i===0?10.5:8.5);
-      doc.setTextColor(...(i===3?teal:ink));
-      doc.text((doc.splitTextToSize(vals[i], 48)||[vals[i]])[0], cols[i], y+14);
-    });
-    y += 21;
-
-    // ── CHECKLIST SECTIONS
-    function drawSection(label, items, team) {
-      chk(20);
-      doc.setFillColor(...(team?dteal:teal)); doc.rect(mg, y, pw-mg*2, 7, 'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...white);
-      doc.text(label.toUpperCase(), mg+3, y+4.8);
-      if (team) { doc.setFontSize(6); doc.text('INTERNAL ONLY', pw-mg-2, y+4.8, {align:'right'}); }
-      y += 9;
-      items.forEach(({checked,text}) => {
-        chk(8);
-        const cc = checked ? (team?dteal:teal) : [203,213,225];
-        doc.setFillColor(...cc); doc.setDrawColor(...cc); doc.setLineWidth(0.3);
-        doc.rect(mg+1, y+0.3, 3.8, 3.8, checked?'F':'D');
-        if (checked) { doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(...white); doc.text('✓', mg+1.9, y+3.5); }
-        doc.setFont('helvetica','normal'); doc.setFontSize(8);
-        doc.setTextColor(...(checked?muted:ink));
-        const lines = doc.splitTextToSize(text, pw-mg*2-8);
-        lines.forEach((ln,li) => { if(li>0)chk(5); doc.text(ln, mg+7, y+3.5+(li*4.5)); });
-        y += Math.max(lines.length*4.5, 6);
-      });
-      y += 3;
-    }
-
-    [
-      {id:'section-bank',    label:'Bank Account'},
-      {id:'section-admin',   label:'Managed Admin Service'},
-      {id:'section-pm',      label:'Property Manager / Rent'},
-      {id:'section-loan',    label:'Loan'},
-      {id:'section-tax',     label:'Tax'},
-      {id:'section-further', label:'Further Considerations'},
-    ].forEach(s => {
-      const el = document.getElementById(s.id);
-      if (!el) return;
-      drawSection(s.label, [...el.querySelectorAll('.check-item')].map(item => ({
-        checked: item.querySelector('.real-cb').checked,
-        text: item.querySelector('.check-label').textContent.trim()
-      })), false);
-    });
-
-    drawSection('Team Actions', [...document.querySelectorAll('.team-item')].map(cb => ({
-      checked: cb.checked,
-      text: cb.closest('.check-item').querySelector('.check-label').textContent.trim()
-    })), true);
-
-    // ── TEXT BLOCKS
-    function drawBlock(title, text) {
-      if (!text) return;
-      chk(20); y += 2;
-      doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...navy);
-      doc.text(title.toUpperCase(), mg, y); y += 5;
-      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...ink);
-      doc.splitTextToSize(text, pw-mg*2).forEach(ln => { chk(6); doc.text(ln, mg, y); y += 5; });
-      y += 2;
-    }
-    drawBlock('Notes', notes);
-    drawBlock('Action Points', actionPts);
-    drawBlock('Constructive Feedback', cf);
-
-    // ── NPS
-    if (selectedNPS !== null) {
-      chk(24); y += 2;
-      doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...navy);
-      doc.text('NET PROMOTER SCORE', mg, y); y += 6;
-      const npsRgb = selectedNPS>=9?[93,219,160]:selectedNPS>=7?[245,166,35]:[255,123,123];
-      const npsLbl = selectedNPS>=9?'Promoter':selectedNPS>=7?'Passive':'Detractor';
-      doc.setFillColor(...npsRgb); doc.roundedRect(mg, y, 48, 12, 3, 3, 'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(...white);
-      doc.text(selectedNPS+'/10', mg+14, y+8);
-      doc.setFontSize(8); doc.text(npsLbl, mg+34, y+8);
-      y += 15;
-      if (npsReason) {
-        doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...grey);
-        doc.splitTextToSize('"'+npsReason+'"', pw-mg*2).forEach(ln => { chk(6); doc.text(ln, mg, y); y += 5; });
-        y += 2;
+    // ── Checkbox helper (draws filled box + checkmark or empty box)
+    function cb(x, yy, checked, color) {
+      const s=3.5;
+      if(checked) {
+        doc.setFillColor(...color); doc.rect(x,yy,s,s,'F');
+        doc.setDrawColor(...WHITE); doc.setLineWidth(0.55);
+        doc.line(x+0.7,yy+1.8, x+1.4,yy+2.7);
+        doc.line(x+1.4,yy+2.7, x+2.8,yy+0.9);
+      } else {
+        doc.setFillColor(...WHITE); doc.setDrawColor(...BORD);
+        doc.setLineWidth(0.35); doc.rect(x,yy,s,s,'FD');
       }
     }
 
-    // ── FOOTER on every page
-    const np = doc.internal.getNumberOfPages();
-    for (let p = 1; p <= np; p++) {
+    // ── Card drawing: calculate height then draw border, then content
+    function sectionHeight(items) {
+      let h=9.5; // header
+      items.forEach(({text})=>{
+        h += doc.splitTextToSize(text, pw-mg*2-8).length * 5 + 1;
+      });
+      return h + 3;
+    }
+
+    function drawSection(label, items, hdrColor, isTeam) {
+      const sh = sectionHeight(items);
+      chk(sh + 4);
+      // Card background + border
+      doc.setFillColor(...WHITE); doc.rect(mg,y,pw-mg*2,sh,'F');
+      doc.setDrawColor(...BORD); doc.setLineWidth(0.25); doc.rect(mg,y,pw-mg*2,sh,'D');
+      // Accent left bar
+      doc.setFillColor(...hdrColor); doc.rect(mg,y,1.8,sh,'F');
+      // Section header
+      doc.setFillColor(...hdrColor); doc.rect(mg+1.8,y,pw-mg*2-1.8,8.5,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...WHITE);
+      doc.text(label.toUpperCase(), mg+6, y+5.8);
+      if(isTeam){ doc.setFontSize(6.5); doc.text('INTERNAL ONLY', pw-mg-3, y+5.8,{align:'right'}); }
+      y += 10;
+      // Items
+      items.forEach(({checked,text})=>{
+        const lines = doc.splitTextToSize(text, pw-mg*2-10);
+        const rowH = lines.length*5+1;
+        cb(mg+4, y+0.3, checked, isTeam?DTEAL:TEAL);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+        doc.setTextColor(...(checked?MUTED:INK));
+        lines.forEach((ln,li)=> doc.text(ln, mg+9, y+3.5+(li*5)));
+        y += rowH + 0.5;
+      });
+      y += 3; // bottom card padding
+      y += 4; // gap between cards
+    }
+
+    // ── TEXT BLOCK helper
+    function textBlock(title, body) {
+      if(!body) return;
+      const lines = doc.splitTextToSize(body, pw-mg*2-4);
+      const bh = lines.length*5 + 14;
+      chk(bh);
+      doc.setFillColor(...WHITE); doc.rect(mg,y,pw-mg*2,bh,'F');
+      doc.setDrawColor(...BORD); doc.setLineWidth(0.25); doc.rect(mg,y,pw-mg*2,bh,'D');
+      doc.setFillColor(...TEAL); doc.rect(mg,y,1.8,bh,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...INK);
+      doc.text(title.toUpperCase(), mg+5, y+7);
+      y += 11;
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...INK);
+      lines.forEach(ln=>{ doc.text(ln, mg+4, y); y+=5; });
+      y += 7;
+    }
+
+    // ════════ HEADER ════════
+    doc.setFillColor(...NAVY); doc.rect(0,0,pw,22,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...WHITE);
+    doc.text('Corbwood & Associates', mg, 11);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...MTEAL);
+    doc.text('SMSF PROPERTY SPECIALISTS', mg, 17);
+    // Badge
+    doc.setDrawColor(...TEAL); doc.setLineWidth(0.4);
+    doc.roundedRect(pw-52,7,40,9,4,4,'D');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...TEAL);
+    doc.text('PORTFOLIO REVIEW #1', pw-32,12.5,{align:'center'});
+    y=22;
+
+    // ════════ HERO STRIP ════════
+    doc.setFillColor(...NAVY2); doc.rect(0,y,pw,15,'F');
+    // Teal accent line
+    doc.setFillColor(...TEAL); doc.rect(0,y+13.5,pw,1.5,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...WHITE);
+    doc.text('Portfolio Review #1 \u2014 2 Months Post Settlement', pw/2,y+7,{align:'center'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(180,195,215);
+    doc.text('Now that the property has settled, what do you need to be across for the property to succeed?', pw/2,y+12.5,{align:'center'});
+    y+=15;
+
+    // ════════ INFO ROW ════════
+    doc.setFillColor(...BG); doc.rect(0,y,pw,18,'F');
+    doc.setDrawColor(...BORD); doc.setLineWidth(0.4); doc.line(0,y+18,pw,y+18);
+    const infoX=[mg,pw*0.28,pw*0.57,pw*0.78];
+    ['CLIENT','REVIEWED BY','DATE','COMPLETION'].forEach((lbl,i)=>{
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(...GREY);
+      doc.text(lbl, infoX[i], y+6);
+      doc.setFontSize(i===0?11:9);
+      doc.setTextColor(...(i===3?TEAL:INK));
+      const v=[clientName,reviewedBy,reviewDate,clientDone+'/'+clientTotal][i];
+      doc.text((doc.splitTextToSize(v,46)||[v])[0], infoX[i], y+14);
+    });
+    y+=22;
+
+    // ════════ CHECKLIST SECTIONS ════════
+    [
+      {id:'section-bank',    label:'🏦 Bank Account'},
+      {id:'section-admin',   label:'📋 Managed Admin Service'},
+      {id:'section-pm',      label:'🏠 Property Manager / Rent'},
+      {id:'section-loan',    label:'💳 Loan'},
+      {id:'section-tax',     label:'📊 Tax'},
+      {id:'section-further', label:'💡 Further Considerations'},
+    ].forEach(s=>{
+      const el=document.getElementById(s.id); if(!el) return;
+      drawSection(s.label, [...el.querySelectorAll('.check-item')].map(item=>({
+        checked: item.querySelector('.real-cb').checked,
+        text: item.querySelector('.check-label').textContent.trim()
+      })), TEAL, false);
+    });
+
+    drawSection('\u2699\ufe0f Team Actions', [...document.querySelectorAll('.team-item')].map(cb=>({
+      checked: cb.checked,
+      text: cb.closest('.check-item').querySelector('.check-label').textContent.trim()
+    })), DTEAL, true);
+
+    // ════════ TEXT BLOCKS ════════
+    textBlock('Notes', notes);
+    textBlock('Action Points', actionPts);
+    textBlock('Constructive Feedback', cf);
+
+    // ════════ NPS ════════
+    if(selectedNPS !== null) {
+      const npsH = 14 + (npsReason ? Math.ceil(npsReason.length/80)*5+4 : 0);
+      chk(npsH+4);
+      doc.setFillColor(...WHITE); doc.rect(mg,y,pw-mg*2,npsH,'F');
+      doc.setDrawColor(...BORD); doc.setLineWidth(0.25); doc.rect(mg,y,pw-mg*2,npsH,'D');
+      const npsC = selectedNPS>=9?TEAL:selectedNPS>=7?AMBER:RED;
+      doc.setFillColor(...npsC); doc.rect(mg,y,1.8,npsH,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...INK);
+      doc.text('NET PROMOTER SCORE', mg+5, y+7); y+=11;
+      // Badge
+      doc.setFillColor(...npsC); doc.roundedRect(mg+3,y,30,10,3,3,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...WHITE);
+      doc.text(selectedNPS+'/10', mg+9, y+7.2);
+      const lbl=selectedNPS>=9?'Promoter':selectedNPS>=7?'Passive':'Detractor';
+      doc.setFontSize(8); doc.text(lbl, mg+28, y+4);
+      y+=13;
+      if(npsReason){
+        doc.setFont('helvetica','italic'); doc.setFontSize(8.5); doc.setTextColor(...GREY);
+        doc.splitTextToSize('"'+npsReason+'"', pw-mg*2-8).forEach(ln=>{doc.text(ln,mg+4,y);y+=5;});
+        y+=2;
+      }
+      y+=4;
+    }
+
+    // ════════ FOOTER on every page ════════
+    const np=doc.internal.getNumberOfPages();
+    for(let p=1;p<=np;p++){
       doc.setPage(p);
-      doc.setFillColor(...navy); doc.rect(0, ph-11, pw, 11, 'F');
+      doc.setFillColor(...NAVY); doc.rect(0,ph-12,pw,12,'F');
       doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(150,150,165);
-      doc.text('© 2026 Corbwood & Associates  ·  103/120 Siganto Drive, Helensvale QLD 4212  ·  07 5609 7670', pw/2, ph-4.5, {align:'center'});
+      doc.text('\u00a9 2026 Corbwood & Associates  \u00b7  103/120 Siganto Drive, Helensvale QLD 4212  \u00b7  07 5609 7670', pw/2,ph-4.5,{align:'center'});
     }
 
     const blob = doc.output('blob');
@@ -913,7 +950,7 @@
       };
 
       let formData;
-      try { formData = new FormData(); Object.entries(payload).forEach(([k, v]) => formData.append(k, String(v))); }
+      try { formData = new FormData(); Object.entries(payload).forEach(([k, v]) => { if (v !== null && v !== undefined && v !== '') formData.append(k, String(v)); }); }
       catch(e) { throw new Error('FormData: ' + e.message); }
 
       let zapRes;
