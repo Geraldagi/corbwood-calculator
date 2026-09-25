@@ -597,10 +597,7 @@
 
     const pdfContent = `<div style="font-family:Arial,Helvetica,sans-serif;max-width:700px;margin:0 auto;color:#1A1A2E;">
       <div style="background:#25263D;padding:22px 30px;display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <div style="color:#fff;font-size:17px;font-weight:900;letter-spacing:-0.3px;">Corbwood &amp; Associates</div>
-          <div style="color:#4C9A9F;font-size:9px;font-weight:400;letter-spacing:2px;text-transform:uppercase;margin-top:2px;">SMSF Property Specialists</div>
-        </div>
+        <div><div style="color:#fff;font-size:17px;font-weight:900;letter-spacing:-0.3px;">Corbwood &amp; Associates</div><div style="color:#4C9A9F;font-size:9px;font-weight:400;letter-spacing:2px;text-transform:uppercase;margin-top:2px;">SMSF Property Specialists</div></div>
         <div style="background:rgba(50,176,198,0.15);border:1px solid rgba(50,176,198,0.3);color:#32B0C6;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:20px;">Portfolio Review #1</div>
       </div>
       <div style="background:linear-gradient(135deg,#2e2f4d,#2A5B62);padding:16px 30px;">
@@ -632,32 +629,60 @@
       </div>
     </div>`;
 
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = pdfContent;
-    document.body.appendChild(wrapper);
+    // Render in an isolated iframe — zero CSS custom properties in scope,
+    // so html2canvas cannot encounter var() references at all
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;top:0;left:0;width:780px;height:3000px;border:none;opacity:0;pointer-events:none;';
+    document.body.appendChild(iframe);
 
-    // ── CRITICAL FIX: replace CSS custom properties with hex values before
-    // html2canvas processes the document. This prevents the CSS parsing error.
-    const pageStyle = document.head.querySelector('style');
-    let savedStyle = '';
-    if (pageStyle) {
-      savedStyle = pageStyle.textContent;
-      const vars = {
-        '--navy':'#25263D','--navy2':'#2e2f4d','--dteal':'#2A5B62',
-        '--mteal':'#4C9A9F','--lteal':'#40B8BC','--bteal':'#32B0C6',
-        '--grey':'#5D5D5D','--bg':'#F4F6F8','--white':'#ffffff',
-        '--border':'#E2E8ED','--text':'#1A1A2E','--muted':'#8A9BAE',
-        '--green':'#5DDBA0','--red':'#FF7B7B','--amber':'#F5A623',
-      };
-      let fixed = savedStyle;
-      // Replace var() references
-      Object.entries(vars).forEach(([name, val]) => {
-        fixed = fixed.replace(new RegExp('var\\(' + name + '\\)', 'g'), val);
+    const iDoc = iframe.contentWindow.document;
+    iDoc.open();
+    iDoc.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>*{box-sizing:border-box;margin:0;padding:0;}body{background:#fff;}</style></head><body>' + pdfContent + '</body></html>');
+    iDoc.close();
+
+    // Let the iframe render fully
+    await new Promise(r => setTimeout(r, 400));
+
+    let blob;
+    try {
+      // html2canvas is exposed as window.html2canvas from the html2pdf bundle
+      const canvas = await window.html2canvas(iDoc.body, {
+        scale: 2,
+        useCORS: false,
+        allowTaint: true,
+        logging: false,
+        width: 780,
+        height: iDoc.body.scrollHeight,
+        windowWidth: 780,
+        windowHeight: iDoc.body.scrollHeight,
+        scrollX: 0,
+        scrollY: 0
       });
-      // Strip :root custom property declarations so html2canvas never sees --name syntax
-      fixed = fixed.replace(/:root\s*\{[^}]*\}/g, ':root {}');
-      pageStyle.textContent = fixed;
+
+      // Convert canvas to multi-page A4 PDF via jsPDF (bundled in html2pdf)
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const pdfW = pdf.internal.pageSize.getWidth();
+      const pdfH = pdf.internal.pageSize.getHeight();
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      const imgH = (canvas.height / canvas.width) * pdfW;
+      let remaining = imgH;
+      let yOffset = 0;
+
+      while (remaining > 0) {
+        pdf.addImage(imgData, 'JPEG', 0, -yOffset, pdfW, imgH, '', 'FAST');
+        remaining -= pdfH;
+        yOffset += pdfH;
+        if (remaining > 0) pdf.addPage();
+      }
+
+      blob = pdf.output('blob');
+    } finally {
+      document.body.removeChild(iframe);
     }
+
+    return { blob, filename };
+  }
 
     let blob;
     try {
@@ -678,19 +703,29 @@
 
   // ── UPLOAD PDF TO TEMP STORAGE ───────────
   async function uploadPDF(blob, filename) {
-    // 5-second timeout — if no response, caller continues without attachment
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 5000);
+    async function tryUpload(url, buildFd, timeoutMs) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), timeoutMs);
+      try {
+        const res = await fetch(url, { method:'POST', body:buildFd(), signal:ctrl.signal });
+        if (!res.ok) throw new Error('status ' + res.status);
+        const txt = (await res.text()).trim();
+        if (!txt.startsWith('https://')) throw new Error('unexpected: ' + txt.slice(0,40));
+        return txt;
+      } finally { clearTimeout(t); }
+    }
+    // catbox.moe (25s) then 0x0.st (20s)
     try {
-      const fd = new FormData();
-      fd.append('file', blob, filename);
-      const res = await fetch('https://0x0.st', { method:'POST', body:fd, signal:ctrl.signal });
-      if (!res.ok) throw new Error('status ' + res.status);
-      const url = (await res.text()).trim();
-      if (!url.startsWith('https://')) throw new Error('bad response');
-      return url;
-    } finally {
-      clearTimeout(t);
+      return await tryUpload('https://catbox.moe/user/api.php', () => {
+        const fd = new FormData();
+        fd.append('reqtype', 'fileupload');
+        fd.append('fileToUpload', blob, filename);
+        return fd;
+      }, 25000);
+    } catch(_) {
+      return await tryUpload('https://0x0.st', () => {
+        const fd = new FormData(); fd.append('file', blob, filename); return fd;
+      }, 20000);
     }
   }
 
@@ -850,7 +885,7 @@
       URL.revokeObjectURL(_u);
 
       // Try to upload for email attachment (non-blocking)
-      setStatus('loading', '☁️ Uploading PDF…');
+      setStatus('loading', '☁️ Uploading PDF… (up to 30s)');
       let pdfUrl = null;
       try { pdfUrl = await uploadPDF(blob, filename); }
       catch(e) { /* Upload failed — email will send without attachment; PDF was downloaded locally */ }
