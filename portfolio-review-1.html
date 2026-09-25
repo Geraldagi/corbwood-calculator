@@ -645,38 +645,15 @@
 
     let blob;
     try {
-      // html2canvas is exposed as window.html2canvas from the html2pdf bundle
-      const canvas = await window.html2canvas(iDoc.body, {
-        scale: 2,
-        useCORS: false,
-        allowTaint: true,
-        logging: false,
-        width: 780,
-        height: iDoc.body.scrollHeight,
-        windowWidth: 780,
-        windowHeight: iDoc.body.scrollHeight,
-        scrollX: 0,
-        scrollY: 0
-      });
-
-      // Convert canvas to multi-page A4 PDF via jsPDF (bundled in html2pdf)
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-      const pdfW = pdf.internal.pageSize.getWidth();
-      const pdfH = pdf.internal.pageSize.getHeight();
-      const imgData = canvas.toDataURL('image/jpeg', 0.92);
-      const imgH = (canvas.height / canvas.width) * pdfW;
-      let remaining = imgH;
-      let yOffset = 0;
-
-      while (remaining > 0) {
-        pdf.addImage(imgData, 'JPEG', 0, -yOffset, pdfW, imgH, '', 'FAST');
-        remaining -= pdfH;
-        yOffset += pdfH;
-        if (remaining > 0) pdf.addPage();
-      }
-
-      blob = pdf.output('blob');
+      // html2pdf handles html2canvas + jsPDF internally — no need for globals
+      // iDoc.body is from the iframe's clean document (no CSS custom properties)
+      blob = await html2pdf().from(iDoc.body).set({
+        margin: [8, 8, 8, 8],
+        filename,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, useCORS: false, allowTaint: true, logging: false, width: 780, windowWidth: 780 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).output('blob');
     } finally {
       document.body.removeChild(iframe);
     }
