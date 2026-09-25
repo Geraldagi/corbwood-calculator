@@ -684,22 +684,6 @@
     return { blob, filename };
   }
 
-    let blob;
-    try {
-      blob = await html2pdf().from(wrapper).set({
-        margin: [8, 8, 8, 8],
-        filename,
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 2, useCORS: true, logging: false, foreignObjectRendering: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).output('blob');
-    } finally {
-      if (pageStyle) pageStyle.textContent = savedStyle;
-      document.body.removeChild(wrapper);
-    }
-
-    return { blob, filename };
-  }
 
   // ── UPLOAD PDF TO TEMP STORAGE ───────────
   async function uploadPDF(blob, filename) {
