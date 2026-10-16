@@ -131,7 +131,7 @@
 
 <div class="hero">
   <h2>Co-Invest Cashflow Projection</h2>
-  <p>Real-time cashflow modelling for 1–4 SMSF properties · LVR options · October 2026</p>
+  <p>Updated October 2026 — includes LVR options and refined ranges</p>
 </div>
 
 <div class="main">
@@ -308,10 +308,10 @@
         </div>
         <div class="field">
           <label>LVR Option</label>
-          <div style="display:flex;gap:6px;margin-bottom:12px">
-            <button class="prop-tab lvr-btn-${i} active" data-lvr="50" onclick="setLvr(${i},50)">50% LVR</button>
-            <button class="prop-tab lvr-btn-${i}" data-lvr="35" onclick="setLvr(${i},35)">35% LVR</button>
-            <button class="prop-tab lvr-btn-${i}" data-lvr="0" onclick="setLvr(${i},0)">Cash</button>
+          <div class="prop-tabs" style="margin-bottom:12px">
+            <button class="prop-tab lvr-btn lvr-btn-${i} active" data-lvr="50" onclick="setLvr(${i},50)">50% LVR</button>
+            <button class="prop-tab lvr-btn lvr-btn-${i}" data-lvr="35" onclick="setLvr(${i},35)">35% LVR</button>
+            <button class="prop-tab lvr-btn lvr-btn-${i}" data-lvr="0" onclick="setLvr(${i},0)">Cash</button>
           </div>
           <div class="computed-wrap" style="padding-top:0;border-top:none;margin-top:0">
             <div class="computed-lbl">Your Loan Amount (auto-calculated)</div>
@@ -335,7 +335,7 @@
         <div class="field">
           <label>Weekly Rent</label>
           <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="rent${i}" value="" class="currency-input" oninput="calc()"></div>
-          <div class="field-note">Enter full weekly rent — your ownership % share is calculated automatically</div>
+          <div class="field-note">Enter the full weekly rent for the property (your share is calculated from ownership %)</div>
         </div>
 
         <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
@@ -465,7 +465,7 @@
       const tab = $('ptab-' + i);
       if (tab) tab.style.display = i <= n ? '' : 'none';
     }
-    const activeTabId = document.querySelector('.prop-tab.active')?.id;
+    const activeTabId = document.querySelector('.prop-tab.active:not(.lvr-btn)')?.id;
     const activeNum = activeTabId ? parseInt(activeTabId.split('-')[1]) : 1;
     if (activeNum > n) switchPropTab(1);
     calc();
@@ -490,9 +490,6 @@
       const price    = v('price' + i);
       const rent     = v('rent' + i);
       const own      = propState[i].own;
-      const lvrPct = (propState[i].lvr || 0) / 100;
-      const loan = effectivePrice * lvrPct;
-      if ($('loanAmt' + i)) $('loanAmt' + i).textContent = loan > 0 ? fmt(loan) : '$0 (Cash)';
       const pmRate   = (v('pm_rate' + i) || 8.8) / 100;
       const rate     = (v('rate' + i) || 6.34) / 100;
 
@@ -501,6 +498,11 @@
 
       // Ownership value display
       if ($('ownVal' + i)) $('ownVal' + i).textContent = price > 0 ? fmt(effectivePrice) : '—';
+
+      // LVR-based loan calculation
+      const lvrPct = (propState[i].lvr || 0) / 100;
+      const loan = effectivePrice * lvrPct;
+      if ($('loanAmt' + i)) $('loanAmt' + i).textContent = loan > 0 ? fmt(loan) : '$0 (Cash)';
 
       // Per-property retirement projections
       const propValRet_i  = yearsToRet > 0 && effectivePrice > 0 ? Math.round(FV(0.04, yearsToRet, 0, -effectivePrice)) : effectivePrice;
@@ -514,10 +516,9 @@
       const taxDep_i  = effectivePrice * 0.003;
 
       // Cash buffer
-      const bufCouncil = v('buf_council' + i);
-      const bufWater   = v('buf_water' + i);
+      const bufRates   = v('buf_rates' + i);
       const bufIns     = v('buf_insurance' + i);
-      const bufShare   = (bufCouncil + bufWater + bufIns) * own + pmFees_i;
+      const bufShare   = (bufRates + bufIns) * own + pmFees_i;
       const bufShareDisplay = (i === 1) ? bufShare + acct : bufShare;
       if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShareDisplay);
 
