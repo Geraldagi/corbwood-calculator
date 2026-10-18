@@ -114,6 +114,12 @@
       header { padding:14px 18px; }
       .hero { padding:24px 18px; }
     }
+
+    /* ── Info tooltips ── */
+    .tip-i { position:relative; display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:50%; border:1.5px solid currentColor; font-size:9px; font-weight:900; cursor:help; margin-left:5px; vertical-align:middle; opacity:.55; line-height:1; flex-shrink:0; font-style:normal; }
+    .tip-i:hover { opacity:1; }
+    .tip-i .tt { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#25263D; color:rgba(255,255,255,.9); font-size:11px; font-weight:400; line-height:1.55; border-radius:9px; padding:10px 14px; width:240px; text-align:left; z-index:300; box-shadow:0 6px 24px rgba(0,0,0,.45); pointer-events:none; white-space:normal; font-style:normal; font-weight:400; text-transform:none; letter-spacing:0; }
+    .tip-i:hover .tt { display:block; }
   </style>
 </head>
 <body>
@@ -200,7 +206,7 @@
 
       <div class="res-divider"></div>
       <div class="res-total">
-        <span class="res-total-lbl">Est. Years Until Debt Free</span>
+        <span class="res-total-lbl">Est. Years Until Debt Free <span class="tip-i">i<span class="tt">Estimate only. Rent, wages and tax depreciation all tend to grow over time, while your loan interest decreases as debt reduces — so you're likely debt-free sooner than shown.</span></span></span>
         <span class="res-total-val" id="r-debtfree">—</span>
       </div>
 
@@ -213,19 +219,19 @@
       <div class="ret-hd">Potential Retirement Portfolio</div>
       <div class="ret-row">
         <div>
-          <div class="ret-lbl">Total Property Value at Retirement</div>
+          <div class="ret-lbl">Total Property Value at Retirement <span class="tip-i">i<span class="tt">Based on 4% p.a. compounded growth — the national average for the last 25 years is 6.8%.</span></span></div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-propval">$0</div></div>
       </div>
       <div class="ret-row">
         <div>
-          <div class="ret-lbl">Cash Balance at Retirement</div>
+          <div class="ret-lbl">Cash Balance at Retirement <span class="tip-i">i<span class="tt">After the property is paid off and you continue receiving rent and employer super contributions — with no rent or pay increases applied.</span></span></div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-cash">$0</div></div>
       </div>
       <div class="ret-row">
         <div>
-          <div class="ret-lbl">Total Rental Income at Retirement</div>
+          <div class="ret-lbl">Total Rental Income at Retirement <span class="tip-i">i<span class="tt">Based on a conservative 2.5% p.a. compounded growth.</span></span></div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-rentalret">$0</div><div class="ret-sub" style="text-align:right">per week</div></div>
       </div>
@@ -370,7 +376,7 @@
             </div>
           </div>
           <div class="computed-wrap" style="margin-top:8px;padding-top:8px;border-top:none">
-            <div class="computed-lbl">Annual Loan Interest</div>
+            <div class="computed-lbl">Annual Loan Interest <span class="tip-i">i<span class="tt">This is the maximum you'll pay — as you pay down the loan, the interest reduces each year.</span></span></div>
             <div class="computed" id="loanIntYear${i}">—</div>
           </div>
           <div class="field" style="margin-top:22px">
