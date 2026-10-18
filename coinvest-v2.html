@@ -123,10 +123,6 @@
   <p style="color:var(--mteal);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0">Co-Invest Cashflow Calculator</p>
 </header>
 
-<div class="hero">
-  <h2>Co-Invest Cashflow Projection</h2>
-  <p>Updated October 2026 — includes LVR options and refined ranges</p>
-</div>
 
 <div class="main">
   <div class="inputs-col">
@@ -218,21 +214,18 @@
       <div class="ret-row">
         <div>
           <div class="ret-lbl">Total Property Value at Retirement</div>
-          <div class="ret-sub">4% p.a. compounded across all properties</div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-propval">$0</div></div>
       </div>
       <div class="ret-row">
         <div>
           <div class="ret-lbl">Cash Balance at Retirement</div>
-          <div class="ret-sub">Rent + super after debt free (no increases assumed)</div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-cash">$0</div></div>
       </div>
       <div class="ret-row">
         <div>
           <div class="ret-lbl">Total Rental Income at Retirement</div>
-          <div class="ret-sub">2.5% p.a. compounded across all properties</div>
         </div>
         <div style="text-align:right"><div class="ret-val" id="r-rentalret">$0</div><div class="ret-sub" style="text-align:right">per week</div></div>
       </div>
@@ -387,23 +380,14 @@
           <div class="field">
             <label>Building Insurance / Body Corporate <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
             <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="buf_insurance${i}" value="2,000" class="currency-input" oninput="calc()"></div>
-            <div class="field-note">Freehold = building insurance · Strata = body corporate levy</div>
           </div>
           ${i === 1 ? `
           <div class="field">
             <label>Accounting, Admin, Auditing & Registration <span style="font-weight:400;text-transform:none;font-size:10px">(fixed — not split by ownership)</span></label>
             <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="accounting" value="3,000" class="currency-input" oninput="calc()"></div>
-            <div class="field-note">Fixed SMSF annual cost — same regardless of ownership %</div>
           </div>
           ` : ''}
           <div class="computed-wrap" style="padding-top:12px">
-            <div class="computed-lbl">Annual Cost Breakdown</div>
-            <div style="background:#F4F6F8;border-radius:9px;padding:10px 13px;margin-bottom:8px;font-size:12px">
-              <div style="display:flex;justify-content:space-between;padding:2px 0;color:var(--grey)"><span>PM fees (your share)</span><span id="pmFeesLine${i}" style="font-weight:700;color:var(--dteal)">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:2px 0;color:var(--grey)"><span>Council &amp; Water (your share)</span><span id="ratesLine${i}" style="font-weight:700;color:var(--dteal)">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:2px 0;color:var(--grey)"><span>BC / Insurance (your share)</span><span id="insLine${i}" style="font-weight:700;color:var(--dteal)">—</span></div>
-              ${i === 1 ? `<div style="display:flex;justify-content:space-between;padding:4px 0 2px;color:var(--grey);border-top:1px solid var(--border);margin-top:4px"><span>Accounting (fixed)</span><span id="acctLine" style="font-weight:700;color:var(--dteal)">—</span></div>` : ''}
-            </div>
             <div class="computed-lbl">Total Annual Holding Costs (your share)</div>
             <div class="computed" id="bufShare${i}">—</div>
           </div>
