@@ -317,12 +317,16 @@
         <div class="field">
           <label>LVR Option</label>
           <div class="prop-tabs" style="margin-bottom:12px">
-            <button class="prop-tab lvr-btn lvr-btn-${i} active" data-lvr="50" onclick="setLvr(${i},50)">50% LVR</button>
-            <button class="prop-tab lvr-btn lvr-btn-${i}" data-lvr="35" onclick="setLvr(${i},35)">35% LVR</button>
+            <button class="prop-tab lvr-btn lvr-btn-${i} active" data-lvr="50" onclick="setLvr(${i},50)">50/50</button>
+            <button class="prop-tab lvr-btn lvr-btn-${i}" data-lvr="65" onclick="setLvr(${i},65)">35/65</button>
             <button class="prop-tab lvr-btn lvr-btn-${i}" data-lvr="0" onclick="setLvr(${i},0)">Cash</button>
           </div>
           <div class="computed-wrap" style="padding-top:0;border-top:none;margin-top:0">
-            <div class="computed-lbl">Your Loan Amount (auto-calculated)</div>
+            <div class="computed-lbl">Your Super Contribution</div>
+            <div class="computed" id="superContrib${i}" style="color:var(--dteal)">—</div>
+          </div>
+          <div class="computed-wrap" style="margin-top:8px;padding-top:8px">
+            <div class="computed-lbl">Your Loan Amount</div>
             <div class="computed" id="loanAmt${i}">—</div>
           </div>
         </div>
@@ -521,7 +525,9 @@
       // LVR-based loan calculation
       const lvrPct = (propState[i].lvr || 0) / 100;
       const loan = effectivePrice * lvrPct;
-      if ($('loanAmt' + i)) $('loanAmt' + i).textContent = loan > 0 ? fmt(loan) : '$0';
+      const superContrib = effectivePrice * (1 - lvrPct);
+      if ($('loanAmt' + i)) $('loanAmt' + i).textContent = fmt(loan);
+      if ($('superContrib' + i)) $('superContrib' + i).textContent = fmt(superContrib);
 
       // Per-property retirement projections
       const propValRet_i  = yearsToRet > 0 && effectivePrice > 0 ? Math.round(FV(0.04, yearsToRet, 0, -effectivePrice)) : effectivePrice;
