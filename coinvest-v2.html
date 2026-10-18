@@ -118,15 +118,9 @@
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-icon">C</div>
-    <div class="logo-text">
-      <h1>Corbwood & Associates</h1>
-      <p>SMSF Property Specialists</p>
-    </div>
-  </div>
-  <div class="badge">Free Calculator</div>
+<header style="justify-content:center;flex-direction:column;gap:6px;text-align:center;padding:20px 40px">
+  <span style="color:#fff;font-size:22px;font-weight:900;letter-spacing:2px">CORBWOOD</span>
+  <p style="color:var(--mteal);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0">Co-Invest Cashflow Calculator</p>
 </header>
 
 <div class="hero">
@@ -244,6 +238,20 @@
       </div>
     </div>
 
+
+    <div style="background:#1e1f35;border-radius:14px;padding:18px 22px;margin-top:14px">
+      <div style="color:rgba(255,255,255,.5);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">Email yourself a copy</div>
+      <div style="display:flex;gap:8px">
+        <input type="email" id="userEmail" placeholder="your@email.com"
+          style="flex:1;padding:11px 14px;border-radius:9px;border:1.5px solid rgba(255,255,255,.1);font-family:'Lato',sans-serif;font-size:13px;background:rgba(255,255,255,.07);color:#fff;outline:none"
+          oninput="document.getElementById('sendStatus').textContent=''">
+        <button onclick="sendEmailCopy()"
+          style="padding:11px 18px;background:var(--bteal);border:none;border-radius:9px;color:#fff;font-family:'Lato',sans-serif;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;transition:opacity .2s"
+          onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Send copy</button>
+      </div>
+      <div id="sendStatus" style="font-size:11px;color:var(--mteal);margin-top:7px;min-height:16px"></div>
+    </div>
+
     <button class="cta">📞 Speak with a Corbwood Specialist</button>
   </div>
 </div>
@@ -350,6 +358,10 @@
               </div>
             </div>
           </div>
+          <div class="computed-wrap" style="margin-top:8px;padding-top:8px">
+            <div class="computed-lbl">Annual PM Fees (your share)</div>
+            <div class="computed" id="pmFeesYear${i}">—</div>
+          </div>
           <div class="field">
             <label>Interest Rate</label>
             <div class="slider-row">
@@ -381,7 +393,14 @@
           </div>
           ` : ''}
           <div class="computed-wrap" style="padding-top:12px">
-            <div class="computed-lbl">Your Share of All Annual Costs (incl. PM)</div>
+            <div class="computed-lbl">Annual Cost Breakdown</div>
+            <div style="background:#F4F6F8;border-radius:9px;padding:10px 13px;margin-bottom:8px;font-size:12px">
+              <div style="display:flex;justify-content:space-between;padding:2px 0;color:var(--grey)"><span>PM fees (your share)</span><span id="pmFeesLine${i}" style="font-weight:700;color:var(--dteal)">—</span></div>
+              <div style="display:flex;justify-content:space-between;padding:2px 0;color:var(--grey)"><span>Council &amp; Water (your share)</span><span id="ratesLine${i}" style="font-weight:700;color:var(--dteal)">—</span></div>
+              <div style="display:flex;justify-content:space-between;padding:2px 0;color:var(--grey)"><span>BC / Insurance (your share)</span><span id="insLine${i}" style="font-weight:700;color:var(--dteal)">—</span></div>
+              ${i === 1 ? `<div style="display:flex;justify-content:space-between;padding:4px 0 2px;color:var(--grey);border-top:1px solid var(--border);margin-top:4px"><span>Accounting (fixed)</span><span id="acctLine" style="font-weight:700;color:var(--dteal)">—</span></div>` : ''}
+            </div>
+            <div class="computed-lbl">Total Annual Holding Costs (your share)</div>
             <div class="computed" id="bufShare${i}">—</div>
           </div>
         </div>
@@ -502,7 +521,7 @@
       // LVR-based loan calculation
       const lvrPct = (propState[i].lvr || 0) / 100;
       const loan = effectivePrice * lvrPct;
-      if ($('loanAmt' + i)) $('loanAmt' + i).textContent = loan > 0 ? fmt(loan) : '$0 (Cash)';
+      if ($('loanAmt' + i)) $('loanAmt' + i).textContent = loan > 0 ? fmt(loan) : '$0';
 
       // Per-property retirement projections
       const propValRet_i  = yearsToRet > 0 && effectivePrice > 0 ? Math.round(FV(0.04, yearsToRet, 0, -effectivePrice)) : effectivePrice;
@@ -521,6 +540,11 @@
       const bufShare   = (bufRates + bufIns) * own + pmFees_i;
       const bufShareDisplay = (i === 1) ? bufShare + acct : bufShare;
       if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShareDisplay);
+      if ($('pmFeesYear' + i)) $('pmFeesYear' + i).textContent = fmt(pmFees_i);
+      if ($('pmFeesLine' + i)) $('pmFeesLine' + i).textContent = fmt(pmFees_i);
+      if ($('ratesLine' + i)) $('ratesLine' + i).textContent = fmt(bufRates * own);
+      if ($('insLine' + i)) $('insLine' + i).textContent = fmt(bufIns * own);
+      if (i === 1 && $('acctLine')) $('acctLine').textContent = fmt(acct);
 
       if (i <= numProps) {
         totalPrice       += effectivePrice;
@@ -612,6 +636,57 @@
   });
 
   calc();
+  function sendEmailCopy() {
+    const email = document.getElementById('userEmail')?.value?.trim();
+    const status = document.getElementById('sendStatus');
+    if (!email || !email.includes('@')) {
+      status.textContent = 'Please enter a valid email address.';
+      status.style.color = '#FF7B7B';
+      return;
+    }
+    const subject = 'My Corbwood Co-Invest Cashflow Projection';
+    const body = buildEmailSummary();
+    window.open('mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body), '_blank');
+    status.textContent = '✅ Opening your email client…';
+    status.style.color = '#5DDBA0';
+  }
+
+  function buildEmailSummary() {
+    const g = id => document.getElementById(id)?.textContent || '—';
+    return [
+      'Co-Invest Cashflow Projection',
+      new Date().toLocaleDateString('en-AU', {weekday:'long',year:'numeric',month:'long',day:'numeric'}),
+      '',
+      'ANNUAL CASHFLOW: ' + g('r-cashflow'),
+      '',
+      'INCOMINGS',
+      '  Annual Rental Income:   ' + g('r-rent'),
+      '  Employer Contributions: ' + g('r-ec'),
+      '  Salary Sacrifice:       ' + g('r-ss'),
+      '  Tax Depreciation:       ' + g('r-dep'),
+      '  Total Incomings:        ' + g('r-in'),
+      '',
+      'OUTGOINGS',
+      '  Loan Interest:          ' + g('r-interest'),
+      '  PM Fees:                ' + g('r-pm'),
+      '  Council & Water:        ' + g('r-rates'),
+      '  BC / Insurance:         ' + g('r-ins'),
+      '  Accounting:             ' + g('r-acc'),
+      '  Total Outgoings:        ' + g('r-out'),
+      '',
+      'RETIREMENT PROJECTION',
+      '  Years Until Debt Free:  ' + g('r-debtfree'),
+      '  Property Value:         ' + g('r-propval'),
+      '  Cash Balance:           ' + g('r-cash'),
+      '  Weekly Rental Income:   ' + g('r-rentalret'),
+      '',
+      '——————————',
+      'Corbwood Co-Invest Cashflow Calculator',
+      'corbwood.com.au'
+    ].join('\n');
+  }
+
+
 </script>
 </body>
 </html>
