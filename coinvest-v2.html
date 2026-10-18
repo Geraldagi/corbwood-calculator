@@ -344,7 +344,7 @@
         </div>
 
         <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
-          <div class="section-lbl">Rates & Fees</div>
+          <div class="section-lbl">Outgoings</div>
           <div class="field">
             <label>PM Rate</label>
             <div class="slider-row">
@@ -369,10 +369,10 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
-          <div class="section-lbl">Cash Buffer — Annual Holding Costs</div>
+          <div class="computed-wrap" style="margin-top:8px;padding-top:8px">
+            <div class="computed-lbl">Annual Loan Interest</div>
+            <div class="computed" id="loanIntYear${i}">—</div>
+          </div>
           <div class="field">
             <label>Council &amp; Water Rates <span style="font-weight:400;text-transform:none;font-size:10px">(full property total)</span></label>
             <div class="input-wrap"><span class="pfx">$</span><input type="text" inputmode="numeric" id="buf_rates${i}" value="2,500" class="currency-input" oninput="calc()"></div>
@@ -531,6 +531,7 @@
       const bufShareDisplay = (i === 1) ? bufShare + acct : bufShare;
       if ($('bufShare' + i)) $('bufShare' + i).textContent = fmt(bufShareDisplay);
       if ($('pmFeesYear' + i)) $('pmFeesYear' + i).textContent = fmt(pmFees_i);
+      if ($('loanIntYear' + i)) $('loanIntYear' + i).textContent = fmt(loanInt_i);
       if ($('pmFeesLine' + i)) $('pmFeesLine' + i).textContent = fmt(pmFees_i);
       if ($('ratesLine' + i)) $('ratesLine' + i).textContent = fmt(bufRates * own);
       if ($('insLine' + i)) $('insLine' + i).textContent = fmt(bufIns * own);
