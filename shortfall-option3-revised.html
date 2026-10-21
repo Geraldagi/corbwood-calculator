@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option 3 — Revised</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Lato',sans-serif;background:#111118;color:#fff;padding:32px 20px 80px;display:flex;flex-direction:column;align-items:center;}
+.label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:16px;text-align:center;}
+.card-wrap{width:100%;max-width:460px;}
+
+.card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5);}
+
+/* Red banner */
+.banner{background:#FF1111;padding:18px 32px;}
+.banner-text{font-size:10px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.8);}
+
+/* Main number */
+.main-block{padding:30px 32px 0;}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#CC2222;margin-bottom:10px;}
+.big-num{font-size:76px;font-weight:900;color:#CC0000;letter-spacing:-4px;line-height:1;}
+.statement{font-size:15px;color:#25263D;line-height:1.55;margin-top:14px;margin-bottom:28px;}
+.statement strong{color:#CC0000;}
+
+/* Red accent line */
+.accent-line{height:3px;background:#CC0000;margin:0 32px;border-radius:2px;}
+
+/* Breakdown */
+.breakdown{padding:22px 32px;}
+.brow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px;}
+.brow:last-child{margin-bottom:0;}
+.bl{font-size:13px;color:#8A9BAE;}
+.bv{font-size:16px;font-weight:900;color:#25263D;}
+.bv.pos{color:#2A8A60;}
+.bv.neg{color:#CC2222;}
+.remaining-box{background:#FFF0F0;border-left:4px solid #CC0000;padding:13px 18px;margin:6px 0 16px;border-radius:0 8px 8px 0;}
+.rem-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#CC5555;margin-bottom:4px;}
+.rem-val{font-size:22px;font-weight:900;color:#CC0000;}
+
+/* Fix section — revised narrative style */
+.fix-section{background:#25263D;border-radius:0 0 20px 20px;padding:24px 32px;}
+.fix-intro{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:10px;line-height:1.5;}
+.fix-intro strong{color:rgba(255,255,255,.7);font-weight:700;}
+.fix-amount-row{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+.fix-amount{font-size:48px;font-weight:900;color:#32B0C6;letter-spacing:-2px;line-height:1;}
+.fix-per{font-size:18px;font-weight:400;color:rgba(255,255,255,.4);}
+.fix-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;}
+.fix-desc strong{color:#32B0C6;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="label">Option 3 — Revised</div>
+<div class="card-wrap">
+  <div class="card">
+
+    <div class="banner">
+      <div class="banner-text">⚠ Retirement projection</div>
+    </div>
+
+    <div class="main-block">
+      <div class="eyebrow">Your shortfall</div>
+      <div class="big-num">−$870,000</div>
+      <div class="statement">At your current rate, you will retire <strong>$870,000 short</strong> of what you need. Here's what that looks like — and what it takes to fix it.</div>
+    </div>
+
+    <div class="accent-line"></div>
+
+    <div class="breakdown">
+      <div class="brow">
+        <span class="bl">Employer super (12% of salary)</span>
+        <span class="bv pos">+$648,000</span>
+      </div>
+      <div class="brow">
+        <span class="bl">Your contributions</span>
+        <span class="bv" style="color:#8A9BAE">$0</span>
+      </div>
+      <div class="remaining-box">
+        <div class="rem-lbl">Net shortfall after super</div>
+        <div class="rem-val">−$222,000</div>
+      </div>
+    </div>
+
+    <!-- REVISED FIX SECTION -->
+    <div class="fix-section">
+      <div class="fix-intro">With <strong>15 years</strong> remaining in the workforce, you would need to save:</div>
+      <div class="fix-amount-row">
+        <span class="fix-amount">$620</span>
+        <span class="fix-per">per week</span>
+      </div>
+      <div class="fix-desc">for the next <strong>15 years</strong> to make up your total shortfall of <strong>$222,000</strong></div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
