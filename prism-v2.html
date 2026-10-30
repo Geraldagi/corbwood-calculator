@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM v2 — Corbwood Client Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #25263D; --navy2: #2e2f4d; --dteal: #2A5B62;
+  --mteal: #4C9A9F; --lteal: #40B8BC; --bteal: #32B0C6;
+  --grey: #5D5D5D; --bg: #F4F6F8; --white: #fff;
+  --border: #E2E8ED; --text: #1A1A2E; --muted: #8A9BAE;
+}
+body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* ── Page header ── */
+.page-header { background: var(--navy); padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 900; box-shadow: 0 2px 20px rgba(0,0,0,.3); }
+.page-logo { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: .5px; }
+.page-logo span { color: var(--bteal); }
+.page-controls { display: flex; gap: 8px; align-items: center; }
+
+/* ── Path tabs ── */
+.path-tabs { display: flex; gap: 6px; background: rgba(255,255,255,.08); border-radius: 10px; padding: 4px; }
+.path-tab { padding: 7px 14px; border-radius: 7px; border: none; font-family: 'Lato', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; color: rgba(255,255,255,.5); background: transparent; transition: all .15s; }
+.path-tab.active { background: var(--bteal); color: #fff; }
+
+/* ── Mode toggle ── */
+.mode-toggle { display: flex; gap: 4px; }
+.mode-btn { padding: 7px 12px; border-radius: 7px; border: 1.5px solid rgba(255,255,255,.15); font-family: 'Lato', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; color: rgba(255,255,255,.5); background: transparent; transition: all .15s; }
+.mode-btn.active { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.3); }
+
+/* ── Layout ── */
+.main-wrap { max-width: 1280px; margin: 0 auto; padding: 28px 20px 60px; }
+.screens { display: flex; flex-wrap: wrap; gap: 20px; padding: 0 0 8px; }
+
+/* ── Stage header ── */
+.stage-header { padding: 28px 0 10px; }
+.stage-label-big { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #8A9BAE; }
+
+/* ── Screen group ── */
+.group { display: flex; flex-direction: column; align-items: center; }
+.stage { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.title { font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center; max-width: 160px; }
+
+/* ── Phone mockup ── */
+.phone { width: 220px; height: 440px; background: var(--white); border-radius: 36px; box-shadow: 0 0 0 6px var(--navy), 0 20px 60px rgba(0,0,0,.3); overflow: hidden; position: relative; flex-shrink: 0; }
+.sc { display: flex; flex-direction: column; height: 100%; position: relative; }
+.sb { height: 28px; padding: 0 14px; display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; }
+.sbt { font-size: 10px; font-weight: 700; }
+.nb { height: 40px; display: flex; align-items: center; padding: 0 14px; justify-content: space-between; flex-shrink: 0; border-bottom: 1px solid var(--border); }
+.logo { font-size: 14px; font-weight: 900; color: var(--navy); letter-spacing: .5px; }
+.ct { flex: 1; overflow-y: auto; padding: 14px 14px 0; display: flex; flex-direction: column; position: relative; scrollbar-width: none; }
+.ct::-webkit-scrollbar { display: none; }
+
+/* ── Phone elements ── */
+.ico { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--bteal), var(--dteal)); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 10px; flex-shrink: 0; }
+h2 { font-size: 21px; font-weight: 900; line-height: 1.2; color: var(--navy); margin-bottom: 6px; letter-spacing: -.3px; }
+.sub { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+.card { background: #F4F6F8; border-radius: 11px; padding: 10px 12px; margin-bottom: 6px; flex-shrink: 0; }
+.cl { font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 3px; }
+.cv { font-size: 13px; font-weight: 700; color: var(--text); }
+.pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; }
+.pa { background: rgba(50,176,198,.12); color: var(--dteal); }
+.pt { background: rgba(245,166,35,.12); color: #9A6000; }
+.pg { background: rgba(93,219,160,.15); color: #1a6a3a; }
+.btn { border: none; border-radius: 13px; padding: 12px; width: 100%; font-family: 'Lato', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; margin-bottom: 6px; flex-shrink: 0; }
+.bp { background: var(--navy); color: #fff; }
+.bs { background: var(--bg); color: var(--grey); border: 1.5px solid var(--border); }
+.sp { flex: 1; min-height: 8px; }
+.bd { height: 16px; flex-shrink: 0; }
+.sr { display: flex; gap: 8px; margin-bottom: 8px; }
+.st { flex: 1; background: #F4F6F8; border-radius: 10px; padding: 10px 8px; text-align: center; }
+.sv { font-size: 16px; font-weight: 900; color: var(--navy); }
+.sl { font-size: 9px; color: var(--muted); margin-top: 2px; }
+.mil { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #F0F2F4; }
+.mi { font-size: 14px; flex-shrink: 0; }
+.mn { flex: 1; font-size: 11px; color: var(--grey); }
+.ms { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; flex-shrink: 0; }
+.ms-d { background: rgba(93,219,160,.15); color: #1a6a3a; }
+.ms-a { background: rgba(50,176,198,.1); color: var(--dteal); }
+.ms-l { background: #F0F2F4; color: #C0C8D4; }
+.act .mn { color: var(--dteal); font-weight: 700; }
+.dn .mn { color: #8A9BAE; }
+.lk .mn { color: #C0C8D4; }
+.step { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; }
+.step-num { width: 20px; height: 20px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.step-text { font-size: 11px; color: var(--grey); line-height: 1.4; }
+.vc { display: flex; align-items: center; gap: 10px; background: #F4F6F8; border-radius: 11px; padding: 10px; margin-bottom: 6px; }
+.vt { width: 50px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.vp { color: rgba(255,255,255,.9); font-size: 14px; }
+.vi { flex: 1; }
+.vn { font-size: 11px; font-weight: 700; color: var(--navy); }
+.vd { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.vb { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-top: 4px; display: inline-block; }
+.vb-d { background: rgba(93,219,160,.15); color: #1a6a3a; }
+.vb-r { background: rgba(255,123,123,.12); color: #cc2222; }
+
+/* ── Intro card ── */
+.intro-group .phone { background: transparent; box-shadow: 0 0 0 6px #32B0C6, 0 20px 60px rgba(0,0,0,.35); }
+.intro-group .phone .sc { overflow: hidden; }
+
+/* ── Bird mascot ── */
+.bird-wrap { position: absolute; bottom: 14px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; z-index: 100; }
+.bird-wrap.expanded { bottom: 10px; right: 8px; }
+.bird-bubble { background: #fff; border: 1.5px solid var(--border); border-radius: 11px 11px 2px 11px; padding: 6px 9px; font-size: 9.5px; font-weight: 600; color: var(--dteal); max-width: 140px; line-height: 1.4; box-shadow: 0 2px 10px rgba(0,0,0,.1); }
+.bird-icon { position: relative; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.95); border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,.18); }
+.bird-icon svg { width: 30px; height: 30px; animation: bird-bob 3s ease-in-out infinite; }
+@keyframes bird-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+.bird-icon:hover { box-shadow: 0 3px 16px rgba(50,176,198,.4); }
+.bird-menu { display: none; position: absolute; bottom: calc(100% + 6px); right: 0; background: #25263D; border-radius: 12px; padding: 6px; min-width: 130px; box-shadow: 0 6px 24px rgba(0,0,0,.35); z-index: 200; }
+.bird-menu.open { display: block; }
+.bm-item { padding: 8px 12px; font-size: 11px; font-weight: 700; color: #fff; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.bm-item:hover { background: rgba(50,176,198,.2); color: #32B0C6; }
+
+/* ── Prototype mode ── */
+.proto-overlay { display: none; position: fixed; inset: 0; background: #0a0b12; z-index: 1000; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+body.proto-mode .proto-overlay { display: flex; }
+body.proto-mode .main-wrap { display: none; }
+.proto-phone-wrap { display: flex; align-items: center; gap: 32px; }
+.proto-arrow { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15); color: rgba(255,255,255,.7); font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; user-select: none; }
+.proto-arrow:hover { background: rgba(50,176,198,.2); border-color: var(--bteal); color: var(--bteal); }
+.proto-arrow.disabled { opacity: .25; cursor: default; }
+.proto-phone { }
+.proto-meta { text-align: center; }
+.proto-counter { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: 1px; }
+.proto-title { font-size: 12px; color: rgba(255,255,255,.35); margin-top: 4px; }
+.proto-exit { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15); color: rgba(255,255,255,.6); font-size: 12px; font-weight: 700; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+.proto-path-note { font-size: 11px; font-weight: 700; color: var(--bteal); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-logo">PRISM <span>v2</span></div>
+  <div class="page-controls">
+    <div class="path-tabs">
+      <button class="path-tab active" onclick="showPath(1)">🏛 New SMSF</button>
+      <button class="path-tab" onclick="showPath(2)">🔗 Existing SMSF</button>
+    </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" onclick="void 0" id="scrollBtn">Scroll</button>
+      <button class="mode-btn" onclick="enterProto()" id="protoBtn">▶ Present</button>
+    </div>
+  </div>
+</div>
+
+<!-- Prototype mode overlay -->
+<div class="proto-overlay" id="protoOverlay">
+  <button class="proto-exit" onclick="exitProto()">✕ Exit</button>
+  <div class="proto-path-note" id="protoPathNote">Path 1 — New SMSF</div>
+  <div class="proto-phone-wrap">
+    <div class="proto-arrow" id="protoLeft" onclick="protoNav(-1)">‹</div>
+    <div id="protoPhoneWrap"></div>
+    <div class="proto-arrow" id="protoRight" onclick="protoNav(1)">›</div>
+  </div>
+  <div class="proto-meta">
+    <div class="proto-counter" id="protoCounter">1 / 0</div>
+    <div class="proto-title" id="protoTitle"></div>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+<div class="stage-header"><div class="stage-label-big">Stage 1 — Discovery</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 1 · Discovery</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:52px;margin-bottom:12px">✨</div>
+  <h2>Welcome to<br>PRISM.</h2>
+  <p class="sub">Your path to financial freedom<br>through SMSF property investment.</p>
+  <div class="sp"></div>
+  <button class="btn bp">Let's get started →</button>
+  <button class="btn bs">Learn more first</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Hey! I'm here every step of the way. Tap me if you ever need to call, book or just ask something.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm1">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">1. Welcome</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 1 · Discovery</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct">
+  <div class="ico">👤</div>
+  <h2>Let's set up<br>your account.</h2>
+  <p class="sub">Quick — takes about 2 minutes.</p>
+  <div class="card"><div class="cl">Full name</div><div class="cv">Sarah Mitchell</div></div>
+  <div class="card"><div class="cl">Email</div><div class="cv">sarah@email.com</div></div>
+  <div class="card"><div class="cl">Mobile</div><div class="cv">+61 412 345 678</div></div>
+  <div class="card"><div class="cl">Password</div><div class="cv">••••••••••</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Create my account →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">All your details are stored securely. We never share your information.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm2">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">2. Account Setup</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 1 · Discovery</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct">
+  <div class="ico">🔍</div>
+  <h2>Tell us about<br>your situation.</h2>
+  <p class="sub">A few quick questions so we can find<br>the right strategy for you.</p>
+  <div style="background:rgba(50,176,198,.08);border-radius:12px;padding:14px;border:1px solid rgba(50,176,198,.2);margin-top:8px">
+    <div style="font-size:12px;font-weight:700;color:#2A5B62;margin-bottom:6px">You'll need:</div>
+    <div style="font-size:11px;color:#5D5D5D;line-height:1.7">✓ Your approximate annual income<br>✓ Your current super balance<br>✓ Your age and retirement goals</div>
+  </div>
+  <div class="sp"></div>
+  <button class="btn bp">Start the fact find →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">This helps us personalise everything. It stays between you and your Corbwood adviser.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm3">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">3. Fact Find — Intro</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 1 · Discovery</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Step 1 of 3</div></div><div class="ct" style="padding-top:16px">
+  <h2 style="font-size:20px;margin-bottom:16px">Your finances.</h2>
+  <div class="card"><div class="cl">Annual income (combined)</div><div class="cv">$140,000</div></div>
+  <div class="card"><div class="cl">Current super balance</div><div class="cv">$180,000</div></div>
+  <div class="card"><div class="cl">Current age</div><div class="cv">38</div></div>
+  <div class="card"><div class="cl">Target retirement age</div><div class="cv">65</div></div>
+  <div class="card"><div class="cl">Existing property?</div><div class="cv">Owner-occupier, no investment</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Next →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">No judgment here — just honest numbers so we can give you honest advice.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm4">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">4. Fact Find — Details</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 1 · Discovery</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Upload required</div></div><div class="ct">
+  <div class="ico">📎</div>
+  <h2>We need a couple<br>of documents.</h2>
+  <p class="sub">Secure upload — bank-level encryption.</p>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Photo ID (licence or passport)</div><div class="ms ms-d">Uploaded</div></div>
+  <div class="mil act"><div class="mi">📄</div><div class="mn">Latest super statement</div><div class="ms ms-a">Required</div></div>
+  <div class="mil lk"><div class="mi">🔒</div><div class="mn">Payslip (last 3 months)</div><div class="ms ms-l">Next</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Upload super statement →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Uploading from your phone is fine — just tap the document and select your file.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm5">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">5. Document Upload</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 1 · Discovery</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Review & confirm</div></div><div class="ct" style="padding-top:14px">
+  <p style="font-size:11px;color:#8A9BAE;margin-bottom:6px">Your submission summary</p>
+  <h2 style="font-size:19px;margin-bottom:14px">Looks good?</h2>
+  <div class="sr" style="margin-top:0"><div class="st"><div class="sv" style="color:#32B0C6;font-size:18px">$140K</div><div class="sl">Combined income</div></div><div class="st"><div class="sv" style="font-size:18px">$180K</div><div class="sl">Super balance</div></div></div>
+  <div class="card"><div class="cl">Strategy fit</div><div class="cv">SMSF property via Co-Invest</div></div>
+  <div class="card"><div class="cl">Est. max purchase</div><div class="cv" style="color:#32B0C6">~$620,000</div></div>
+  <div style="font-size:11px;color:#8A9BAE;line-height:1.5;margin-top:8px">A Corbwood consultant will review this and be in touch within 1 business day.</div>
+  <div class="sp"></div>
+  <button class="btn bp">Submit for review →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Once you submit, we review within 1 business day and confirm if you're a strong fit.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm6">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">6. Review & Confirm</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 1 · Discovery</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pt">Under review</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:32px">
+  <div style="font-size:48px;margin-bottom:14px">⏳</div>
+  <h2 style="text-align:center">We're reviewing<br>your details.</h2>
+  <p class="sub" style="text-align:center">Usually takes less than a day.<br>We'll notify you as soon as we're done.</p>
+  <div style="background:#fff;border-radius:13px;padding:14px;border:1px solid #E2E8ED;margin-top:16px;display:flex;align-items:center;gap:12px">
+    <div style="font-size:22px">👤</div>
+    <div><div style="font-size:12px;font-weight:700;color:#25263D">Tom Neilsen</div><div style="font-size:11px;color:#8A9BAE">Your Corbwood adviser</div></div>
+  </div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Sit tight! Most reviews are done same-day. I'll let you know the moment something happens.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm7">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">7. BC Under Review</div>
+</div>
+</div>
+
+<div class="group intro-group" data-path="1">
+  <div class="stage">Intro</div>
+  <div class="phone"><div class="sc" style="background:linear-gradient(160deg,#25263D,#2A5B62,#32B0C6)">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center">
+      <div style="font-size:72px;margin-bottom:6px">🐦</div>
+      <div style="color:#32B0C6;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">SMSF Application</div>
+      <h2 style="color:#fff;font-size:22px;font-weight:900;line-height:1.2;margin-bottom:12px;letter-spacing:-.3px">Let's set up your SMSF.</h2>
+      <p style="color:rgba(255,255,255,.6);font-size:13px;line-height:1.6">Now that you're approved, we'll set up your Self-Managed Super Fund. Capri handles the heavy lifting — you just confirm the details.</p>
+    </div>
+    <div class="bird-wrap" style="bottom:20px;right:16px">
+      <div class="bird-bubble" style="background:rgba(37,38,61,.8);color:#fff;border-color:rgba(50,176,198,.4)">We've done this thousands of times. Smooth, fast, and I'll explain every step.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm_intro_1_SMS">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">↳ Stage intro: SMSF Application</div>
+</div>
+<div class="stage-header"><div class="stage-label-big">Stage 2 — SMSF Application</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 2 · SMSF App</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="padding-top:16px">
+  <div class="sr" style="margin-top:0"><div class="st"><div class="sv" style="color:#32B0C6;font-size:20px">$620K</div><div class="sl">Max purchase</div></div><div class="st"><div class="sv" style="font-size:20px">$402K</div><div class="sl">Loan amount</div></div></div>
+  <div class="card"><div class="cl">Next step</div><div class="cv">Set up your SMSF with Capri</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Set up my SMSF →</button>
+  <button class="btn bs">I already have an SMSF</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Welcome to the next stage! Two paths from here — setting up fresh or connecting your existing SMSF.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm8">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">8. BC Confirmed 🎉</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 2 · SMSF App</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Pre-filled from your Fact Find</div></div><div class="ct">
+  <div class="ico" style="background:linear-gradient(135deg,#25263D,#4C9A9F)">🏛</div>
+  <h2>Set up your<br>SMSF.</h2>
+  <p class="sub">We've pre-filled everything. Just review and confirm.</p>
+  <div class="card"><div class="cl">Proposed SMSF name</div><div class="cv">Mitchell Super Fund<div style="font-size:10px;color:#8A9BAE;margin-top:2px">Tap to edit</div></div></div>
+  <div class="card"><div class="cl">Trustee type</div><div class="cv">Corporate trustee (recommended)</div></div>
+  <div class="card"><div class="cl">Member(s)</div><div class="cv">Sarah Mitchell</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Confirm details →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Corporate trustee is the Corbwood standard — it protects you and makes property ownership much cleaner.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm9">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">9. SMSF Details</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 2 · SMSF App</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct">
+  <div class="ico">🏢</div>
+  <h2>Why a corporate<br>trustee?</h2>
+  <p class="sub">Here's why it's the right choice<br>for property investors.</p>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Property is held in the company name — far cleaner legally</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">No change of trustee needed if members change in future</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">Better asset protection than individual trustees</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Capri manages this for you — one less thing to worry about</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Makes sense — proceed →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Trust me on this one — almost everyone who's done it the other way wishes they'd done a corporate trustee from the start.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm10">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">10. Corporate Trustee — Why?</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 2 · SMSF App</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Identity required</div></div><div class="ct">
+  <div class="ico">🪪</div>
+  <h2>Verify your<br>identity.</h2>
+  <p class="sub">Required by law for all SMSF trustees.<br>Takes about 2 minutes.</p>
+  <div class="card"><div class="cl">Option 1</div><div class="cv">Australian driver's licence</div></div>
+  <div class="card"><div class="cl">Option 2</div><div class="cv">Passport</div></div>
+  <div style="font-size:11px;color:#8A9BAE;line-height:1.5;margin-top:6px">Your ID is verified by our secure partner and never stored on our servers.</div>
+  <div class="sp"></div>
+  <button class="btn bp">Verify with licence →</button>
+  <button class="btn bs">Use passport instead</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Quick and secure — this is a legal requirement, same as opening a bank account.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm11">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">11. ID Verification</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 2 · SMSF App</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Required viewing</div></div><div class="ct">
+  <div class="pill pa" style="margin-bottom:12px">Required viewing</div>
+  <h2>Before you<br>continue.</h2>
+  <p class="sub">Watch both videos. Required before<br>your SMSF can be created.</p>
+  <div class="vc"><div class="vt" style="background:linear-gradient(135deg,#2A5B62,#40B8BC)"><div class="vp">▶</div></div><div class="vi"><div class="vn">SMSF Compliance Overview</div><div class="vd">4:32 · Investure</div><span class="vb vb-d">✓ Watched</span></div></div>
+  <div class="vc"><div class="vt" style="background:linear-gradient(135deg,#25263D,#4C9A9F)"><div class="vp">▶</div></div><div class="vi"><div class="vn">Your SMSF Obligations</div><div class="vd">3:18 · Capri</div><span class="vb vb-r">⚠ Required</span></div></div>
+  <div class="sp"></div>
+  <button class="btn" style="background:#E2E8ED;color:#8A9BAE;border-radius:14px;padding:14px;width:100%;font-size:13px;font-weight:700;border:none">Continue — 1 video remaining</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">I know, I know — but these are actually useful. The obligations video is only 3 minutes.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm12">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">12. Compliance Videos</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 2 · SMSF App</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pt">In progress</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:48px;margin-bottom:14px">📬</div>
+  <h2 style="text-align:center">Application<br>submitted!</h2>
+  <p class="sub" style="text-align:center">Capri has your details and will start<br>setting up your SMSF within 24 hours.</p>
+  <div class="mil dn" style="width:100%;text-align:left;margin-top:16px"><div class="mi">✅</div><div class="mn">Application submitted</div><div class="ms ms-d">Done</div></div>
+  <div class="mil act" style="width:100%;text-align:left"><div class="mi">⏳</div><div class="mn">SMSF establishment</div><div class="ms ms-a">3–5 business days</div></div>
+  <div class="mil lk" style="width:100%;text-align:left"><div class="mi">🔒</div><div class="mn">Property selection</div><div class="ms ms-l">Coming soon</div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">You're officially in the process. Capri will be in touch within 24 hours to confirm everything's underway.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm13">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">13. Application Submitted</div>
+</div>
+</div>
+
+<div class="stage-header"><div class="stage-label-big">Stage 3 — SMSF Approval</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 3 · Approval</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Sign required</div></div><div class="ct">
+  <div class="ico">📝</div>
+  <h2>Sign your Third<br>Party Authority.</h2>
+  <p class="sub">Authorises Capri to manage your<br>SMSF admin on your behalf.</p>
+  <div class="card"><div class="cl">Document</div><div class="cv">Third Party Authority (3PA)</div></div>
+  <div class="card"><div class="cl">Authorising</div><div class="cv">Capri Wealth Management</div></div>
+  <div class="card"><div class="cl">Covers</div><div class="cv">SMSF administration & annual compliance</div></div>
+  <div style="font-size:11px;color:#8A9BAE;line-height:1.5;margin-top:6px">This does not give Capri investment authority. You retain all investment decisions.</div>
+  <div class="sp"></div>
+  <button class="btn bp">Sign document →</button>
+  <button class="btn bs">Read full document first</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">This lets Capri handle the paperwork on your behalf. You stay in control of all investment decisions.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm14">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">14. Sign 3PA</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 3 · Approval</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Signed</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:36px">
+  <div style="font-size:48px;margin-bottom:14px">✅</div>
+  <h2 style="text-align:center">3PA signed.</h2>
+  <p class="sub" style="text-align:center">Capri is now authorised to act<br>on your behalf. Next: Director ID.</p>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Done! One of the bigger steps is ticked off. Director ID is next — let's keep the momentum going.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm15">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">15. 3PA Signed</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 3 · Approval</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Your action needed</div></div><div class="ct">
+  <div class="ico" style="background:#25263D">🔑</div>
+  <h2>Apply for your<br>Director ID.</h2>
+  <p class="sub">Required by Australian law for all<br>company directors. Takes 5 minutes.</p>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Go to the ATO website (button below)</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Log in with your myGovID</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">Verify your identity (licence or passport)</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Your DIN is issued immediately</div></div>
+  <div class="step"><div class="step-num">5</div><div class="step-text">Come back and tap "Done"</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Go to ATO website →</button>
+  <button class="btn bs">✅ I've applied — mark as done</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">It's genuinely quick — myGovID on your phone makes this a 5-minute job. I'll wait right here.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm16">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">16. DIN Application</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 3 · Approval</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Confirmed</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:36px">
+  <div style="font-size:48px;margin-bottom:14px">🔑</div>
+  <h2 style="text-align:center">Director ID<br>confirmed.</h2>
+  <p class="sub" style="text-align:center">Your DIN has been recorded.<br>Capri can now lodge everything.</p>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">DIN sorted. You're officially a company director. Capri now has everything they need to finish your SMSF setup.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm17">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">17. DIN Confirmed</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 3 · Approval</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Sign required</div></div><div class="ct">
+  <div class="ico" style="background:linear-gradient(135deg,#4C9A9F,#32B0C6)">📜</div>
+  <h2>Sign your LOE<br>with Crescent.</h2>
+  <p class="sub">Appoints Crescent as your SMSF<br>accountant to apply for ABN & TFN.</p>
+  <div class="card"><div class="cl">Document</div><div class="cv">Letter of Engagement</div></div>
+  <div class="card"><div class="cl">Party</div><div class="cv">Crescent Accounting</div></div>
+  <div class="card"><div class="cl">Purpose</div><div class="cv">SMSF ABN/TFN application</div></div>
+  <div style="font-size:11px;color:#8A9BAE;line-height:1.5;margin-top:4px">Once signed, Crescent applies for your SMSF's ABN and TFN within 24–48 hours.</div>
+  <div class="sp"></div>
+  <button class="btn bp">Sign LOE →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Last signing for now! Crescent are great — they handle all your SMSF accounting from here on in.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm18">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">18. Sign LOE — Crescent</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 3 · Approval</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pt">In progress</div></div><div class="ct" style="padding-top:16px">
+  <p style="font-size:11px;color:#8A9BAE;margin-bottom:4px">Capri & Crescent working in parallel</p>
+  <h2 style="font-size:20px;margin-bottom:14px">Under way.</h2>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Third Party Authority</div><div class="ms ms-d">Signed</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Director ID (DIN)</div><div class="ms ms-d">Confirmed</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Letter of Engagement</div><div class="ms ms-d">Signed</div></div>
+  <div class="mil act"><div class="mi">🔍</div><div class="mn">Capri reviewing documents</div><div class="ms ms-a">In progress</div></div>
+  <div class="mil act"><div class="mi">🏢</div><div class="mn">Crescent: ABN/TFN application</div><div class="ms ms-a">24–48 hrs</div></div>
+  <div class="mil lk"><div class="mi">🏛</div><div class="mn">SMSF established</div><div class="ms ms-l">Almost there</div></div>
+  <div style="background:#fff;border-radius:13px;padding:12px;border:1px solid #E2E8ED;margin-top:10px;display:flex;align-items:center;gap:10px">
+    <div style="font-size:18px">💬</div>
+    <div><div style="font-size:11px;font-weight:700;color:#25263D">Questions about this step?</div><div style="font-size:10px;color:#8A9BAE">Message Corbwood directly</div></div>
+  </div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Two things happening in parallel — shouldn't take long. Typical turnaround is 2–3 business days.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm19">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">19. Under Way — Review & ABN/TFN</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 3 · Approval</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#25263D"><span class="sbt" style="color:#fff">9:41</span></div><div style="background:linear-gradient(160deg,#25263D,#2A5B62,#32B0C6);padding:20px 20px 26px;flex-shrink:0;text-align:center"><div style="color:#32B0C6;font-size:16px;font-weight:900;text-align:left;margin-bottom:16px">PRISM</div><div style="font-size:44px;margin-bottom:8px">🏛</div><div style="color:#fff;font-size:22px;font-weight:800;line-height:1.2;letter-spacing:-.4px;margin-bottom:6px">Your SMSF<br>is established!</div><div style="color:rgba(255,255,255,.6);font-size:12px;line-height:1.5">You're officially a self-managed<br>super fund trustee.</div></div><div class="ct" style="padding-top:14px"><div class="card"><div class="cl">SMSF name</div><div class="cv">Mitchell Super Fund</div></div><div class="card"><div class="cl">ABN</div><div class="cv">12 345 678 901</div></div><div class="card"><div class="cl">Established</div><div class="cv">8 October 2026</div></div><div class="sp"></div><button class="btn bp">Choose your property →</button><div class="bd"></div></div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">THIS IS THE MOMENT. Your SMSF exists. Now let's go find you a property.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm20">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">20. SMSF Established 🎉</div>
+</div>
+</div>
+
+<div class="group intro-group" data-path="1">
+  <div class="stage">Intro</div>
+  <div class="phone"><div class="sc" style="background:linear-gradient(160deg,#25263D,#2A5B62,#32B0C6)">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center">
+      <div style="font-size:72px;margin-bottom:6px">🐦</div>
+      <div style="color:#32B0C6;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Property Selection</div>
+      <h2 style="color:#fff;font-size:22px;font-weight:900;line-height:1.2;margin-bottom:12px;letter-spacing:-.3px">Time to choose your property.</h2>
+      <p style="color:rgba(255,255,255,.6);font-size:13px;line-height:1.6">We've curated options based on your situation. Browse, compare, and when you're ready — select. There's no rush and no pressure.</p>
+    </div>
+    <div class="bird-wrap" style="bottom:20px;right:16px">
+      <div class="bird-bubble" style="background:rgba(37,38,61,.8);color:#fff;border-color:rgba(50,176,198,.4)">This is the exciting part. Your SMSF is ready — now let's put it to work.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm_intro_1_Pro">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">↳ Stage intro: Property Selection</div>
+</div>
+<div class="stage-header"><div class="stage-label-big">Stage 4 — Property Selection</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 4 · Property</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="padding-top:12px">
+  <h2 style="font-size:18px;margin-bottom:4px">Choose your<br>property.</h2>
+  <p class="sub" style="margin-bottom:12px">3 options curated for your situation.</p>
+  <button class="btn" style="background:rgba(50,176,198,.12);color:#2A5B62;border:1px solid rgba(50,176,198,.3);border-radius:11px;padding:10px 14px;width:100%;font-size:11px;font-weight:700;margin-bottom:12px;text-align:left">📅 Want to talk it through first? Book a time →</button>
+  <div class="card" style="padding:10px 13px"><div style="font-size:10px;font-weight:700;color:#8A9BAE;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Option 1 · QLD</div><div style="font-size:13px;font-weight:700;color:#25263D">14 Sunrise Cres, Coomera</div><div style="display:flex;gap:12px;margin-top:6px"><span style="font-size:11px;color:#32B0C6;font-weight:700">$589,000</span><span style="font-size:11px;color:#8A9BAE">5.1% yield · 98% occupancy</span></div></div>
+  <div class="card" style="padding:10px 13px"><div style="font-size:10px;font-weight:700;color:#8A9BAE;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Option 2 · QLD</div><div style="font-size:13px;font-weight:700;color:#25263D">7/22 Parklands Dr, Helensvale</div><div style="display:flex;gap:12px;margin-top:6px"><span style="font-size:11px;color:#32B0C6;font-weight:700">$612,000</span><span style="font-size:11px;color:#8A9BAE">4.9% yield · 99% occupancy</span></div></div>
+  <div class="card" style="padding:10px 13px"><div style="font-size:10px;font-weight:700;color:#8A9BAE;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Option 3 · VIC</div><div style="font-size:13px;font-weight:700;color:#25263D">3 Bayside Blvd, Altona</div><div style="display:flex;gap:12px;margin-top:6px"><span style="font-size:11px;color:#32B0C6;font-weight:700">$598,000</span><span style="font-size:11px;color:#8A9BAE">5.3% yield · 97% occupancy</span></div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">These three are curated specifically for your income, super balance and investment goals. Take your time.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm21">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">21. Property Browser</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 4 · Property</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="padding-top:0">
+  <div style="background:linear-gradient(135deg,#2A5B62,#25263D);border-radius:14px;padding:20px;margin-bottom:12px;text-align:center">
+    <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">14 Sunrise Crescent</div>
+    <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:2px">Coomera, QLD 4209</div>
+    <div style="font-size:24px;font-weight:900;color:#32B0C6">$589,000</div>
+  </div>
+  <div class="sr" style="margin-top:0"><div class="st"><div class="sv">4</div><div class="sl">Bedrooms</div></div><div class="st"><div class="sv">2</div><div class="sl">Bathrooms</div></div><div class="st"><div class="sv">2</div><div class="sl">Garage</div></div></div>
+  <div class="card"><div class="cl">Estimated rent</div><div class="cv">$580/week · 5.1% yield</div></div>
+  <div class="card"><div class="cl">Occupancy history</div><div class="cv">98% over 3 years</div></div>
+  <div class="card"><div class="cl">Rental guarantee</div><div class="cv">4.2% minimum — Corbwood backed</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Select this property →</button>
+  <button class="btn bs">💾 Save for later</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Coomera is one of our highest performers. Consistent occupancy and a Corbwood rental guarantee means predictable income.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm22">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">22. Property Detail</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 4 · Property</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Your numbers</div></div><div class="ct" style="padding-top:14px">
+  <h2 style="font-size:18px;margin-bottom:4px">What does this<br>cost you?</h2>
+  <p class="sub" style="margin-bottom:12px">Based on your Co-Invest structure (50/50 LVR)</p>
+  <div class="sr"><div class="st"><div class="sv" style="color:#32B0C6">$147K</div><div class="sl">Your super contribution</div></div><div class="st"><div class="sv">$147K</div><div class="sl">Your loan</div></div></div>
+  <div class="card"><div class="cl">Your weekly loan repayment</div><div class="cv" style="color:#FF7B7B">−$176/week</div></div>
+  <div class="card"><div class="cl">Your weekly rental income</div><div class="cv" style="color:#5DDBA0">+$290/week</div></div>
+  <div class="card"><div class="cl">Weekly cashflow (net)</div><div class="cv" style="color:#32B0C6;font-weight:900">+$114/week</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Select this property →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Positive cashflow from week one. Your super fund is generating income, not just sitting there.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm23">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">23. Financial Breakdown</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 4 · Property</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct">
+  <div class="ico">🤝</div>
+  <h2>Your Co-Invest<br>structure.</h2>
+  <p class="sub">Corbwood co-invests alongside you.<br>Here's how it's split.</p>
+  <div style="background:#F4F6F8;border-radius:14px;padding:16px;margin-top:8px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:12px;font-weight:700;color:#25263D">Your SMSF (50%)</span><span style="font-size:14px;font-weight:900;color:#32B0C6">$294,500</span></div>
+    <div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:700;color:#8A9BAE">Corbwood (50%)</span><span style="font-size:14px;font-weight:700;color:#8A9BAE">$294,500</span></div>
+    <div style="height:1px;background:#E2E8ED;margin:12px 0"></div>
+    <div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:700;color:#25263D">Total property value</span><span style="font-size:14px;font-weight:900;color:#25263D">$589,000</span></div>
+  </div>
+  <div class="card"><div class="cl">LVR options</div><div class="cv">50/50 · 35/65 · Cash</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Confirm — I understand →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Corbwood co-invests so you can get into the market sooner with less capital. Shared ownership, shared growth.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm24">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">24. Co-Invest Structure</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 4 · Property</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Reserved</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:48px;margin-bottom:14px">🏠</div>
+  <h2 style="text-align:center">Property<br>reserved!</h2>
+  <p class="sub" style="text-align:center">14 Sunrise Crescent, Coomera QLD is held<br>while we prepare your contracts.</p>
+  <div class="card" style="width:100%;text-align:left;margin-top:12px"><div class="cl">Next step</div><div class="cv">Contracts being prepared (1–3 days)</div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Excellent choice! Your property is reserved. Contracts will be ready within a few days.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm25">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">25. Selection Confirmed</div>
+</div>
+</div>
+
+<div class="stage-header"><div class="stage-label-big">Stage 5 — Contracts</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 5 · Contracts</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pt">In preparation</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:32px">
+  <div style="font-size:48px;margin-bottom:14px">📄</div>
+  <h2 style="text-align:center">Preparing your<br>contracts.</h2>
+  <p class="sub" style="text-align:center">Our legal team is generating your<br>purchase documents. Usually 1–3 days.</p>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Sit tight — the legal team is doing their thing. You'll get a notification the moment they're ready to sign.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm26">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">26. Contracts Being Prepared</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 5 · Contracts</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Sign required</div></div><div class="ct">
+  <div class="ico">📋</div>
+  <h2>Sign the Seller<br>Disclosure.</h2>
+  <p class="sub">The seller must disclose all known<br>defects and issues with the property.</p>
+  <div class="card"><div class="cl">Document</div><div class="cv">Seller Disclosure Statement</div></div>
+  <div class="card"><div class="cl">Property</div><div class="cv">14 Sunrise Crescent, Coomera</div></div>
+  <div class="card"><div class="cl">Key items disclosed</div><div class="cv">No material defects</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Sign disclosure →</button>
+  <button class="btn bs">Read full document</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">The disclosure shows no material defects — good sign. Read it through before signing.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm27">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">27. Sign Seller Disclosure</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 5 · Contracts</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Sign required</div></div><div class="ct">
+  <div class="ico">✍️</div>
+  <h2>Sign the purchase<br>contract.</h2>
+  <p class="sub">This is the main contract — your SMSF<br>is committing to purchase.</p>
+  <div class="card"><div class="cl">Property</div><div class="cv">14 Sunrise Crescent, Coomera QLD</div></div>
+  <div class="card"><div class="cl">Purchase price</div><div class="cv">$589,000</div></div>
+  <div class="card"><div class="cl">Settlement date</div><div class="cv">60 days from exchange</div></div>
+  <div class="card"><div class="cl">SMSF</div><div class="cv">Mitchell Super Fund</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Sign contract →</button>
+  <button class="btn bs">Read full contract</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">This is the big one. Once signed, the property is legally yours to settle. Take a moment to read it through.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm28">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">28. Sign Purchase Contract</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 5 · Contracts</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Complete</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:48px;margin-bottom:14px">🎉</div>
+  <h2 style="text-align:center">Signed, sealed,<br>delivered!</h2>
+  <p class="sub" style="text-align:center">Contracts are executed. Settlement in<br>approximately 60 days.</p>
+  <div class="card" style="width:100%;text-align:left;margin-top:12px"><div class="cl">Next step</div><div class="cv">Finance approval via Macquarie</div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Contracts done! Next up is getting your loan finalised. I'll guide you through the Macquarie process now.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm29">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">29. Contracts Executed 🎉</div>
+</div>
+</div>
+
+<div class="group intro-group" data-path="1">
+  <div class="stage">Intro</div>
+  <div class="phone"><div class="sc" style="background:linear-gradient(160deg,#25263D,#2A5B62,#32B0C6)">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center">
+      <div style="font-size:72px;margin-bottom:6px">🐦</div>
+      <div style="color:#32B0C6;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Finance</div>
+      <h2 style="color:#fff;font-size:22px;font-weight:900;line-height:1.2;margin-bottom:12px;letter-spacing:-.3px">Let's sort out the lending.</h2>
+      <p style="color:rgba(255,255,255,.6);font-size:13px;line-height:1.6">Your SMSF property loan goes through Macquarie — Australia's leading SMSF lender. We'll guide you through the whole process.</p>
+    </div>
+    <div class="bird-wrap" style="bottom:20px;right:16px">
+      <div class="bird-bubble" style="background:rgba(37,38,61,.8);color:#fff;border-color:rgba(50,176,198,.4)">Macquarie are the gold standard for SMSF lending. I'll walk you through every document they need.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm_intro_1_Fin">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">↳ Stage intro: Finance</div>
+</div>
+<div class="stage-header"><div class="stage-label-big">Stage 6 — Finance</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 6 · Finance</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct">
+  <div class="ico">🏦</div>
+  <h2>Your SMSF<br>home loan.</h2>
+  <p class="sub">Through Macquarie — Australia's leading<br>SMSF lender.</p>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Pre-approval — income and SMSF verification</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Full application — property + SMSF docs</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">Loan approval — typically 2–3 weeks</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Loan documents signed and returned</div></div>
+  <div class="step"><div class="step-num">5</div><div class="step-text">Ready for settlement</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Start finance application →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">The process sounds involved but Corbwood manages most of it. You just need to supply a few documents.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm30">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">30. Finance — Overview</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 6 · Finance</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Document required</div></div><div class="ct">
+  <div class="ico" style="background:#25263D">📊</div>
+  <h2>Macquarie need<br>a few things.</h2>
+  <p class="sub">Upload the documents below and<br>we'll handle the rest.</p>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">SMSF Trust Deed</div><div class="ms ms-d">Provided by Capri</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Last 2 payslips</div><div class="ms ms-d">Uploaded</div></div>
+  <div class="mil act"><div class="mi">📄</div><div class="mn">Last 2 years tax returns</div><div class="ms ms-a">Upload now</div></div>
+  <div class="mil lk"><div class="mi">🔒</div><div class="mn">Bank statements (3 months)</div><div class="ms ms-l">Next</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Upload tax returns →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Most of these are already done. Just the tax returns and bank statements and you're set.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm31">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">31. Macquarie Application</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 6 · Finance</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pt">Under assessment</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:32px">
+  <div style="font-size:48px;margin-bottom:14px">🔍</div>
+  <h2 style="text-align:center">Macquarie are<br>reviewing your loan.</h2>
+  <p class="sub" style="text-align:center">Typical turnaround: 10–15 business days.<br>We'll keep you updated throughout.</p>
+  <div class="card" style="width:100%;text-align:left;margin-top:16px"><div class="cl">Loan amount</div><div class="cv">$147,250 (50% of your share)</div></div>
+  <div class="card" style="width:100%;text-align:left"><div class="cl">Interest rate</div><div class="cv">6.25% p.a.</div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">This is the waiting part. Macquarie are thorough but fair — they'll come back with a decision within 2 weeks.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm32">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">32. Loan Assessment</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 6 · Finance</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#2A5B62"><span class="sbt" style="color:#fff">9:41</span></div><div style="background:linear-gradient(135deg,#2A5B62,#25263D);padding:20px;text-align:center;flex-shrink:0"><div style="font-size:40px;margin-bottom:8px">🎉</div><div style="color:#fff;font-size:21px;font-weight:900">Loan approved!</div><div style="color:rgba(255,255,255,.6);font-size:12px;margin-top:4px">Your SMSF loan is approved by Macquarie</div></div><div class="ct" style="padding-top:14px"><div class="card"><div class="cl">Loan amount</div><div class="cv" style="color:#32B0C6;font-weight:900">$147,250</div></div><div class="card"><div class="cl">Term</div><div class="cv">30 years</div></div><div class="card"><div class="cl">Interest rate</div><div class="cv">6.25% p.a.</div></div><div class="sp"></div><button class="btn bp">Sign loan documents →</button><div class="bd"></div></div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Yes! Your loan is approved. One more signing and then we're heading into the home stretch.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm33">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">33. Loan Approved 🎉</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 6 · Finance</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Complete</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:36px">
+  <div style="font-size:48px;margin-bottom:14px">✅</div>
+  <h2 style="text-align:center">Loan documents<br>signed.</h2>
+  <p class="sub" style="text-align:center">Everything is in place for settlement.<br>Almost there!</p>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Loan sorted. Your SMSF bank account is being set up at Macquarie — that's the last piece before settlement.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm34">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">34. Loan Documents Signed</div>
+</div>
+</div>
+
+<div class="stage-header"><div class="stage-label-big">Stage 7 — Pending Settlement</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 7 · Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Final checks</div></div><div class="ct">
+  <h2 style="font-size:18px;margin-bottom:14px">Home stretch.<br>Let's tick these off.</h2>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Contracts executed</div><div class="ms ms-d">Done</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Finance approved</div><div class="ms ms-d">Done</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">SMSF bank account open</div><div class="ms ms-d">Done</div></div>
+  <div class="mil act"><div class="mi">📝</div><div class="mn">Accept Letter of Offer (LOO)</div><div class="ms ms-a">Action needed</div></div>
+  <div class="mil lk"><div class="mi">🔒</div><div class="mn">Settlement day</div><div class="ms ms-l">Upcoming</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Accept the LOO →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">One tap to go. Accept the Letter of Offer and settlement will be booked.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm35">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">35. Pre-Settlement Checklist</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 7 · Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Action needed</div></div><div class="ct">
+  <div class="ico" style="background:linear-gradient(135deg,#2A5B62,#32B0C6)">📬</div>
+  <h2>Accept your Letter<br>of Offer.</h2>
+  <p class="sub">Your formal loan offer from Macquarie.<br>One tap to lock it in.</p>
+  <div class="card"><div class="cl">Lender</div><div class="cv">Macquarie Bank</div></div>
+  <div class="card"><div class="cl">Loan amount</div><div class="cv">$147,250</div></div>
+  <div class="card"><div class="cl">Rate</div><div class="cv">6.25% p.a. variable</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Accept LOO — lock it in →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Almost there — one tap to lock in your property. Your SMSF is about to own real estate.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm36">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">36. LOO — Accept</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 7 · Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Date confirmed</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:48px;margin-bottom:14px">📅</div>
+  <h2 style="text-align:center">Settlement date<br>is set.</h2>
+  <div style="background:linear-gradient(135deg,#2A5B62,#25263D);border-radius:16px;padding:20px;margin:16px 0;text-align:center"><div style="color:rgba(255,255,255,.5);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Settlement date</div><div style="color:#fff;font-size:26px;font-weight:900">8 December 2026</div><div style="color:rgba(255,255,255,.5);font-size:12px;margin-top:4px">14 Sunrise Crescent, Coomera</div></div>
+  <p style="font-size:12px;color:#8A9BAE;line-height:1.5">We'll handle everything on the day. You'll receive a notification when your SMSF officially owns the property.</p>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Mark the date! On 8 December, your SMSF officially becomes a property owner.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm37">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">37. Settlement Date Confirmed</div>
+</div>
+</div>
+
+<div class="stage-header"><div class="stage-label-big">Stage 8 — Settlement</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 8 · Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#25263D"><span class="sbt" style="color:#fff">9:41</span></div><div style="background:linear-gradient(160deg,#25263D,#1a3040,#32B0C6);padding:24px 20px 28px;flex-shrink:0;text-align:center"><div style="font-size:52px;margin-bottom:8px">🎊</div><div style="color:#fff;font-size:24px;font-weight:900;line-height:1.2;margin-bottom:6px">Settlement<br>complete!</div><div style="color:rgba(255,255,255,.6);font-size:12px;line-height:1.5">Your SMSF now owns property.<br>This is what financial freedom looks like.</div></div><div class="ct" style="padding-top:14px"><div class="card"><div class="cl">Property</div><div class="cv">14 Sunrise Crescent, Coomera QLD</div></div><div class="card"><div class="cl">SMSF</div><div class="cv">Mitchell Super Fund</div></div><div class="card"><div class="cl">Settlement date</div><div class="cv">8 December 2026</div></div><div class="sp"></div><button class="btn bp">Go to your portfolio →</button><div class="bd"></div></div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Your SMSF owns property. This is what financial freedom looks like. Everything changes from here.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm38">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">38. Settlement Day 🎉</div>
+</div>
+</div>
+
+<div class="group intro-group" data-path="1">
+  <div class="stage">Intro</div>
+  <div class="phone"><div class="sc" style="background:linear-gradient(160deg,#25263D,#2A5B62,#32B0C6)">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center">
+      <div style="font-size:72px;margin-bottom:6px">🐦</div>
+      <div style="color:#32B0C6;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Post-Settlement</div>
+      <h2 style="color:#fff;font-size:22px;font-weight:900;line-height:1.2;margin-bottom:12px;letter-spacing:-.3px">You did it. Here's what comes next.</h2>
+      <p style="color:rgba(255,255,255,.6);font-size:13px;line-height:1.6">Your SMSF owns property. Now we set up the ongoing admin, redirect your super, and keep growing from here.</p>
+    </div>
+    <div class="bird-wrap" style="bottom:20px;right:16px">
+      <div class="bird-bubble" style="background:rgba(37,38,61,.8);color:#fff;border-color:rgba(50,176,198,.4)">I'm so proud of you. Now let's make sure everything is set up properly for the long term.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm_intro_1_Pos">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">↳ Stage intro: Post-Settlement</div>
+</div>
+<div class="stage-header"><div class="stage-label-big">Stage 9 — Post-Settlement</div></div>
+<div class="screens">
+
+<div class="group" data-path="1">
+  <div class="stage">Stage 9 · Post-Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="padding-top:14px">
+  <p style="font-size:11px;color:#8A9BAE;margin-bottom:6px">What's next for you</p>
+  <h2 style="font-size:18px;margin-bottom:14px">Your post-settlement<br>checklist.</h2>
+  <div class="mil act"><div class="mi">🔄</div><div class="mn">Redirect super contributions to SMSF</div><div class="ms ms-a">Action needed</div></div>
+  <div class="mil lk"><div class="mi">🏘</div><div class="mn">Property management setup</div><div class="ms ms-l">In progress</div></div>
+  <div class="mil lk"><div class="mi">🛡</div><div class="mn">Landlord insurance</div><div class="ms ms-l">Pending</div></div>
+  <div class="mil lk"><div class="mi">📊</div><div class="mn">Tax depreciation schedule</div><div class="ms ms-l">Upcoming</div></div>
+  <div class="mil lk"><div class="mi">📅</div><div class="mn">First portfolio review (6 months)</div><div class="ms ms-l">Book when ready</div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">A few important things to set up now that you've settled. Let's work through them together.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm39">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">39. Post-Settlement Hub</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 9 · Post-Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Action needed</div></div><div class="ct">
+  <div class="ico">🔄</div>
+  <h2>Redirect your<br>super contributions.</h2>
+  <p class="sub">Your employer super should now go<br>directly into your SMSF, not your old fund.</p>
+  <div class="step"><div class="step-num">1</div><div class="step-text">Download the Super Choice form (button below)</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-text">Fill in your SMSF details (pre-filled for you)</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-text">Submit to your employer's payroll team</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-text">Your next super contribution goes to your SMSF</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Download Super Choice form →</button>
+  <button class="btn bs">✅ Already submitted — mark done</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">This is important — until this form is in, your employer is still sending super to your old fund.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm40">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">40. Redirect Super Contributions</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 9 · Post-Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Great news!</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:48px;margin-bottom:14px">💰</div>
+  <h2 style="text-align:center">First rent<br>received!</h2>
+  <div style="background:linear-gradient(135deg,#0a2a1a,#1a4a2a);border-radius:16px;padding:20px;margin:16px 0;text-align:center"><div style="color:rgba(255,255,255,.5);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Rent received</div><div style="color:#5DDBA0;font-size:30px;font-weight:900">+$580</div><div style="color:rgba(255,255,255,.5);font-size:11px;margin-top:4px">Week 1 · 14 Sunrise Crescent</div></div>
+  <p style="font-size:12px;color:#8A9BAE;line-height:1.5">Your SMSF is officially generating income. This happens every week from now on.</p>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Your first rent just landed in your SMSF. Your super fund is earning $580 every single week.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm41">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">41. First Rent Received 💰</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 9 · Post-Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="padding-top:12px">
+  <h2 style="font-size:18px;margin-bottom:14px">Your SMSF<br>portfolio.</h2>
+  <div style="background:linear-gradient(135deg,#25263D,#2A5B62);border-radius:14px;padding:16px;margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="color:rgba(255,255,255,.6);font-size:11px;text-transform:uppercase;letter-spacing:1px">Total value</span><span style="color:#32B0C6;font-size:22px;font-weight:900">$621K</span></div>
+    <div style="display:flex;gap:12px"><div style="flex:1;background:rgba(255,255,255,.08);border-radius:9px;padding:10px;text-align:center"><div style="color:#5DDBA0;font-size:16px;font-weight:900">+5.4%</div><div style="color:rgba(255,255,255,.4);font-size:9px;margin-top:2px">Growth YTD</div></div><div style="flex:1;background:rgba(255,255,255,.08);border-radius:9px;padding:10px;text-align:center"><div style="color:#32B0C6;font-size:16px;font-weight:900">$580</div><div style="color:rgba(255,255,255,.4);font-size:9px;margin-top:2px">Weekly income</div></div><div style="flex:1;background:rgba(255,255,255,.08);border-radius:9px;padding:10px;text-align:center"><div style="color:#fff;font-size:16px;font-weight:900">1</div><div style="color:rgba(255,255,255,.4);font-size:9px;margin-top:2px">Properties</div></div></div>
+  </div>
+  <div class="card"><div class="cl">14 Sunrise Crescent, Coomera</div><div class="cv" style="color:#5DDBA0">+5.4% · $580/wk · 98% occupied</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Book portfolio review →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Your portfolio is growing. This is what having your super work for you actually looks like.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm42">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">42. Portfolio Dashboard</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 9 · Post-Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Upcoming</div></div><div class="ct">
+  <div class="ico">📊</div>
+  <h2>Book your<br>portfolio review.</h2>
+  <p class="sub">Your 6-month review with your<br>Corbwood adviser. Free, of course.</p>
+  <div class="card"><div class="cl">What we'll cover</div><div class="cv">Property performance, cashflow, equity position, next steps</div></div>
+  <div class="card"><div class="cl">Your adviser</div><div class="cv">Tom Neilsen</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Book my review →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Your 6-month review is an important one — we'll map out what's next for your SMSF.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm43">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">43. Portfolio Review</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 9 · Post-Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">You're invited</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:20px">
+  <div style="font-size:42px;margin-bottom:12px">💎</div>
+  <h2>You're now a<br>Cornerstone member.</h2>
+  <p class="sub" style="margin-bottom:14px">Our most exclusive client tier.<br>Here's what it means for you.</p>
+  <div style="background:linear-gradient(135deg,#25263D,#1e2040);border-radius:14px;padding:16px;text-align:left">
+    <div style="color:#32B0C6;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Your Cornerstone perks</div>
+    <div style="color:rgba(255,255,255,.8);font-size:12px;line-height:1.8">💎 9.75% return on P2P lending (vs 9.25% standard)<br>📋 Priority access to off-market properties<br>🎁 Invitations to exclusive Corbwood events<br>⚡ Dedicated adviser with 24h response time</div>
+  </div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Cornerstone is our inner circle. You've earned it — now let's make the most of what it gives you.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm44">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">44. Cornerstone Invitation</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Stage 9 · Post-Settlement</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="padding-top:12px">
+  <h2 style="font-size:18px;margin-bottom:14px">Your SMSF journey<br>at a glance.</h2>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 1 — Discovery & BC</div><div class="ms ms-d">Complete</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 2 — SMSF Application</div><div class="ms ms-d">Complete</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 3 — SMSF Approval</div><div class="ms ms-d">Complete</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 4 — Property Selection</div><div class="ms ms-d">Complete</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 5 — Contracts</div><div class="ms ms-d">Complete</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 6 — Finance</div><div class="ms ms-d">Complete</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 7-8 — Settlement</div><div class="ms ms-d">Complete</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Stage 9 — Post-Settlement</div><div class="ms ms-d">Active</div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Look at that — every stage complete. Your SMSF is established, funded, and earning. This is just the beginning.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm45">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">45. Your Journey</div>
+</div>
+</div>
+
+<div class="stage-header" data-path="2"><div class="stage-label-big">Path 2 — Existing SMSF Journey</div></div>
+<div class="screens" data-path="2">
+
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:52px;margin-bottom:12px">✨</div>
+  <h2>Welcome to<br>PRISM.</h2>
+  <p class="sub">Your path to property investment<br>through your existing SMSF.</p>
+  <div class="sp"></div>
+  <button class="btn bp">Let's get started →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Hey! Great news — you already have an SMSF. We just need to verify it's ready to invest.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm46">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E1. Welcome — Existing SMSF</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct">
+  <div class="ico">👤</div>
+  <h2>Set up your<br>account.</h2>
+  <p class="sub">Quick — takes about 2 minutes.</p>
+  <div class="card"><div class="cl">Full name</div><div class="cv">Sarah Mitchell</div></div>
+  <div class="card"><div class="cl">Email</div><div class="cv">sarah@email.com</div></div>
+  <div class="card"><div class="cl">Mobile</div><div class="cv">+61 412 345 678</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Create my account →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Same quick setup — then we'll connect your existing SMSF.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm47">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E2. Account Setup</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Existing SMSF</div></div><div class="ct">
+  <div class="ico">🏛</div>
+  <h2>Let's connect your<br>existing SMSF.</h2>
+  <p class="sub">We need to verify your SMSF is<br>ready to invest in property.</p>
+  <div class="card"><div class="cl">SMSF name</div><div class="cv">Mitchell Super Fund</div></div>
+  <div class="card"><div class="cl">ABN</div><div class="cv">12 345 678 901</div></div>
+  <div class="card"><div class="cl">Trustee type</div><div class="cv">Corporate trustee</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Verify my SMSF →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Existing SMSF? Perfect. We just need to run a quick compliance check before you can start buying.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm48">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E3. "I already have an SMSF"</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pt">Checking</div></div><div class="ct">
+  <h2 style="font-size:18px;margin-bottom:14px">Checking your<br>SMSF compliance.</h2>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">SMSF registered & active</div><div class="ms ms-d">Confirmed</div></div>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Corporate trustee structure</div><div class="ms ms-d">Confirmed</div></div>
+  <div class="mil act"><div class="mi">🔍</div><div class="mn">Investment strategy reviewed</div><div class="ms ms-a">Checking</div></div>
+  <div class="mil lk"><div class="mi">🔒</div><div class="mn">LRBA provisions checked</div><div class="ms ms-l">Next</div></div>
+  <div style="font-size:11px;color:#8A9BAE;line-height:1.5;margin-top:12px">Most existing SMSFs pass this in under 24 hours. We'll notify you as soon as it's done.</div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Just making sure your SMSF is set up to borrow and invest in property. This usually takes less than a day.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm49">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E4. SMSF Compliance Check</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pa">Upload required</div></div><div class="ct">
+  <div class="ico">📎</div>
+  <h2>A few documents<br>needed.</h2>
+  <p class="sub">To verify your existing SMSF,<br>we need the following.</p>
+  <div class="mil dn"><div class="mi">✅</div><div class="mn">Photo ID</div><div class="ms ms-d">Uploaded</div></div>
+  <div class="mil act"><div class="mi">📄</div><div class="mn">SMSF Trust Deed</div><div class="ms ms-a">Upload now</div></div>
+  <div class="mil lk"><div class="mi">🔒</div><div class="mn">Latest SMSF financial statements</div><div class="ms ms-l">Next</div></div>
+  <div class="mil lk"><div class="mi">🔒</div><div class="mn">Investment strategy document</div><div class="ms ms-l">Next</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Upload trust deed →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">The trust deed is the most important one. Your accountant or trustee company will have a copy.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm50">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E5. Documents Required</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div><div class="pill pg">Verified!</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:28px">
+  <div style="font-size:48px;margin-bottom:14px">🏛</div>
+  <h2 style="text-align:center">Your SMSF is<br>property-ready!</h2>
+  <p class="sub" style="text-align:center">Everything checks out. You can now<br>browse properties and invest.</p>
+  <div class="card" style="width:100%;text-align:left;margin-top:12px"><div class="cl">Max purchase (est.)</div><div class="cv" style="color:#32B0C6">~$620,000</div></div>
+  <div class="sp"></div>
+  <button class="btn bp">Browse properties →</button>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Your existing SMSF is cleared for property investment. Let's go find you the right property.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm51">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E6. SMSF Verified ✅</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="padding-top:12px">
+  <h2 style="font-size:18px;margin-bottom:4px">Choose your<br>property.</h2>
+  <p class="sub" style="margin-bottom:10px">3 options curated for your situation.</p>
+  <button class="btn" style="background:rgba(50,176,198,.12);color:#2A5B62;border:1px solid rgba(50,176,198,.3);border-radius:11px;padding:10px 14px;width:100%;font-size:11px;font-weight:700;margin-bottom:12px;text-align:left">📅 Want to talk it through first? Book a time →</button>
+  <div class="card" style="padding:10px 13px"><div style="font-size:10px;font-weight:700;color:#8A9BAE;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Option 1 · QLD</div><div style="font-size:13px;font-weight:700;color:#25263D">14 Sunrise Cres, Coomera</div><div style="display:flex;gap:12px;margin-top:6px"><span style="font-size:11px;color:#32B0C6;font-weight:700">$589,000</span><span style="font-size:11px;color:#8A9BAE">5.1% yield · 98% occupancy</span></div></div>
+  <div class="card" style="padding:10px 13px"><div style="font-size:10px;font-weight:700;color:#8A9BAE;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Option 2 · QLD</div><div style="font-size:13px;font-weight:700;color:#25263D">7/22 Parklands Dr, Helensvale</div><div style="display:flex;gap:12px;margin-top:6px"><span style="font-size:11px;color:#32B0C6;font-weight:700">$612,000</span><span style="font-size:11px;color:#8A9BAE">4.9% yield · 99% occupancy</span></div></div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">Straight to the good stuff — you're verified and ready to invest. These three are curated for your situation.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm52">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E7. Property Browser</div>
+</div>
+<div class="group" data-path="1">
+  <div class="stage">Path 2 · Existing SMSF</div>
+  <div class="phone"><div class="sc">
+    <div class="sb" style="background:#fff"><span class="sbt" style="color:#25263D">9:41</span></div><div class="nb"><div class="logo">PRISM</div></div><div class="ct" style="align-items:center;text-align:center;padding-top:36px">
+  <div style="font-size:48px;margin-bottom:14px">🔗</div>
+  <h2 style="text-align:center">From here, the<br>process is the same.</h2>
+  <p class="sub" style="text-align:center">Contracts → Finance → Settlement → Post-Settlement.<br>Same stages as Path 1 from Screen 26 onwards.</p>
+  <div style="font-size:11px;color:#8A9BAE;line-height:1.5;margin-top:12px">The main difference: you skip the entire SMSF setup process and go straight into property selection once your existing SMSF is verified.</div>
+  <div class="bd"></div>
+</div>
+    <div class="bird-wrap">
+      <div class="bird-bubble">The beauty of an existing SMSF — you skip months of setup and go straight to investing.</div>
+      <div class="bird-icon" onclick="toggleBirdMenu(this)">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  <ellipse cx="22" cy="30" rx="13" ry="10" fill="#32B0C6"/>
+  <circle cx="32" cy="17" r="9" fill="#32B0C6"/>
+  <circle cx="35" cy="14" r="2.5" fill="white"/>
+  <circle cx="35.5" cy="13.5" r="1.4" fill="#25263D"/>
+  <path d="M40,16 L45,12 L40,20" fill="#F5A623"/>
+  <path d="M11,27 Q2,14 9,6 Q18,20 25,26" fill="#2A5B62"/>
+  <path d="M10,34 Q2,42 8,46 L16,35" fill="#2A5B62"/>
+</svg>
+        <div class="bird-menu" id="bm53">
+          <div class="bm-item">📞 Call us</div>
+          <div class="bm-item">📅 Book a time</div>
+          <div class="bm-item">❓ FAQ</div>
+          <div class="bm-item">💬 Live chat</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="title">E8. Path 2 — Contracts onwards</div>
+</div>
+</div>
+
+</div>
+
+<script>
+function toggleBirdMenu(el) {
+  const menu = el.querySelector('.bird-menu');
+  const wasOpen = menu && menu.classList.contains('open');
+  document.querySelectorAll('.bird-menu.open').forEach(m => m.classList.remove('open'));
+  if (!wasOpen && menu) menu.classList.add('open');
+  document.addEventListener('click', function close(e) {
+    if (!el.contains(e.target)) { menu && menu.classList.remove('open'); document.removeEventListener('click', close); }
+  }, { once: true });
+}
+
+// Path switching
+let activePath = 1;
+function showPath(n) {
+  activePath = n;
+  document.querySelectorAll('.path-tab').forEach((t,i) => t.classList.toggle('active', i+1===n));
+  document.querySelectorAll('.group, .stage-header, .screens').forEach(el => {
+    const p = el.dataset.path;
+    if (!p) return;
+    const pArr = p.split(' ').map(Number);
+    el.style.display = (pArr.includes(n) || p === '0') ? '' : 'none';
+  });
+  if (protoMode) buildProtoScreens();
+}
+
+// Prototype mode
+let protoMode = false;
+let protoScreens = [];
+let protoIdx = 0;
+let protoPhone = null;
+
+function buildProtoScreens() {
+  protoScreens = Array.from(document.querySelectorAll('.group')).filter(g => {
+    const p = g.dataset.path;
+    if (!p) return false;
+    const pArr = p.split(' ').map(Number);
+    return pArr.includes(activePath) || p === '0';
+  });
+}
+
+function enterProto() {
+  protoMode = true;
+  document.body.classList.add('proto-mode');
+  buildProtoScreens();
+  protoIdx = 0;
+  renderProto();
+}
+function exitProto() {
+  protoMode = false;
+  document.body.classList.remove('proto-mode');
+}
+function protoNav(dir) {
+  protoIdx = Math.max(0, Math.min(protoScreens.length-1, protoIdx+dir));
+  renderProto();
+}
+function renderProto() {
+  const overlay = document.getElementById('protoOverlay');
+  const s = protoScreens[protoIdx];
+  if (!s) return;
+  const phoneEl = s.querySelector('.phone');
+  const titleEl = s.querySelector('.title');
+  const wrap = document.getElementById('protoPhoneWrap');
+  wrap.innerHTML = '';
+  if (phoneEl) {
+    const clone = phoneEl.cloneNode(true);
+    clone.style.width = '260px';
+    clone.style.height = '520px';
+    clone.querySelectorAll('.bird-menu').forEach(m => m.classList.remove('open'));
+    clone.querySelectorAll('.bird-icon').forEach(b => b.onclick = () => {});
+    wrap.appendChild(clone);
+  }
+  document.getElementById('protoCounter').textContent = (protoIdx+1) + ' / ' + protoScreens.length;
+  document.getElementById('protoTitle').textContent = titleEl ? titleEl.textContent : '';
+  document.getElementById('protoLeft').classList.toggle('disabled', protoIdx === 0);
+  document.getElementById('protoRight').classList.toggle('disabled', protoIdx === protoScreens.length-1);
+}
+
+document.addEventListener('keydown', e => {
+  if (!protoMode) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') protoNav(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') protoNav(-1);
+  if (e.key === 'Escape') exitProto();
+});
+</script>
+<script>
+// Init — show path 1 by default
+showPath(1);
+// Update path note in proto mode
+const origShowPath = showPath;
+function showPath(n) {
+  origShowPath(n);
+  const note = document.getElementById('protoPathNote');
+  if (note) note.textContent = n === 1 ? 'Path 1 — New SMSF' : 'Path 2 — Existing SMSF';
+}
+showPath(1);
+</script>
+</body>
+</html>
