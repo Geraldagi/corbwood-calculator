@@ -214,6 +214,14 @@ body.demo-mode .page-header{display:none;}
 .sl{font-size:9px;color:#8A8060;margin-top:2px;}
 .sp{flex:1;min-height:8px;}
 .bd{height:16px;flex-shrink:0;}
+
+/* ── Final overrides ── */
+.nest-help{position:absolute;top:32px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(220,223,40,.2);border:1px solid rgba(220,223,40,.38);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;z-index:50;}
+.nb,.nb-logo{display:none!important;}
+.card{background:#DBD3C1;border-radius:13px;padding:12px 14px;margin-bottom:8px;flex-shrink:0;}
+.cl{font-size:9px;font-weight:700;color:#7A7050;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block;}
+.cv{font-size:13px;font-weight:700;color:#2A3012;line-height:1.35;}
+.sb{border-bottom:none;}
 </style>
 </head>
 <body>
@@ -323,10 +331,10 @@ body.demo-mode .page-header{display:none;}
     <div class="sg" data-path="1">
       <div class="phone"><div class="sc">
         <div class="sb"><span class="time">9:41</span></div>
-        <div class="nb"><div class="nb-logo">🪺 The Nest</div><div class="nest-help" onclick="toggleNestMenu(this)">🪺<div class="nest-menu"><div class="nm-item">📞 Call us</div>
+        <div class="nest-help" onclick="toggleNestMenu(this)">🪺<div class="nest-menu"><div class="nm-item">📞 Call us</div>
             <div class="nm-item">📅 Book a time</div>
             <div class="nm-item">❓ FAQ</div>
-            <div class="nm-item">💬 Live chat</div></div></div></div>
+            <div class="nm-item">💬 Live chat</div></div>
         <div class="sc-top" style="padding:14px 14px 72px">
           <h2 style="font-size:20px;margin-bottom:14px">About you.</h2>
           <div class="card"><div class="cl">Date of birth</div><div class="cv" style="color:#9A9080;font-style:italic">DD / MM / YYYY</div></div>
