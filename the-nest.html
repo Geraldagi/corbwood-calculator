@@ -120,6 +120,34 @@ body{font-family:'Lato',sans-serif;background:#111A06;min-height:100vh;color:#3A
 }
 .action-btn-ghost:hover{border-color:#9A9280;}
 
+/* ── Screen components (used from Slide 2 onwards) ── */
+.sc-top{flex:1;display:flex;flex-direction:column;padding:18px 20px 72px;overflow-y:auto;scrollbar-width:none;}
+.sc-top::-webkit-scrollbar{display:none;}
+.screen-h2{font-size:24px;font-weight:900;color:#3A4820;line-height:1.15;letter-spacing:-.5px;margin-bottom:8px;}
+.screen-sub{font-size:11px;color:#8A8060;line-height:1.65;margin-bottom:18px;}
+
+/* Detail rows (pre-populated, tap to edit) */
+.detail-rows{display:flex;flex-direction:column;gap:0;border:1.5px solid rgba(58,72,32,.12);border-radius:14px;overflow:hidden;background:#EAE6DC;}
+.detail-row{display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid rgba(58,72,32,.08);}
+.detail-row:last-child{border-bottom:none;}
+.detail-label{font-size:9px;font-weight:700;color:#8A8060;text-transform:uppercase;letter-spacing:.8px;width:52px;flex-shrink:0;}
+.detail-value{flex:1;font-size:13px;font-weight:700;color:#3A4820;}
+.detail-edit{font-size:13px;color:#DCDF28;cursor:pointer;opacity:.8;flex-shrink:0;padding-left:8px;}
+
+
+/* ── Document upload rows (Slide 5) ── */
+.doc-rows{display:flex;flex-direction:column;}
+.doc-row{display:flex;align-items:center;padding:11px 0;border-bottom:1px solid rgba(58,72,32,.08);}
+.doc-row:last-child{border-bottom:none;}
+.doc-name{flex:1;font-size:12px;font-weight:700;color:#3A4820;line-height:1.2;}
+.doc-name small{display:block;font-size:9px;font-weight:400;color:#8A8060;margin-top:2px;}
+.doc-name.done{color:#5A6830;}
+.doc-upload-btn{background:#3A4820;color:#F4F2EC;font-size:10px;font-weight:700;padding:6px 10px;border-radius:8px;cursor:pointer;flex-shrink:0;white-space:nowrap;}
+.doc-done-wrap{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.doc-done-badge{font-size:10px;font-weight:700;color:#5A6830;}
+.doc-change{font-size:9px;color:#8A8060;cursor:pointer;text-decoration:underline;}
+.doc-cta-muted{font-size:13px;font-weight:700;color:#C0B8A0;letter-spacing:.3px;}
+.doc-cta-muted::after{content:'›';font-size:17px;font-weight:300;color:#D4C8A8;position:relative;top:-1px;margin-left:4px;}
 /* ── Present / Demo mode ── */
 .demo-overlay{
   display:none;position:fixed;inset:0;
@@ -218,7 +246,253 @@ body.demo-mode .page-header{display:none;}
       <div class="screen-title">1. Welcome</div>
     </div>
 
-  </div>
+    <!-- ── Screen 2: Confirm Details ── -->
+    <div class="sg" data-path="1">
+      <div class="phone"><div class="sc">
+        <div class="sb"><span class="time">9:41</span></div>
+        <div class="nest-help" onclick="toggleNestMenu(this)">🪺
+          <div class="nest-menu">
+            <div class="nm-item">📞 Call us</div>
+            <div class="nm-item">📅 Book a time</div>
+            <div class="nm-item">❓ FAQ</div>
+            <div class="nm-item">💬 Live chat</div>
+          </div>
+        </div>
+        <div class="sc-top">
+          <h2 class="screen-h2">Is this<br>you?</h2>
+          <p class="screen-sub">We've been given your details by the person who referred you. Tap any field to update.</p>
+          <div class="detail-rows">
+            <div class="detail-row">
+              <span class="detail-label">Name</span>
+              <span class="detail-value">Sarah Mitchell</span>
+              <span class="detail-edit">✏</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">sarah@email.com</span>
+              <span class="detail-edit">✏</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Mobile</span>
+              <span class="detail-value">0412 345 678</span>
+              <span class="detail-edit">✏</span>
+            </div>
+          </div>
+        </div>
+        <div class="sc-foot">
+          <div class="cta-text">My details are correct</div>
+          <div class="cta-bar"></div>
+        </div>
+      </div></div>
+      <div class="screen-title">2. Confirm Details</div>
+    </div>
+
+
+
+<!-- ── Screen 3: Qualifier Explainer ── -->
+    <div class="sg" data-path="1">
+      <div class="phone"><div class="sc">
+        <div class="sb"><span class="time">9:41</span></div>
+        <div class="nest-help" onclick="toggleNestMenu(this)">🪺
+          <div class="nest-menu">
+            <div class="nm-item">📞 Call us</div>
+            <div class="nm-item">📅 Book a time</div>
+            <div class="nm-item">❓ FAQ</div>
+            <div class="nm-item">💬 Live chat</div>
+          </div>
+        </div>
+        <div class="sc-body" style="gap:0;padding-bottom:72px">
+          <div style="font-size:38px;margin-bottom:20px">🪺</div>
+          <h2 class="nest-title" style="font-size:22px;margin-bottom:12px">Quick check.</h2>
+          <p class="nest-sub" style="max-width:170px">Everyone’s situation is a little different. A few quick questions so we can point you in the right direction.</p>
+        </div>
+        <div class="sc-foot">
+          <div class="cta-text">Let’s go</div>
+          <div class="cta-bar"></div>
+        </div>
+      </div></div>
+      <div class="screen-title">3. Qualifier intro</div>
+    </div>
+
+  
+    <!-- ── Screen 4: Intake Form ── -->
+    <div class="sg" data-path="1">
+      <div class="phone"><div class="sc">
+        <div class="sb"><span class="time">9:41</span></div>
+        <div class="nest-help" onclick="toggleNestMenu(this)">🪺
+          <div class="nest-menu">
+            <div class="nm-item">📞 Call us</div>
+            <div class="nm-item">📅 Book a time</div>
+            <div class="nm-item">❓ FAQ</div>
+            <div class="nm-item">💬 Live chat</div>
+          </div>
+        </div>
+        <div class="sc-top" style="padding:14px 14px 72px">
+
+          <div class="form-section-hd" style="padding-top:0">Personal</div>
+          <div class="form-block">
+            <div class="form-row"><span class="fr-lbl">Date of birth</span><span class="fr-val">DD / MM / YYYY</span></div>
+          </div>
+
+          <div class="form-section-hd">Address</div>
+          <div class="form-block">
+            <div class="form-row"><span class="fr-lbl">Status</span><span class="fr-val">Renting, owning…</span></div>
+            <div class="form-row"><span class="fr-lbl">Address</span><span class="fr-val">Your current address</span></div>
+            <div class="form-row"><span class="fr-lbl">Time there</span><span class="fr-val">Years at address</span></div>
+          </div>
+
+          <div class="form-section-hd">Family</div>
+          <div class="form-block">
+            <div class="form-row"><span class="fr-lbl">Marital status</span><span class="fr-val">Single, married…</span></div>
+            <div class="form-row"><span class="fr-lbl">Dependents</span><span class="fr-val">0</span></div>
+          </div>
+
+          <div class="form-section-hd">Employment</div>
+          <div class="form-block">
+            <div class="form-row"><span class="fr-lbl">Type</span><span class="fr-val">Full-time, part-time…</span></div>
+            <div class="form-row"><span class="fr-lbl">Employer</span><span class="fr-val">Your employer</span></div>
+            <div class="form-row"><span class="fr-lbl">Base salary</span><span class="fr-val">$</span></div>
+            <div class="form-row"><span class="fr-lbl">Overtime</span><span class="fr-val">$ if applicable</span></div>
+            <div class="form-row"><span class="fr-lbl">Bonus</span><span class="fr-val">$ if applicable</span></div>
+            <div class="form-row"><span class="fr-lbl">Start date</span><span class="fr-val">MM / YYYY</span></div>
+          </div>
+
+          <div class="form-section-hd">Superannuation</div>
+          <div class="form-block">
+            <div class="form-row"><span class="fr-lbl">Balance</span><span class="fr-val">Your current super balance</span></div>
+          </div>
+
+          <div class="form-section-hd">Credit history</div>
+          <div class="form-block">
+            <div class="form-row-credit"><span class="frc-q">Bankruptcy or Part IX</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+            <div class="form-row-credit"><span class="frc-q">Default on credit file</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+            <div class="form-row-credit"><span class="frc-q">Court judgements</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+            <div class="form-row-credit"><span class="frc-q">Behind on repayments</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+            <div class="form-row-credit"><span class="frc-q">Currently a guarantor</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+          </div>
+
+        </div>
+        <div class="sc-foot">
+          <div class="cta-text">Continue</div>
+          <div class="cta-bar"></div>
+        </div>
+      </div></div>
+      <div class="screen-title">4. Intake form</div>
+    </div>
+
+
+    <!-- ── Screen 5: Document Upload ── -->
+    <div class="sg" data-path="1">
+      <div class="phone"><div class="sc">
+        <div class="sb"><span class="time">9:41</span></div>
+        <div class="nest-help" onclick="toggleNestMenu(this)">🪺
+          <div class="nest-menu">
+            <div class="nm-item">📞 Call us</div>
+            <div class="nm-item">📅 Book a time</div>
+            <div class="nm-item">❓ FAQ</div>
+            <div class="nm-item">💬 Live chat</div>
+          </div>
+        </div>
+        <div class="sc-top" style="padding:18px 20px 72px">
+          <h2 class="screen-h2">A couple of<br>documents.</h2>
+          <p class="screen-sub">Fully encrypted. Used only to process your application.</p>
+          <div class="doc-rows">
+            <div class="doc-row">
+              <div class="doc-name done">Photo ID ✓<small>Licence or passport</small></div>
+              <div class="doc-done-wrap">
+                <span class="doc-done-badge">Done ✓</span>
+                <span class="doc-change">Change</span>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name">Super statement<small>Your most recent</small></div>
+              <div class="doc-upload-btn">↑ Upload</div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-name">Recent payslip<small>Last 3 months</small></div>
+              <div class="doc-upload-btn">↑ Upload</div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-foot">
+          <div class="doc-cta-muted">Continue</div>
+          <div class="cta-bar" style="background:rgba(220,223,40,.3)"></div>
+        </div>
+      </div></div>
+      <div class="screen-title">5. Upload documents</div>
+    </div>
+
+
+    <!-- ── Screen 6: Review & Confirm ── -->
+    <div class="sg" data-path="1">
+      <div class="phone"><div class="sc">
+        <div class="sb"><span class="time">9:41</span></div>
+        <div class="nest-help" onclick="toggleNestMenu(this)">🪺
+          <div class="nest-menu">
+            <div class="nm-item">📞 Call us</div>
+            <div class="nm-item">📅 Book a time</div>
+            <div class="nm-item">❓ FAQ</div>
+            <div class="nm-item">💬 Live chat</div>
+          </div>
+        </div>
+        <div class="sc-top" style="padding:16px 16px 72px">
+          <h2 class="screen-h2">Looking good.</h2>
+          <p class="screen-sub" style="margin-bottom:12px">Review your details before we get to work.</p>
+
+          <div class="form-section-hd" style="padding-top:4px">Your details</div>
+          <div class="detail-rows">
+            <div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">Sarah Mitchell</span><span class="detail-edit">✏</span></div>
+            <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">sarah@email.com</span><span class="detail-edit">✏</span></div>
+            <div class="detail-row"><span class="detail-label">Mobile</span><span class="detail-value">0412 345 678</span><span class="detail-edit">✏</span></div>
+          </div>
+
+          <div class="form-section-hd">Your situation</div>
+          <div class="detail-rows">
+            <div class="detail-row"><span class="detail-label">DOB</span><span class="detail-value">15 Mar 1985</span><span class="detail-edit">✏</span></div>
+            <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value">12 Beach St, Helensvale</span><span class="detail-edit">✏</span></div>
+            <div class="detail-row"><span class="detail-label">Employer</span><span class="detail-value">Acme Corp · $95,000</span><span class="detail-edit">✏</span></div>
+            <div class="detail-row"><span class="detail-label">Super</span><span class="detail-value">$182,000</span><span class="detail-edit">✏</span></div>
+          </div>
+
+          <div class="form-section-hd">Documents</div>
+          <div class="detail-rows">
+            <div class="detail-row">
+              <span class="detail-label" style="flex:1;font-size:12px;font-weight:700;color:#3A4820">3 of 3 uploaded</span>
+              <span style="font-size:11px;font-weight:700;color:#5A6830">All ✓</span>
+            </div>
+          </div>
+        </div>
+        <div class="sc-foot">
+          <div class="cta-text">Submit my application</div>
+          <div class="cta-bar"></div>
+        </div>
+      </div></div>
+      <div class="screen-title">6. Review & confirm</div>
+    </div>
+
+
+    <!-- ── Screen 7: Under Review ── -->
+    <div class="sg" data-path="1">
+      <div class="phone"><div class="sc">
+        <div class="sb"><span class="time">9:41</span></div>
+        <div class="nest-help" onclick="toggleNestMenu(this)">🪺
+          <div class="nest-menu">
+            <div class="nm-item">📞 Call us</div>
+            <div class="nm-item">📅 Book a time</div>
+            <div class="nm-item">❓ FAQ</div>
+            <div class="nm-item">💬 Live chat</div>
+          </div>
+        </div>
+        <div class="sc-body">
+          <div style="font-size:48px;margin-bottom:18px">🪺</div>
+          <h2 class="nest-title" style="font-size:22px;margin-bottom:12px">Leave it<br>with us.</h2>
+          <p class="nest-sub" style="max-width:170px">We're reviewing everything now. Someone will be in touch within one business day.</p>
+        </div>
+      </div></div>
+      <div class="screen-title">7. Under review</div>
+    </div>
+
+</div>
 
 </div><!-- /main-wrap -->
 
