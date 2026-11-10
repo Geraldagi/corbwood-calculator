@@ -44,7 +44,7 @@ body{font-family:'Lato',sans-serif;background:#111A06;min-height:100vh;color:#3A
 
 /* ── Nest help icon (top-right, most screens) ── */
 .nest-help{
-  position:absolute;top:5px;right:14px;
+  position:absolute;top:30px;right:14px;
   width:24px;height:24px;border-radius:50%;
   background:rgba(220,223,40,.18);
   border:1px solid rgba(220,223,40,.35);
@@ -251,33 +251,18 @@ body.demo-mode .page-header{display:none;}
       <div class="phone"><div class="sc">
         <div class="sb"><span class="time">9:41</span></div>
         <div class="nest-help" onclick="toggleNestMenu(this)">🪺
-          <div class="nest-menu">
-            <div class="nm-item">📞 Call us</div>
+          <div class="nest-menu"><div class="nm-item">📞 Call us</div>
             <div class="nm-item">📅 Book a time</div>
             <div class="nm-item">❓ FAQ</div>
-            <div class="nm-item">💬 Live chat</div>
-          </div>
+            <div class="nm-item">💬 Live chat</div></div>
         </div>
-        <div class="sc-top">
+        <div class="sc-top" style="padding:16px 16px 72px">
+          <div class="ico">👤</div>
           <h2 class="screen-h2">Is this<br>you?</h2>
-          <p class="screen-sub">We've been given your details by the person who referred you. Tap any field to update.</p>
-          <div class="detail-rows">
-            <div class="detail-row">
-              <span class="detail-label">Name</span>
-              <span class="detail-value">Sarah Mitchell</span>
-              <span class="detail-edit">✏</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Email</span>
-              <span class="detail-value">sarah@email.com</span>
-              <span class="detail-edit">✏</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Mobile</span>
-              <span class="detail-value">0412 345 678</span>
-              <span class="detail-edit">✏</span>
-            </div>
-          </div>
+          <p class="screen-sub">The person who referred you gave us these details. Tap to update anything.</p>
+          <div class="nest-card"><div class="nest-cl">Name</div><div class="nest-cv">Sarah Mitchell <span class="nest-edit">✏</span></div></div>
+          <div class="nest-card"><div class="nest-cl">Email</div><div class="nest-cv">sarah@email.com <span class="nest-edit">✏</span></div></div>
+          <div class="nest-card"><div class="nest-cl">Mobile</div><div class="nest-cv">0412 345 678 <span class="nest-edit">✏</span></div></div>
         </div>
         <div class="sc-foot">
           <div class="cta-text">My details are correct</div>
@@ -320,57 +305,48 @@ body.demo-mode .page-header{display:none;}
       <div class="phone"><div class="sc">
         <div class="sb"><span class="time">9:41</span></div>
         <div class="nest-help" onclick="toggleNestMenu(this)">🪺
-          <div class="nest-menu">
-            <div class="nm-item">📞 Call us</div>
+          <div class="nest-menu"><div class="nm-item">📞 Call us</div>
             <div class="nm-item">📅 Book a time</div>
             <div class="nm-item">❓ FAQ</div>
-            <div class="nm-item">💬 Live chat</div>
-          </div>
+            <div class="nm-item">💬 Live chat</div></div>
         </div>
-        <div class="sc-top" style="padding:14px 14px 72px">
+        <div class="sc-top" style="padding:16px 16px 72px">
+          <h2 class="screen-h2">About<br>you.</h2>
+          <p class="screen-sub">Fill in your details. We'll use these to find the right path for you.</p>
 
-          <div class="form-section-hd" style="padding-top:0">Personal</div>
-          <div class="form-block">
-            <div class="form-row"><span class="fr-lbl">Date of birth</span><span class="fr-val">DD / MM / YYYY</span></div>
+          <div class="nest-sec-lbl">Personal</div>
+          <div class="nest-card"><div class="nest-cl">Date of birth</div><div class="nest-cv-ph">DD / MM / YYYY</div></div>
+
+          <div class="nest-sec-lbl">Address</div>
+          <div class="nest-card"><div class="nest-cl">Residential status</div><div class="nest-cv-ph">Renting, owning…</div></div>
+          <div class="nest-card"><div class="nest-cl">Current address</div><div class="nest-cv-ph">Your home address</div></div>
+          <div class="nest-card"><div class="nest-cl">Time at address</div><div class="nest-cv-ph">Years</div></div>
+
+          <div class="nest-sec-lbl">Family</div>
+          <div class="nest-card"><div class="nest-cl">Marital status</div><div class="nest-cv-ph">Single, married…</div></div>
+          <div class="nest-card"><div class="nest-cl">Dependents</div><div class="nest-cv-ph">0</div></div>
+
+          <div class="nest-sec-lbl">Employment</div>
+          <div class="nest-card"><div class="nest-cl">Employment type</div><div class="nest-cv-ph">Full-time, part-time…</div></div>
+          <div class="nest-card"><div class="nest-cl">Employer</div><div class="nest-cv-ph">Your employer</div></div>
+          <div class="nest-card"><div class="nest-cl">Base salary</div><div class="nest-cv-ph">$</div></div>
+          <div class="nest-card"><div class="nest-cl">Overtime / Bonus</div><div class="nest-cv-ph">$ if applicable</div></div>
+          <div class="nest-card"><div class="nest-cl">Start date</div><div class="nest-cv-ph">MM / YYYY</div></div>
+
+          <div class="nest-sec-lbl">Superannuation</div>
+          <div class="nest-card"><div class="nest-cl">Current balance</div><div class="nest-cv-ph">Your super balance</div></div>
+
+          <div class="nest-sec-lbl">Credit history</div>
+          <div class="nest-card">
+            <div class="nest-cl" style="margin-bottom:8px">Select Yes if any apply</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div class="frc-row-inline"><span class="frc-q-sm">Bankruptcy or Part IX</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+              <div class="frc-row-inline"><span class="frc-q-sm">Default on credit file</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+              <div class="frc-row-inline"><span class="frc-q-sm">Court judgements</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+              <div class="frc-row-inline"><span class="frc-q-sm">Behind on repayments</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+              <div class="frc-row-inline"><span class="frc-q-sm">Currently a guarantor</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
+            </div>
           </div>
-
-          <div class="form-section-hd">Address</div>
-          <div class="form-block">
-            <div class="form-row"><span class="fr-lbl">Status</span><span class="fr-val">Renting, owning…</span></div>
-            <div class="form-row"><span class="fr-lbl">Address</span><span class="fr-val">Your current address</span></div>
-            <div class="form-row"><span class="fr-lbl">Time there</span><span class="fr-val">Years at address</span></div>
-          </div>
-
-          <div class="form-section-hd">Family</div>
-          <div class="form-block">
-            <div class="form-row"><span class="fr-lbl">Marital status</span><span class="fr-val">Single, married…</span></div>
-            <div class="form-row"><span class="fr-lbl">Dependents</span><span class="fr-val">0</span></div>
-          </div>
-
-          <div class="form-section-hd">Employment</div>
-          <div class="form-block">
-            <div class="form-row"><span class="fr-lbl">Type</span><span class="fr-val">Full-time, part-time…</span></div>
-            <div class="form-row"><span class="fr-lbl">Employer</span><span class="fr-val">Your employer</span></div>
-            <div class="form-row"><span class="fr-lbl">Base salary</span><span class="fr-val">$</span></div>
-            <div class="form-row"><span class="fr-lbl">Overtime</span><span class="fr-val">$ if applicable</span></div>
-            <div class="form-row"><span class="fr-lbl">Bonus</span><span class="fr-val">$ if applicable</span></div>
-            <div class="form-row"><span class="fr-lbl">Start date</span><span class="fr-val">MM / YYYY</span></div>
-          </div>
-
-          <div class="form-section-hd">Superannuation</div>
-          <div class="form-block">
-            <div class="form-row"><span class="fr-lbl">Balance</span><span class="fr-val">Your current super balance</span></div>
-          </div>
-
-          <div class="form-section-hd">Credit history</div>
-          <div class="form-block">
-            <div class="form-row-credit"><span class="frc-q">Bankruptcy or Part IX</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
-            <div class="form-row-credit"><span class="frc-q">Default on credit file</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
-            <div class="form-row-credit"><span class="frc-q">Court judgements</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
-            <div class="form-row-credit"><span class="frc-q">Behind on repayments</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
-            <div class="form-row-credit"><span class="frc-q">Currently a guarantor</span><div class="frc-tog"><span class="tog-opt tog-no">No</span><span class="tog-opt">Yes</span></div></div>
-          </div>
-
         </div>
         <div class="sc-foot">
           <div class="cta-text">Continue</div>
@@ -428,39 +404,22 @@ body.demo-mode .page-header{display:none;}
       <div class="phone"><div class="sc">
         <div class="sb"><span class="time">9:41</span></div>
         <div class="nest-help" onclick="toggleNestMenu(this)">🪺
-          <div class="nest-menu">
-            <div class="nm-item">📞 Call us</div>
+          <div class="nest-menu"><div class="nm-item">📞 Call us</div>
             <div class="nm-item">📅 Book a time</div>
             <div class="nm-item">❓ FAQ</div>
-            <div class="nm-item">💬 Live chat</div>
-          </div>
+            <div class="nm-item">💬 Live chat</div></div>
         </div>
         <div class="sc-top" style="padding:16px 16px 72px">
           <h2 class="screen-h2">Looking good.</h2>
-          <p class="screen-sub" style="margin-bottom:12px">Review your details before we get to work.</p>
-
-          <div class="form-section-hd" style="padding-top:4px">Your details</div>
-          <div class="detail-rows">
-            <div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">Sarah Mitchell</span><span class="detail-edit">✏</span></div>
-            <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">sarah@email.com</span><span class="detail-edit">✏</span></div>
-            <div class="detail-row"><span class="detail-label">Mobile</span><span class="detail-value">0412 345 678</span><span class="detail-edit">✏</span></div>
+          <p class="screen-sub" style="margin-bottom:12px">Review before we get to work.</p>
+          <div class="nest-sr">
+            <div class="nest-st"><div class="nest-sv">$95K</div><div class="nest-sl">Base salary</div></div>
+            <div class="nest-st"><div class="nest-sv">$182K</div><div class="nest-sl">Super balance</div></div>
           </div>
-
-          <div class="form-section-hd">Your situation</div>
-          <div class="detail-rows">
-            <div class="detail-row"><span class="detail-label">DOB</span><span class="detail-value">15 Mar 1985</span><span class="detail-edit">✏</span></div>
-            <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value">12 Beach St, Helensvale</span><span class="detail-edit">✏</span></div>
-            <div class="detail-row"><span class="detail-label">Employer</span><span class="detail-value">Acme Corp · $95,000</span><span class="detail-edit">✏</span></div>
-            <div class="detail-row"><span class="detail-label">Super</span><span class="detail-value">$182,000</span><span class="detail-edit">✏</span></div>
-          </div>
-
-          <div class="form-section-hd">Documents</div>
-          <div class="detail-rows">
-            <div class="detail-row">
-              <span class="detail-label" style="flex:1;font-size:12px;font-weight:700;color:#3A4820">3 of 3 uploaded</span>
-              <span style="font-size:11px;font-weight:700;color:#5A6830">All ✓</span>
-            </div>
-          </div>
+          <div class="nest-card"><div class="nest-cl">Personal</div><div class="nest-cv">Sarah Mitchell · 15 Mar 1985 <span class="nest-edit">✏</span></div></div>
+          <div class="nest-card"><div class="nest-cl">Address</div><div class="nest-cv">12 Beach St, Helensvale <span class="nest-edit">✏</span></div></div>
+          <div class="nest-card"><div class="nest-cl">Employer</div><div class="nest-cv">Acme Corp · Full-time <span class="nest-edit">✏</span></div></div>
+          <div class="nest-card"><div class="nest-cl">Documents</div><div class="nest-cv">All 3 submitted ✓</div></div>
         </div>
         <div class="sc-foot">
           <div class="cta-text">Submit my application</div>
