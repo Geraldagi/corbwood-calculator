@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corbwood Office — Proposed Layout</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Lato', sans-serif; background: #F5F0E8; padding: 32px 24px; color: #2A3012; }
+h1 { font-size: 22px; font-weight: 900; color: #2A3012; margin-bottom: 4px; }
+.sub { font-size: 13px; color: #6B6450; margin-bottom: 28px; }
+.layout { display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap; }
+.diagram { flex-shrink: 0; }
+.notes { max-width: 380px; }
+.notes h2 { font-size: 15px; font-weight: 900; color: #2A3012; margin-bottom: 14px; border-bottom: 2px solid #DCDF28; padding-bottom: 6px; }
+.zone { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+.zone-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+.zone-title { font-size: 13px; font-weight: 700; color: #2A3012; margin-bottom: 2px; }
+.zone-desc { font-size: 11px; color: #6B6450; line-height: 1.5; }
+.insight { background: #2A3012; color: #F5F0E8; border-radius: 12px; padding: 14px 16px; margin-top: 20px; }
+.insight-title { font-size: 12px; font-weight: 700; color: #DCDF28; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 8px; }
+.insight-text { font-size: 12px; line-height: 1.6; color: rgba(255,255,255,.75); }
+</style>
+</head>
+<body>
+
+<h1>Corbwood — Proposed Office Layout</h1>
+<p class="sub">Based on existing floor plan. Kitchen fixed. All other zones optimised for 1 office + podcast + 6 desks + boardroom + breakout.</p>
+
+<div class="layout">
+
+<!-- SVG Floor Plan -->
+<div class="diagram">
+<svg width="560" height="620" viewBox="0 0 560 620" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- BACKGROUND -->
+  <rect width="560" height="620" fill="none"/>
+
+  <!-- ═══ BUILDING EXTERIOR SHELL ═══ -->
+  <!-- Approximate proportions based on measured floor plan -->
+  <!-- Left column extends: 3.4m wide, top at y=60, bottom of office at y=385 -->
+  <!-- Main body: starts at x=185, top at y=60 (slight notch from kitchen roof) -->
+  <!-- Right extent: x=185+480=665 but constrained to 560 canvas, so scale ~45px/m -->
+
+  <!-- Scale: ~45px per meter -->
+  <!-- Left col: 3.4m = 153px wide -->
+  <!-- Main body: 8.4m wide = 378px → fits at x=153+5=158, to x=536 -->
+  <!-- Height: main 8.5m = 382px; left col 6.5m = 292px -->
+
+  <!-- OUTER WALLS -->
+  <!-- Left column top (kitchen roof at y=55) -->
+  <polygon points="
+    35,55
+    188,55
+    188,88
+    536,88
+    536,560
+    188,560
+    188,490
+    35,490
+  " fill="#EDE7DA" stroke="#2A3012" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Storage box (bottom left, below 1.7m gap) -->
+  <rect x="35" y="490" width="77" height="99" fill="#EDE7DA" stroke="#2A3012" stroke-width="3" rx="1"/>
+
+  <!-- ═══ ZONES ═══ -->
+
+  <!-- KITCHEN (stays) 3.4×3.3m ≈ 153×148px -->
+  <rect x="35" y="55" width="153" height="148" fill="#C8D8C4" stroke="#2A3012" stroke-width="2" rx="2"/>
+  <text x="111" y="118" text-anchor="middle" font-family="Lato,sans-serif" font-size="12" font-weight="700" fill="#2A3012">KITCHEN</text>
+  <text x="111" y="133" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#4A5225">3.4 × 3.3 m — no change</text>
+
+  <!-- PODCAST STUDIO (old office) 3.4×3.2m ≈ 153×144px -->
+  <rect x="35" y="203" width="153" height="144" fill="#2A3012" stroke="#2A3012" stroke-width="2" rx="2"/>
+  <text x="111" y="263" text-anchor="middle" font-family="Lato,sans-serif" font-size="12" font-weight="700" fill="#F5F0E8">PODCAST</text>
+  <text x="111" y="278" text-anchor="middle" font-family="Lato,sans-serif" font-size="12" font-weight="700" fill="#F5F0E8">STUDIO</text>
+  <text x="111" y="296" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="rgba(255,255,255,.55)">Use existing enclosed room</text>
+  <text x="111" y="309" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="rgba(255,255,255,.55)">3.4 × 3.2 m</text>
+
+  <!-- MIKEY'S OFFICE — glass partition in top-left of main area, ~3.5×3.5m -->
+  <rect x="188" y="88" width="162" height="163" fill="#4A5225" stroke="#2A3012" stroke-width="2" rx="2"/>
+  <!-- Glass partition — right side of office (dashed) -->
+  <line x1="350" y1="88" x2="350" y2="251" stroke="#DCDF28" stroke-width="2.5" stroke-dasharray="8,5"/>
+  <text x="269" y="160" text-anchor="middle" font-family="Lato,sans-serif" font-size="12" font-weight="700" fill="#F5F0E8">OFFICE</text>
+  <text x="269" y="175" text-anchor="middle" font-family="Lato,sans-serif" font-size="10" fill="rgba(255,255,255,.75)">(Mikey Real)</text>
+  <text x="269" y="193" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#DCDF28">— glass partition —</text>
+  <text x="269" y="210" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="rgba(255,255,255,.5)">≈ 3.5 × 3.5 m</text>
+
+  <!-- BREAKOUT AREA — top right, 6.5×4.6m ≈ 290×207px? Let's use remaining top space -->
+  <rect x="350" y="88" width="186" height="163" fill="#DCDF28" stroke="#2A3012" stroke-width="2" rx="2"/>
+  <!-- Couch suggestion -->
+  <rect x="365" y="105" width="75" height="38" fill="#B8A860" stroke="#8A7840" stroke-width="1.5" rx="4"/>
+  <rect x="453" y="105" width="38" height="38" fill="#B8A860" stroke="#8A7840" stroke-width="1.5" rx="4"/>
+  <rect x="378" y="158" width="60" height="20" fill="#B8A860" stroke="#8A7840" stroke-width="1" rx="3"/>
+  <text x="443" y="210" text-anchor="middle" font-family="Lato,sans-serif" font-size="12" font-weight="700" fill="#2A3012">BREAKOUT</text>
+  <text x="443" y="225" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#2A3012">Lounge · informal area</text>
+  <text x="443" y="240" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#2A3012">Adjacent to kitchen ✓</text>
+
+  <!-- 6-PERSON DESK AREA — central main space -->
+  <rect x="188" y="251" width="230" height="195" fill="#E8E2D6" stroke="#2A3012" stroke-width="2" rx="2"/>
+  <!-- Desks -->
+  <rect x="204" y="268" width="44" height="32" fill="#C4BCA8" stroke="#8A8060" stroke-width="1" rx="2"/>
+  <rect x="258" y="268" width="44" height="32" fill="#C4BCA8" stroke="#8A8060" stroke-width="1" rx="2"/>
+  <rect x="312" y="268" width="44" height="32" fill="#C4BCA8" stroke="#8A8060" stroke-width="1" rx="2"/>
+  <rect x="204" y="314" width="44" height="32" fill="#C4BCA8" stroke="#8A8060" stroke-width="1" rx="2"/>
+  <rect x="258" y="314" width="44" height="32" fill="#C4BCA8" stroke="#8A8060" stroke-width="1" rx="2"/>
+  <rect x="312" y="314" width="44" height="32" fill="#C4BCA8" stroke="#8A8060" stroke-width="1" rx="2"/>
+  <text x="303" y="390" text-anchor="middle" font-family="Lato,sans-serif" font-size="12" font-weight="700" fill="#2A3012">6-PERSON DESKS</text>
+  <text x="303" y="406" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#6B6450">Open plan workstations</text>
+  <text x="303" y="420" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#6B6450">≈ 4.6 m × 3.9 m</text>
+
+  <!-- BOARDROOM — right side, glass wall, existing ≈ 3.6×4.9m = 162×220px -->
+  <rect x="418" y="251" width="118" height="195" fill="#C8D8C4" stroke="#2A3012" stroke-width="2" rx="2"/>
+  <!-- Glass wall (left side of boardroom) -->
+  <line x1="418" y1="251" x2="418" y2="446" stroke="#4A8A6A" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="477" y="315" text-anchor="middle" font-family="Lato,sans-serif" font-size="11" font-weight="700" fill="#2A3012">BOARD</text>
+  <text x="477" y="329" text-anchor="middle" font-family="Lato,sans-serif" font-size="11" font-weight="700" fill="#2A3012">ROOM</text>
+  <text x="477" y="348" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#2A3012">Keep existing</text>
+  <text x="477" y="362" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#4A8A6A">← glass wall</text>
+  <text x="477" y="378" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#6B6450">3.6 × 4.9 m</text>
+
+  <!-- Bottom strip (below desks and boardroom) — circulation/hallway -->
+  <rect x="188" y="446" width="348" height="114" fill="#EDE7DA" stroke="#2A3012" stroke-width="2" rx="2"/>
+  <text x="362" y="509" text-anchor="middle" font-family="Lato,sans-serif" font-size="11" fill="#8A8060">— circulation / open area —</text>
+
+  <!-- STORAGE -->
+  <rect x="35" y="490" width="77" height="99" fill="#C0BAB0" stroke="#2A3012" stroke-width="2" rx="1"/>
+  <text x="73" y="535" text-anchor="middle" font-family="Lato,sans-serif" font-size="10" fill="#2A3012">STORAGE</text>
+  <text x="73" y="549" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#6B6450">1.7 × 2.2m</text>
+
+  <!-- ENTRANCE ARROW -->
+  <polygon points="73,598 60,580 86,580" fill="#2A3012"/>
+  <text x="73" y="615" text-anchor="middle" font-family="Lato,sans-serif" font-size="11" font-weight="700" fill="#2A3012">ENTRANCE</text>
+
+  <!-- DIMENSION INDICATORS -->
+  <!-- Compass/scale note -->
+  <text x="30" y="22" font-family="Lato,sans-serif" font-size="10" fill="#8A8060">Scale: approx 1m = 45px · all zones proportional to measurements</text>
+
+  <!-- Glass wall legend line -->
+  <line x1="30" y1="588" x2="55" y2="588" stroke="#4A8A6A" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="60" y="592" font-family="Lato,sans-serif" font-size="9" fill="#4A8A6A">existing glass wall</text>
+  <line x1="140" y1="588" x2="165" y2="588" stroke="#DCDF28" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="170" y="592" font-family="Lato,sans-serif" font-size="9" fill="#6B6450">new glass partition</text>
+
+</svg>
+</div>
+
+<!-- Notes -->
+<div class="notes">
+  <h2>Zone Rationale</h2>
+
+  <div class="zone">
+    <div class="zone-dot" style="background:#C8D8C4;border:1px solid #2A3012"></div>
+    <div>
+      <div class="zone-title">Kitchen — no change</div>
+      <div class="zone-desc">Stays exactly as-is per your brief. 3.4 × 3.3m at the top-left.</div>
+    </div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-dot" style="background:#2A3012"></div>
+    <div>
+      <div class="zone-title">Podcast Studio — existing "Office" room</div>
+      <div class="zone-desc">The existing enclosed room (3.4 × 3.2m) is perfect for a studio — already built out as a private enclosed space, easy to soundproof. No new walls needed. Adjacent to kitchen for breaks between recordings.</div>
+    </div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-dot" style="background:#4A5225"></div>
+    <div>
+      <div class="zone-title">Mikey's Office — new glass partition, top-left of main</div>
+      <div class="zone-desc">Create a ~3.5 × 3.5m private office in the top-left of the main open space using a glass partition. Shares the left wall with the podcast studio (keeps the quiet zone on the left side). Glass partition toward the open plan keeps it connected but private.</div>
+    </div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-dot" style="background:#DCDF28;border:1px solid #8A8060"></div>
+    <div>
+      <div class="zone-title">Breakout — top right, adjacent to kitchen</div>
+      <div class="zone-desc">The 6.5m wide upper-right section (4.6m deep) becomes the breakout lounge. Close to the kitchen so it becomes the natural social zone — people get coffee, sit down, decompress. Informal meeting area doubles the space's utility.</div>
+    </div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-dot" style="background:#E8E2D6;border:1px solid #8A8060"></div>
+    <div>
+      <div class="zone-title">6-Person Desks — central open plan</div>
+      <div class="zone-desc">Main central open space for the team workstations. Good light, central position, natural flow from entrance. Cluster or L-shape arrangement works well in the available footprint.</div>
+    </div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-dot" style="background:#C8D8C4;border:1px solid #2A3012"></div>
+    <div>
+      <div class="zone-title">Boardroom — keep existing</div>
+      <div class="zone-desc">Already purpose-built with the glass wall. 3.6 × 4.9m — seats 8 comfortably. No changes needed except potentially updating fit-out.</div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-title">Key principle</div>
+    <div class="insight-text">
+      Quiet zone on the LEFT (podcast studio + Mikey's office) — noise-sensitive activities grouped away from the main floor.<br><br>
+      Collaborative zone in the CENTRE (desks, circulation) — team interaction and spontaneous conversation encouraged.<br><br>
+      Formal/social zones flanking RIGHT (breakout at top, boardroom at bottom) — natural flow from arrival → boardroom → breakout → kitchen.<br><br>
+      Only structural change needed: one glass partition wall for Mikey's office. Everything else works with what's already there.
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
