@@ -81,6 +81,20 @@ body.demo-mode .main-wrap,body.demo-mode .page-header{display:none;}
 .demo-bottom{position:absolute;bottom:0;left:0;right:0;padding:0 0 20px;text-align:center;}
 .demo-counter{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:1px;}
 .demo-hint{font-size:9px;color:rgba(255,255,255,.12);margin-top:4px;letter-spacing:.5px;text-transform:uppercase;}
+
+.fl{font-size:11px;font-weight:700;color:#7A7050;margin-bottom:5px;display:block;}
+.fi{background:#FFFFFF;border:1.5px solid #C8C0A8;border-radius:12px;padding:12px 14px;font-size:13px;font-weight:600;color:#2A3012;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0;}
+.fi.on{border-color:#4A5225;}
+.prog{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(58,72,32,.12);}
+.prog-f{height:3px;background:#DCDF28;border-radius:0 2px 2px 0;}
+
+/* ── Form fields: label above, clean white input box ── */
+.fl{font-size:11px;font-weight:700;color:#7A7050;margin-bottom:5px;display:block;}
+.fi{background:#FFFFFF;border:1.5px solid #C8C0A8;border-radius:12px;padding:12px 14px;font-size:13px;font-weight:600;color:#2A3012;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0;}
+.fi.on{border-color:#4A5225;}
+/* Progress bar */
+.prog{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(58,72,32,.12);}
+.prog-f{height:3px;background:#DCDF28;border-radius:0 2px 2px 0;}
 </style>
 </head>
 <body>
@@ -114,13 +128,23 @@ body.demo-mode .main-wrap,body.demo-mode .page-header{display:none;}
     </div>
     <div class="sg" data-path="1">
       <div class="phone"><div class="sc">
-        <div class="sb"><span class="time">9:41</span></div>
+        <div class="sb" style="position:relative">
+          <span class="time">9:41</span>
+          <div class="prog"><div class="prog-f" style="width:28%"></div></div>
+        </div>
         <div class="nh" onclick="toggleNH(this)">🪺<div class="nh-menu"><div class="nm-item">📞 Call us</div><div class="nm-item">📅 Book a time</div><div class="nm-item">❓ FAQ</div><div class="nm-item">💬 Live chat</div></div></div>
-        
-        <div class="sc-top">
-          <h2 style="font-size:22px;font-weight:900;color:#2A3012;margin-bottom:6px">Is this<br>you?</h2>
+        <div class="sc-top" style="padding:16px 16px 72px">
+          <h2 style="font-size:22px;font-weight:900;color:#2A3012;margin-bottom:6px">Is this you?</h2>
           <p class="sub">The person who referred you gave us these details. Tap to update anything.</p>
-<div class="card"><div class="cl">Name</div><div class="cv cv-ed">Sarah Mitchell<span class="edit-ic">✏</span></div></div><div class="card"><div class="cl">Email</div><div class="cv cv-ed">sarah@email.com<span class="edit-ic">✏</span></div></div><div class="card"><div class="cl">Mobile</div><div class="cv cv-ed">0412 345 678<span class="edit-ic">✏</span></div></div><div class="sp"></div></div><div class="sc-foot"><div class="cta-text">My details are correct</div><div class="cta-bar"></div></div>
+          <span class="fl">Name</span>
+          <div class="fi on">Sarah Mitchell <span class="edit-ic">✏</span></div>
+          <span class="fl">Email</span>
+          <div class="fi">sarah@email.com <span class="edit-ic">✏</span></div>
+          <span class="fl">Mobile</span>
+          <div class="fi">0412 345 678 <span class="edit-ic">✏</span></div>
+          <div class="sp"></div>
+        </div>
+        <div class="sc-foot"><div class="cta-text">My details are correct</div><div class="cta-bar"></div></div>
       </div></div>
       <div class="screen-title">2. Confirm Details</div>
     </div>
