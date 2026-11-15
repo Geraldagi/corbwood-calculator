@@ -101,6 +101,8 @@ body.demo-mode .main-wrap,body.demo-mode .page-header{display:none;}
 .rvl{font-size:9px;font-weight:700;color:#7A7050;text-transform:uppercase;letter-spacing:.9px;margin-bottom:3px;display:block;}
 .rvv{font-size:13px;font-weight:700;color:#2A3012;}
 .rvv.pos{font-size:13px;font-weight:700;color:#4A5225;}
+
+.btn-solid{background:#3A4820;color:#F5F0E8;border:none;border-radius:14px;padding:14px;width:100%;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-align:center;margin-top:12px;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -247,28 +249,30 @@ body.demo-mode .main-wrap,body.demo-mode .page-header{display:none;}
       <div class="phone"><div class="sc">
         <div class="sb" style="position:relative"><span class="time">9:41</span><div class="prog"><div class="prog-f" style="width:86%"></div></div></div>
         <div class="nh" onclick="toggleNH(this)">🪺<div class="nh-menu"><div class="nm-item">📞 Call us</div><div class="nm-item">📅 Book a time</div><div class="nm-item">❓ FAQ</div><div class="nm-item">💬 Live chat</div></div></div>
-        <div class="sc-top" style="padding:16px 16px 72px">
-          <h2 style="font-size:24px;font-weight:900;color:#2A3012;line-height:1.15;margin-bottom:6px">Review &<br>confirm.</h2>
+        <div class="sc-top" style="padding:16px 16px 20px">
+          <div class="ico" style="background:#2A3012;align-self:flex-start;width:44px;height:44px">✅</div>
+          <h2 style="font-size:24px;font-weight:900;color:#2A3012;line-height:1.15;margin-bottom:8px">Review &<br>confirm.</h2>
           <p class="sub" style="margin-bottom:14px">Everything look right?</p>
-          <div class="rv"><span class="rvl">Name</span><div class="rvv">Sarah Mitchell</div></div>
+          <span class="fl">Full name</span>
+          <div class="fi">Sarah Mitchell</div>
+          <span class="fl">Date of birth</span>
+          <div class="fi">15 Mar 1985</div>
+          <span class="fl">Residential address</span>
+          <div class="fi">12 Beach St, Helensvale</div>
+          <span class="fl">Annual income</span>
+          <div class="fi">$95,000 / year</div>
+          <span class="fl">Employer</span>
+          <div class="fi">Acme Corp · Full-time</div>
+          <span class="fl">Super balance</span>
+          <div class="fi">$182,000</div>
+          <span class="fl">Credit history</span>
+          <div class="fi">No issues declared</div>
+          <span class="fl">Documents</span>
+          <div class="fi" style="color:#4A5225;font-weight:700">✅ All 3 uploaded</div>
           
-          <div class="rv"><span class="rvl">Date of birth</span><div class="rvv">15 Mar 1985</div></div>
-          
-          <div class="rv"><span class="rvl">Address</span><div class="rvv">12 Beach St, Helensvale</div></div>
-          
-          <div class="rv"><span class="rvl">Income</span><div class="rvv">$95,000 / year</div></div>
-          
-          <div class="rv"><span class="rvl">Employer</span><div class="rvv">Acme Corp · Full-time</div></div>
-          
-          <div class="rv"><span class="rvl">Super balance</span><div class="rvv">$182,000</div></div>
-          
-          <div class="rv"><span class="rvl">Credit history</span><div class="rvv">No issues declared</div></div>
-          
-          <div class="rv"><span class="rvl">Documents</span><div class="rvv pos">✅ All 3 uploaded</div></div>
-          
-          <div class="sp"></div>
+          <button class="btn-solid">Submit my application →</button>
+          <div style="height:16px"></div>
         </div>
-        <div class="sc-foot"><div class="cta-text">Submit my application</div><div class="cta-bar"></div></div>
       </div></div>
       <div class="screen-title">6. Review & confirm</div>
     </div>
